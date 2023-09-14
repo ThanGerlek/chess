@@ -1,4 +1,4 @@
-package startingClasses;
+package chess;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.

@@ -1,7 +1,5 @@
 package chess;
 
-import startingClasses.*;
-
 import java.util.Collection;
 
 public class ChessPieceImpl implements ChessPiece {

@@ -1,9 +1,5 @@
 package chess;
 
-import startingClasses.ChessMove;
-import startingClasses.ChessPiece;
-import startingClasses.ChessPosition;
-
 public class ChessMoveImpl implements ChessMove {
 
     // TODO ChessMoveImpl
