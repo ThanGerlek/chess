@@ -3,8 +3,10 @@ package chess.pieces;
 import chess.*;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 public class Bishop extends ChessPieceImpl {
+
     public Bishop(ChessGame.TeamColor color) {
         super(PieceType.BISHOP, color);
     }
@@ -20,6 +22,42 @@ public class Bishop extends ChessPieceImpl {
      */
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return null;
+        Collection<ChessMove> moves = new LinkedList<>();
+        for (ChessPosition endPosition : getMoveEndPositions(myPosition))
+            if (isValidPosition(board, endPosition)) moves.add(new ChessMoveImpl(myPosition, endPosition));
+
+        return moves;
+    }
+
+    private Collection<ChessPosition> getMoveEndPositions(ChessPosition myPosition) {
+        Collection<ChessPosition> endPositions = new LinkedList<>();
+        for (int distance = 1; distance < 8; distance++)
+            endPositions.addAll(getEndPositionsOfDistance(distance, myPosition));
+
+        return endPositions;
+    }
+
+    private Collection<ChessPosition> getEndPositionsOfDistance(int dist, ChessPosition myPosition) {
+        Collection<ChessPosition> endPositions = new LinkedList<>();
+
+        endPositions.add(new ChessPositionImpl(myPosition.getRow() + dist, myPosition.getColumn() + dist));
+        endPositions.add(new ChessPositionImpl(myPosition.getRow() + dist, myPosition.getColumn() - dist));
+        endPositions.add(new ChessPositionImpl(myPosition.getRow() - dist, myPosition.getColumn() + dist));
+        endPositions.add(new ChessPositionImpl(myPosition.getRow() - dist, myPosition.getColumn() - dist));
+
+        return endPositions;
+    }
+
+    private boolean isValidPosition(ChessBoard board, ChessPosition position) {
+        return isOnBoard(position) && !isOnSameColorPiece(board, position);
+    }
+
+    private boolean isOnBoard(ChessPosition position) {
+        return position.getRow() > 0 && position.getRow() < 9 && position.getColumn() > 0 && position.getColumn() < 9;
+    }
+
+    private boolean isOnSameColorPiece(ChessBoard board, ChessPosition position) {
+        ChessPiece otherPiece = board.getPiece(position);
+        return otherPiece == null || otherPiece.getTeamColor().equals(getTeamColor());
     }
 }
