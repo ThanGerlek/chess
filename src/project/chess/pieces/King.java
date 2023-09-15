@@ -3,6 +3,7 @@ package chess.pieces;
 import chess.*;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 public class King extends ChessPieceImpl {
     public King(ChessGame.TeamColor color) {
@@ -20,7 +21,23 @@ public class King extends ChessPieceImpl {
      */
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+        Collection<ChessMove> moves = new LinkedList<>();
+        for (ChessPosition endPosition : getMoveEndPositions(myPosition))
+            if (isValidMoveEndPosition(board, endPosition)) moves.add(new ChessMoveImpl(myPosition, endPosition));
 
-        return null;
+        return moves;
+    }
+
+    private Collection<ChessPosition> getMoveEndPositions(ChessPosition position) {
+        Collection<ChessPosition> positions = new LinkedList<>();
+        positions.add(shift(position, -1, -1));
+        positions.add(shift(position, -1, 0));
+        positions.add(shift(position, -1, 1));
+        positions.add(shift(position, 1, -1));
+        positions.add(shift(position, 1, 0));
+        positions.add(shift(position, 1, 1));
+        positions.add(shift(position, 0, -1));
+        positions.add(shift(position, 0, 1));
+        return positions;
     }
 }
