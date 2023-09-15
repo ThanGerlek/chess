@@ -27,6 +27,36 @@ public abstract class ChessPieceImpl implements ChessPiece {
     }
 
     /**
+     * Returns a version of the given ChessPosition shifted by the given amounts.
+     * Positive values shift up and right relative to the white player.
+     *
+     * @param position the starting ChessPosition.
+     * @param deltaRow the amount to shift the row.
+     * @param deltaCol the amount to shift the column.
+     * @return a shifted ChessPosition.
+     */
+    protected static ChessPosition shift(ChessPosition position, int deltaRow, int deltaCol) {
+        return new ChessPositionImpl(position.getRow() + deltaRow, position.getColumn() + deltaCol);
+    }
+
+    /**
+     * Returns a version of the given ChessPosition shifted by the given
+     * amounts towards the opposing side.
+     * Positive values shift up and right relative to the player who owns
+     * this piece.
+     *
+     * @param position the starting ChessPosition.
+     * @param deltaRow the amount to shift the row.
+     * @param deltaCol the amount to shift the column.
+     * @return a shifted ChessPosition.
+     */
+    protected ChessPosition shiftRelative(ChessPosition position, int deltaRow, int deltaCol) {
+        if (color == ChessGame.TeamColor.WHITE)
+            return shift(position, deltaRow, deltaCol);
+        return shift(position, -deltaRow, -deltaCol);
+    }
+
+    /**
      * @return which team this chess piece belongs to.
      */
     @Override
@@ -58,23 +88,12 @@ public abstract class ChessPieceImpl implements ChessPiece {
         return isOnBoard(position) && !isOnSameColorPiece(board, position);
     }
 
-    private boolean isOnBoard(ChessPosition position) {
+    protected boolean isOnBoard(ChessPosition position) {
         return position.getRow() > 0 && position.getRow() < 9 && position.getColumn() > 0 && position.getColumn() < 9;
     }
 
     private boolean isOnSameColorPiece(ChessBoard board, ChessPosition position) {
         ChessPiece otherPiece = board.getPiece(position);
         return otherPiece == null || otherPiece.getTeamColor().equals(getTeamColor());
-    }
-
-    /**
-     * Returns a version of the given ChessPosition shifted by the given amounts.
-     * @param position the starting ChessPosition.
-     * @param deltaRow the amount to shift the row.
-     * @param deltaCol the amount to shift the column.
-     * @return a shifted ChessPosition.
-     */
-    protected static ChessPosition shift(ChessPosition position, int deltaRow, int deltaCol) {
-        return new ChessPositionImpl(position.getRow() + deltaRow, position.getColumn() + deltaCol);
     }
 }
