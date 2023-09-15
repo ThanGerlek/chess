@@ -27,7 +27,7 @@ public abstract class ChessPieceImpl implements ChessPiece {
     }
 
     /**
-     * @return Which team this chess piece belongs to
+     * @return which team this chess piece belongs to.
      */
     @Override
     public ChessGame.TeamColor getTeamColor() {
@@ -35,7 +35,7 @@ public abstract class ChessPieceImpl implements ChessPiece {
     }
 
     /**
-     * @return which type of chess piece this piece is
+     * @return which type of chess piece this piece is.
      */
     @Override
     public PieceType getPieceType() {

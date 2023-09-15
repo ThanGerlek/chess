@@ -10,6 +10,13 @@ public class ChessPositionImpl implements ChessPosition {
         this.col = col;
     }
 
+    /**
+     * Returns a version of this ChessPosition shifted by the given amounts.
+     * @param position the starting ChessPosition.
+     * @param deltaRow the amount to shift the row.
+     * @param deltaCol the amount to shift the column.
+     * @return a shifted version of this ChessPosition.
+     */
     public static ChessPosition shift(ChessPosition position, int deltaRow, int deltaCol) {
         return new ChessPositionImpl(position.getRow() + deltaRow, position.getColumn() + deltaCol);
     }
@@ -31,10 +38,10 @@ public class ChessPositionImpl implements ChessPosition {
     }
 
     /**
-     * Returns this ChessPosition's representation in algebraic chess notation.
+     * @return this ChessPosition's representation in algebraic chess notation.
      */
     public String notation() {
         char colChar = (char) ('a' + col - 1);
-        return "" + (Character) colChar + row;
+        return "" + colChar + row;
     }
 }

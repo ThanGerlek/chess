@@ -16,7 +16,7 @@ public class King extends ChessPieceImpl {
      *
      * @param board      the current ChessBoard.
      * @param myPosition this King's current position.
-     * @return Collection of valid moves.
+     * @return a Collection of valid moves.
      */
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {

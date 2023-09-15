@@ -3,15 +3,14 @@ package chess;
 import java.util.Collection;
 
 /**
- * For a class that can manage a chess game, making moves on a board
- * 
+ * For a class that can manage a chess game, making moves on a board.
  * Note: You can add to this interface, but you should not alter the existing
  * methods.
  */
 public interface ChessGame {
 
     /**
-     * @return Which team's turn it is
+     * @return which team's turn it is
      */
     TeamColor getTeamTurn();
 

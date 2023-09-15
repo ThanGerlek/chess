@@ -17,7 +17,7 @@ public class ChessMoveImpl implements ChessMove {
     }
 
     /**
-     * @return ChessPosition of starting location
+     * @return ChessPosition of starting location.
      */
     @Override
     public ChessPosition getStartPosition() {
@@ -25,7 +25,7 @@ public class ChessMoveImpl implements ChessMove {
     }
 
     /**
-     * @return ChessPosition of ending location
+     * @return ChessPosition of ending location.
      */
     @Override
     public ChessPosition getEndPosition() {
@@ -34,9 +34,9 @@ public class ChessMoveImpl implements ChessMove {
 
     /**
      * Gets the type of piece to promote a pawn to if pawn promotion is part of this
-     * chess move
+     * chess move, or null otherwise.
      *
-     * @return Type of piece to promote a pawn to, or null if no promotion
+     * @return the type of piece to promote a pawn to, or null if no promotion.
      */
     @Override
     public ChessPiece.PieceType getPromotionPiece() {
