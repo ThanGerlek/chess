@@ -2,15 +2,26 @@ package chess;
 
 public class ChessMoveImpl implements ChessMove {
 
-    // TODO ChessMoveImpl
+    private final ChessPosition startPosition;
+    private final ChessPosition endPosition;
+    private final ChessPiece.PieceType promotionPiece;
+
+    public ChessMoveImpl(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece) {
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
+        this.promotionPiece = promotionPiece;
+    }
+
+    public ChessMoveImpl(ChessPosition startPosition, ChessPosition endPosition) {
+        this(startPosition, endPosition, null);
+    }
 
     /**
      * @return ChessPosition of starting location
      */
     @Override
     public ChessPosition getStartPosition() {
-        // TODO getStartPosition()
-        return null;
+        return startPosition;
     }
 
     /**
@@ -18,8 +29,7 @@ public class ChessMoveImpl implements ChessMove {
      */
     @Override
     public ChessPosition getEndPosition() {
-        // TODO getEndPosition()
-        return null;
+        return endPosition;
     }
 
     /**
@@ -30,7 +40,6 @@ public class ChessMoveImpl implements ChessMove {
      */
     @Override
     public ChessPiece.PieceType getPromotionPiece() {
-        // TODO getPromotionPiece()
-        return null;
+        return promotionPiece;
     }
 }
