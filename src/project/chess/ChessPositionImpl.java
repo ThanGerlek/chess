@@ -2,25 +2,39 @@ package chess;
 
 public class ChessPositionImpl implements ChessPosition {
 
-    // TODO ChessPositionImpl
+    private final int row;
+    private final int col;
 
-    /**
-     * @return which row this position is in
-     * 1 codes for the bottom row
-     */
-    @Override
-    public int getRow() {
-        // TODO getRow()
-        return 0;
+    public ChessPositionImpl(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    public static ChessPosition shift(ChessPosition position, int deltaRow, int deltaCol) {
+        return new ChessPositionImpl(position.getRow() + deltaRow, position.getColumn() + deltaCol);
     }
 
     /**
-     * @return which column this position is in
-     * 1 codes for the left row
+     * @return which row this position is in (1 codes for the bottom row).
+     */
+    @Override
+    public int getRow() {
+        return row;
+    }
+
+    /**
+     * @return which column this position is in (1 codes for the left row).
      */
     @Override
     public int getColumn() {
-        // TODO getColumn()
-        return 0;
+        return col;
+    }
+
+    /**
+     * Returns this ChessPosition's representation in algebraic chess notation.
+     */
+    public String notation() {
+        char colChar = (char) ('a' + col - 1);
+        return "" + (Character) colChar + row;
     }
 }
