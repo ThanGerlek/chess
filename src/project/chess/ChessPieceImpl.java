@@ -1,18 +1,24 @@
 package chess;
 
+
 import java.util.Collection;
 
-public class ChessPieceImpl implements ChessPiece {
+public abstract class ChessPieceImpl implements ChessPiece {
 
-    // TODO ChessPieceImpl
+    private final PieceType type;
+    private final ChessGame.TeamColor color;
+
+    public ChessPieceImpl(PieceType type, ChessGame.TeamColor color) {
+        this.type = type;
+        this.color = color;
+    }
 
     /**
      * @return Which team this chess piece belongs to
      */
     @Override
     public ChessGame.TeamColor getTeamColor() {
-        // TODO getTeamColor()
-        return null;
+        return color;
     }
 
     /**
@@ -20,22 +26,18 @@ public class ChessPieceImpl implements ChessPiece {
      */
     @Override
     public PieceType getPieceType() {
-        // TODO getPieceType()
-        return null;
+        return type;
     }
 
     /**
-     * Calculates all the positions a chess piece can move to
+     * Calculates all the positions a chess piece can move to.
      * Does not take into account moves that are illegal due to leaving the king in
-     * danger
+     * danger.
      *
-     * @param board
-     * @param myPosition
-     * @return Collection of valid moves
+     * @param board      the current ChessBoard.
+     * @param myPosition this ChessPiece's current position.
+     * @return Collection of valid moves.
      */
     @Override
-    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        // TODO pieceMoves()
-        return null;
-    }
+    public abstract Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition);
 }
