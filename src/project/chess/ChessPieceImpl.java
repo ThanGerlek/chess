@@ -1,6 +1,8 @@
 package chess;
 
 
+import chess.pieces.*;
+
 import java.util.Collection;
 
 public abstract class ChessPieceImpl implements ChessPiece {
@@ -11,6 +13,17 @@ public abstract class ChessPieceImpl implements ChessPiece {
     public ChessPieceImpl(PieceType type, ChessGame.TeamColor color) {
         this.type = type;
         this.color = color;
+    }
+
+    public static ChessPiece FromType(PieceType type, ChessGame.TeamColor color) {
+        return switch (type) {
+            case KING -> new King(color);
+            case QUEEN -> new Queen(color);
+            case BISHOP -> new Bishop(color);
+            case KNIGHT -> new Knight(color);
+            case ROOK -> new Rook(color);
+            case PAWN -> new Pawn(color);
+        };
     }
 
     /**
