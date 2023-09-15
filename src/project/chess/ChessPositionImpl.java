@@ -10,16 +10,6 @@ public class ChessPositionImpl implements ChessPosition {
         this.col = col;
     }
 
-    /**
-     * Returns a version of this ChessPosition shifted by the given amounts.
-     * @param position the starting ChessPosition.
-     * @param deltaRow the amount to shift the row.
-     * @param deltaCol the amount to shift the column.
-     * @return a shifted version of this ChessPosition.
-     */
-    public static ChessPosition shift(ChessPosition position, int deltaRow, int deltaCol) {
-        return new ChessPositionImpl(position.getRow() + deltaRow, position.getColumn() + deltaCol);
-    }
 
     /**
      * @return which row this position is in (1 codes for the bottom row).

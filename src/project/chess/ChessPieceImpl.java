@@ -53,4 +53,28 @@ public abstract class ChessPieceImpl implements ChessPiece {
      */
     @Override
     public abstract Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition);
+
+    protected boolean isValidMoveEndPosition(ChessBoard board, ChessPosition position) {
+        return isOnBoard(position) && !isOnSameColorPiece(board, position);
+    }
+
+    private boolean isOnBoard(ChessPosition position) {
+        return position.getRow() > 0 && position.getRow() < 9 && position.getColumn() > 0 && position.getColumn() < 9;
+    }
+
+    private boolean isOnSameColorPiece(ChessBoard board, ChessPosition position) {
+        ChessPiece otherPiece = board.getPiece(position);
+        return otherPiece == null || otherPiece.getTeamColor().equals(getTeamColor());
+    }
+
+    /**
+     * Returns a version of the given ChessPosition shifted by the given amounts.
+     * @param position the starting ChessPosition.
+     * @param deltaRow the amount to shift the row.
+     * @param deltaCol the amount to shift the column.
+     * @return a shifted ChessPosition.
+     */
+    protected static ChessPosition shift(ChessPosition position, int deltaRow, int deltaCol) {
+        return new ChessPositionImpl(position.getRow() + deltaRow, position.getColumn() + deltaCol);
+    }
 }
