@@ -34,4 +34,9 @@ public class ChessPositionImpl implements ChessPosition {
         char colChar = (char) ('a' + col - 1);
         return "" + colChar + row;
     }
+
+    @Override
+    public int hashCode() {
+        return row * 16 + col;
+    }
 }
