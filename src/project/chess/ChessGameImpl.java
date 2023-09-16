@@ -4,15 +4,20 @@ import java.util.Collection;
 
 public class ChessGameImpl implements ChessGame {
 
-    // TODO ChessGameImpl
+    private ChessBoardImpl board;
+    private boolean isWhitesTurn;
+
+    public ChessGameImpl() {
+        board = new ChessBoardImpl();
+        isWhitesTurn = true;
+    }
 
     /**
      * @return which team's turn it is.
      */
     @Override
     public TeamColor getTeamTurn() {
-        // TODO getTeamTurn()
-        return null;
+        return isWhitesTurn ? TeamColor.WHITE : TeamColor.BLACK;
     }
 
     /**
@@ -22,7 +27,7 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public void setTeamTurn(TeamColor team) {
-        // TODO setTeamTurn()
+        isWhitesTurn = team == TeamColor.WHITE;
     }
 
     /**
@@ -46,7 +51,9 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public void makeMove(ChessMove move) throws InvalidMoveException {
-//TODO makeMove()
+        //TODO makeMove()
+        // Don't forget to update flags: let the piece know it's been
+        // moved, and let the Board know if the king has been moved
     }
 
     /**
@@ -93,8 +100,7 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public ChessBoard getBoard() {
-        // TODO getBoard()
-        return null;
+        return board;
     }
 
     /**
@@ -104,6 +110,6 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public void setBoard(ChessBoard board) {
-// TODO setBoard()
+        // TODO setBoard()   Problem! BoardImpl?
     }
 }
