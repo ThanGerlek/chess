@@ -54,7 +54,7 @@ public class Pawn extends ChessPieceImpl {
         ChessPosition endPosition = shiftRelative(myPosition, 2, 0);
         if (isOnBoard(endPosition)
                 && board.getPiece(endPosition) == null
-                && isPawnStartingSquare(myPosition)) {
+                && hasNeverMoved()) {
             endPositions.add(endPosition);
         }
     }
@@ -67,11 +67,6 @@ public class Pawn extends ChessPieceImpl {
                 && board.getPiece(endPosition).getTeamColor() != getTeamColor()) {
             endPositions.add(endPosition);
         }
-    }
-
-    private boolean isPawnStartingSquare(ChessPosition myPosition) {
-        return (getTeamColor() == ChessGame.TeamColor.WHITE && myPosition.getRow() == 2)
-                || (getTeamColor() == ChessGame.TeamColor.BLACK && myPosition.getRow() == 7);
     }
 
     @Override

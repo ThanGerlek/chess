@@ -9,10 +9,12 @@ public abstract class ChessPieceImpl implements ChessPiece {
 
     private final PieceType type;
     private final ChessGame.TeamColor color;
+    private boolean hasNeverMoved;
 
     public ChessPieceImpl(PieceType type, ChessGame.TeamColor color) {
         this.type = type;
         this.color = color;
+        this.hasNeverMoved = true;
     }
 
     public static ChessPiece FromType(PieceType type, ChessGame.TeamColor color) {
@@ -72,6 +74,10 @@ public abstract class ChessPieceImpl implements ChessPiece {
         return type;
     }
 
+    public void markAsHavingMoved() {
+        hasNeverMoved = false;
+    }
+
     /**
      * Calculates all the positions a chess piece can move to.
      * Does not take into account moves that are illegal due to leaving the king in
@@ -95,5 +101,9 @@ public abstract class ChessPieceImpl implements ChessPiece {
     private boolean isOnSameColorPiece(ChessBoard board, ChessPosition position) {
         ChessPiece otherPiece = board.getPiece(position);
         return otherPiece == null || otherPiece.getTeamColor().equals(getTeamColor());
+    }
+
+    protected boolean hasNeverMoved() {
+        return hasNeverMoved;
     }
 }
