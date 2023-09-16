@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 public class ChessGameImpl implements ChessGame {
 
@@ -64,8 +65,9 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public boolean isInCheck(TeamColor teamColor) {
-        // TODO isInCheck()
-        return false;
+        ChessPosition kingPosition = board.getKingPosition(teamColor);
+        TeamColor attackColor = (teamColor == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
+        return isPositionUnderAttackFrom(kingPosition, attackColor);
     }
 
     /**
@@ -76,8 +78,25 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public boolean isInCheckmate(TeamColor teamColor) {
-        // TODO isInCheckmate()
-        return false;
+        // TODO optimize?
+        ChessPosition kingPosition = board.getKingPosition(teamColor);
+        Collection<ChessPosition> potentialSpaces = new LinkedList<>();
+        TeamColor attackColor = (teamColor == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
+
+        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 1, 1));
+        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 1, 0));
+        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 1, -1));
+        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 0, 1));
+        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 0, 0));
+        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 0, -1));
+        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, -1, 1));
+        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, -1, 0));
+        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, -1, -1));
+
+        for (ChessPosition position : potentialSpaces) {
+            if (!isPositionUnderAttackFrom(position, attackColor)) return false;
+        }
+        return true;
     }
 
     /**
@@ -111,5 +130,10 @@ public class ChessGameImpl implements ChessGame {
     @Override
     public void setBoard(ChessBoard board) {
         // TODO setBoard()   Problem! BoardImpl?
+    }
+
+    private boolean isPositionUnderAttackFrom(ChessPosition position, TeamColor attackColor) {
+        // TODO isPositionUnderAttackFrom
+        return false;
     }
 }

@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class ChessBoardImpl implements ChessBoard {
 
+    private ChessPosition whiteKingPosition;
+    private ChessPosition blackKingPosition;
     private Map<ChessPosition, ChessPiece> pieces;
 
     public ChessBoardImpl() {
@@ -34,6 +36,10 @@ public class ChessBoardImpl implements ChessBoard {
     @Override
     public ChessPiece getPiece(ChessPosition position) {
         return pieces.get(position);
+    }
+
+    public ChessPosition getKingPosition(ChessGame.TeamColor color) {
+        return (color == ChessGame.TeamColor.WHITE) ? whiteKingPosition : blackKingPosition;
     }
 
     /**
@@ -119,5 +125,8 @@ public class ChessBoardImpl implements ChessBoard {
         pieces.put(blackKingPosition, blackKing);
         pieces.put(whiteQueenPosition, whiteQueen);
         pieces.put(blackQueenPosition, blackQueen);
+
+        this.whiteKingPosition = whiteKingPosition;
+        this.blackKingPosition = blackKingPosition;
     }
 }
