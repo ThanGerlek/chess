@@ -22,13 +22,15 @@ public class King extends ChessPieceImpl {
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> moves = new LinkedList<>();
-        for (ChessPosition endPosition : getMoveEndPositions(myPosition))
-            if (isValidEmptySpace(board, endPosition)) moves.add(new ChessMoveImpl(myPosition, endPosition));
+        for (ChessPosition endPosition : getPotentialEndPositions(myPosition))
+            if (isValidEndPosition(board, endPosition)) {
+                moves.add(new ChessMoveImpl(myPosition, endPosition));
+            }
 
         return moves;
     }
 
-    private Collection<ChessPosition> getMoveEndPositions(ChessPosition position) {
+    private Collection<ChessPosition> getPotentialEndPositions(ChessPosition position) {
         Collection<ChessPosition> positions = new LinkedList<>();
         positions.add(shift(position, -1, -1));
         positions.add(shift(position, -1, 0));
@@ -39,5 +41,12 @@ public class King extends ChessPieceImpl {
         positions.add(shift(position, 0, -1));
         positions.add(shift(position, 0, 1));
         return positions;
+    }
+
+    private boolean isValidEndPosition(ChessBoard board, ChessPosition position) {
+        if (isValidEmptySpace(board, position))
+            return true;
+        ChessPiece previousOccupant = board.getPiece(position);
+        return previousOccupant != null && previousOccupant.getTeamColor() != getTeamColor();
     }
 }
