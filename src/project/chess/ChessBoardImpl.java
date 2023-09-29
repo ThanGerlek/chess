@@ -12,7 +12,7 @@ public class ChessBoardImpl implements ChessBoard {
     private Map<ChessPosition, ChessPiece> pieces;
 
     public ChessBoardImpl() {
-        this.pieces = new HashMap<ChessPosition, ChessPiece>();
+        this.pieces = new HashMap<>();
     }
 
     /**
@@ -23,6 +23,11 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public void addPiece(ChessPosition position, ChessPiece piece) {
+        if (hasPieceAt(position)) {
+            String errMsg = String.format("Tried to add a piece to a nonempty position. Position: '%s', piece to add: '%s', existing piece: '%s'",
+                    position.toString(), piece.toString(), getPiece(position).toString());
+            throw new IllegalArgumentException(errMsg);
+        }
         pieces.put(position, piece);
     }
 
@@ -78,12 +83,12 @@ public class ChessBoardImpl implements ChessBoard {
     private void placeKnights() {
         Knight whiteKnight1 = new Knight(ChessGame.TeamColor.WHITE);
         Knight whiteKnight2 = new Knight(ChessGame.TeamColor.WHITE);
-        Knight blackKnight1 = new Knight(ChessGame.TeamColor.WHITE);
-        Knight blackKnight2 = new Knight(ChessGame.TeamColor.WHITE);
-        ChessPosition whiteKnightPosition1 = new ChessPositionImpl(1, 1);
-        ChessPosition whiteKnightPosition2 = new ChessPositionImpl(1, 8);
-        ChessPosition blackKnightPosition1 = new ChessPositionImpl(8, 1);
-        ChessPosition blackKnightPosition2 = new ChessPositionImpl(8, 8);
+        Knight blackKnight1 = new Knight(ChessGame.TeamColor.BLACK);
+        Knight blackKnight2 = new Knight(ChessGame.TeamColor.BLACK);
+        ChessPosition whiteKnightPosition1 = new ChessPositionImpl(1, 2);
+        ChessPosition whiteKnightPosition2 = new ChessPositionImpl(1, 7);
+        ChessPosition blackKnightPosition1 = new ChessPositionImpl(8, 2);
+        ChessPosition blackKnightPosition2 = new ChessPositionImpl(8, 7);
         pieces.put(whiteKnightPosition1, whiteKnight1);
         pieces.put(whiteKnightPosition2, whiteKnight2);
         pieces.put(blackKnightPosition1, blackKnight1);
@@ -93,12 +98,12 @@ public class ChessBoardImpl implements ChessBoard {
     private void placeBishops() {
         Bishop whiteBishop1 = new Bishop(ChessGame.TeamColor.WHITE);
         Bishop whiteBishop2 = new Bishop(ChessGame.TeamColor.WHITE);
-        Bishop blackBishop1 = new Bishop(ChessGame.TeamColor.WHITE);
-        Bishop blackBishop2 = new Bishop(ChessGame.TeamColor.WHITE);
-        ChessPosition whiteBishopPosition1 = new ChessPositionImpl(1, 1);
-        ChessPosition whiteBishopPosition2 = new ChessPositionImpl(1, 1);
-        ChessPosition blackBishopPosition1 = new ChessPositionImpl(8, 1);
-        ChessPosition blackBishopPosition2 = new ChessPositionImpl(8, 1);
+        Bishop blackBishop1 = new Bishop(ChessGame.TeamColor.BLACK);
+        Bishop blackBishop2 = new Bishop(ChessGame.TeamColor.BLACK);
+        ChessPosition whiteBishopPosition1 = new ChessPositionImpl(1, 3);
+        ChessPosition whiteBishopPosition2 = new ChessPositionImpl(1, 6);
+        ChessPosition blackBishopPosition1 = new ChessPositionImpl(8, 3);
+        ChessPosition blackBishopPosition2 = new ChessPositionImpl(8, 6);
         pieces.put(whiteBishopPosition1, whiteBishop1);
         pieces.put(whiteBishopPosition2, whiteBishop2);
         pieces.put(blackBishopPosition1, blackBishop1);
@@ -108,12 +113,12 @@ public class ChessBoardImpl implements ChessBoard {
     private void placeRooks() {
         Rook whiteRook1 = new Rook(ChessGame.TeamColor.WHITE);
         Rook whiteRook2 = new Rook(ChessGame.TeamColor.WHITE);
-        Rook blackRook1 = new Rook(ChessGame.TeamColor.WHITE);
-        Rook blackRook2 = new Rook(ChessGame.TeamColor.WHITE);
+        Rook blackRook1 = new Rook(ChessGame.TeamColor.BLACK);
+        Rook blackRook2 = new Rook(ChessGame.TeamColor.BLACK);
         ChessPosition whiteRookPosition1 = new ChessPositionImpl(1, 1);
-        ChessPosition whiteRookPosition2 = new ChessPositionImpl(1, 1);
+        ChessPosition whiteRookPosition2 = new ChessPositionImpl(1, 8);
         ChessPosition blackRookPosition1 = new ChessPositionImpl(8, 1);
-        ChessPosition blackRookPosition2 = new ChessPositionImpl(8, 1);
+        ChessPosition blackRookPosition2 = new ChessPositionImpl(8, 8);
         pieces.put(whiteRookPosition1, whiteRook1);
         pieces.put(whiteRookPosition2, whiteRook2);
         pieces.put(blackRookPosition1, blackRook1);
@@ -138,9 +143,9 @@ public class ChessBoardImpl implements ChessBoard {
         this.blackKingPosition = blackKingPosition;
     }
 
+    @Override
     public String toString() {
-        // TODO Test!!
-        // TODO Update; clear up symbol calculations
+        // TODO delegate/centralize symbol calculation
         StringBuilder builder = new StringBuilder();
         for (int row = 8; row >= 1; row--) {
             for (int col = 1; col <= 8; col++) {
