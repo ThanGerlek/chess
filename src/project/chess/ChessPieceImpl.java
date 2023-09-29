@@ -136,4 +136,9 @@ public abstract class ChessPieceImpl implements ChessPiece {
     protected boolean hasNeverMoved() {
         return hasNeverMoved;
     }
+
+    @Override
+    public ChessPiece copy() {
+        return ChessPieces.FromType(getPieceType(), getTeamColor(), hasNeverMoved());
+    }
 }

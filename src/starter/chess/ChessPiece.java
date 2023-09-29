@@ -29,6 +29,8 @@ public interface ChessPiece {
      */
     Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition);
 
+    public ChessPiece copy();
+
     /**
      * The various different chess piece options
      */
