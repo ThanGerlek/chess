@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class ChessGameImpl implements ChessGame {
 
-    private ChessBoardImpl board;
+    private ChessBoard board;
     private boolean isWhitesTurn;
 
     public ChessGameImpl() {
@@ -129,7 +129,7 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public void setBoard(ChessBoard board) {
-        // TODO setBoard()   Problem! BoardImpl?
+        this.board = board;
     }
 
     private boolean isPositionUnderAttackFrom(ChessPosition position, TeamColor attackColor) {

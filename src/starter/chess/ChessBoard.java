@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.Collection;
+
 /**
  * A chessboard that can hold and rearrange chess pieces.
  * Note: You can add to this interface, but you should not alter the existing
@@ -29,4 +31,9 @@ public interface ChessBoard {
      * (How the game of chess normally starts)
      */
     void resetBoard();
+
+    ChessPosition getKingPosition(ChessGame.TeamColor color) throws InvalidBoardException;
+
+    Collection<ChessPosition> occupiedPositions();
+
 }
