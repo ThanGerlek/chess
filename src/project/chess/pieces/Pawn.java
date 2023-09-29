@@ -49,7 +49,7 @@ public class Pawn extends ChessPieceImpl {
             endPositions.add(oneStepPosition);
 
             ChessPosition twoStepPosition = shiftRelative(myPosition, 2, 0);
-            if (hasNeverMoved() && isValidEmptySpace(board, twoStepPosition)) {
+            if (hasNeverMoved() && isOnStartRow(myPosition) && isValidEmptySpace(board, twoStepPosition)) {
                 endPositions.add(twoStepPosition);
             }
         }
@@ -59,6 +59,11 @@ public class Pawn extends ChessPieceImpl {
         int deltaCol = (direction > 0) ? 1 : -1;
         ChessPosition endPosition = shiftRelative(myPosition, 1, deltaCol);
         if (isValidCapturingSpace(board, endPosition)) endPositions.add(endPosition);
+    }
+
+    private boolean isOnStartRow(ChessPosition position) {
+        int startRow = (getTeamColor() == ChessGame.TeamColor.WHITE) ? 2 : 7;
+        return position.getRow() == startRow;
     }
 
 }
