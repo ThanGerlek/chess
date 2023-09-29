@@ -75,7 +75,7 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     public ChessPosition getKingPosition(ChessGame.TeamColor color) {
-        for(ChessPosition position : pieces.keySet()) {
+        for (ChessPosition position : pieces.keySet()) {
             ChessPiece piece = getPiece(position);
             if (piece.getPieceType() == ChessPiece.PieceType.KING
                     && piece.getTeamColor() == color) {
@@ -83,6 +83,30 @@ public class ChessBoardImpl implements ChessBoard {
             }
         }
         throw new InvalidBoardException("Called getKingPosition() but no King piece was found");
+    }
+
+    public ChessPiece forceApplyMove(ChessMove move) {
+        ChessPiece capturedPiece = getPiece(move.getEndPosition());
+        if (capturedPiece != null) {
+            capturedPiece = capturedPiece.copy();
+        }
+        removePiece(move.getEndPosition());
+
+        ChessPiece piece = getPiece(move.getStartPosition()).copy();
+        removePiece(move.getStartPosition());
+
+        addPiece(move.getEndPosition(), piece);
+        return capturedPiece;
+    }
+
+    public void forceRestoreFromMove(ChessMove move, ChessPiece capturedPiece) {
+        ChessPiece piece = getPiece(move.getEndPosition()).copy();
+        removePiece(move.getEndPosition());
+
+        addPiece(move.getStartPosition(), piece);
+        if (capturedPiece != null) {
+            addPiece(move.getEndPosition(), capturedPiece);
+        }
     }
 
     private void placePawns() {

@@ -38,4 +38,9 @@ public interface ChessBoard {
 
     void removePiece(ChessPosition position);
 
+    ChessPiece forceApplyMove(ChessMove move);
+
+    void forceRestoreFromMove(ChessMove move, ChessPiece capturedPiece);
+
+
 }
