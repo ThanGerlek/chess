@@ -133,7 +133,20 @@ public class ChessGameImpl implements ChessGame {
     }
 
     private boolean isPositionUnderAttackFrom(ChessPosition position, TeamColor attackColor) {
-        // TODO isPositionUnderAttackFrom
+        // TODO Implement caching?
+
+        for (ChessPosition attackPosition : board.occupiedPositions()) {
+
+            ChessPiece attacker = board.getPiece(attackPosition);
+            if (attacker.getTeamColor() == attackColor) {
+                Collection<ChessMove> attackerMoves = attacker.pieceMoves(board, attackPosition);
+                ChessMove attackMove = new ChessMoveImpl(attackPosition, position);
+                if (attackerMoves.contains(attackMove)) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 }
