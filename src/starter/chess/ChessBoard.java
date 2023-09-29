@@ -36,4 +36,6 @@ public interface ChessBoard {
 
     Collection<ChessPosition> occupiedPositions();
 
+    void removePiece(ChessPosition position);
+
 }
