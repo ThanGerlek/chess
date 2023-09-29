@@ -12,7 +12,7 @@ public class ChessBoardImpl implements ChessBoard {
     private Map<ChessPosition, ChessPiece> pieces;
 
     public ChessBoardImpl() {
-        resetBoard();
+        this.pieces = new HashMap<ChessPosition, ChessPiece>();
     }
 
     /**
