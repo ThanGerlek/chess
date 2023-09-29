@@ -70,7 +70,7 @@ public class Pawn extends ChessPieceImpl {
     }
 
     @Override
-    protected boolean isValidMoveEndPosition(ChessBoard board, ChessPosition position) {
+    protected boolean isValidEmptySpace(ChessBoard board, ChessPosition position) {
         return isOnBoard(position);
     }
 }

@@ -23,7 +23,7 @@ public class King extends ChessPieceImpl {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> moves = new LinkedList<>();
         for (ChessPosition endPosition : getMoveEndPositions(myPosition))
-            if (isValidMoveEndPosition(board, endPosition)) moves.add(new ChessMoveImpl(myPosition, endPosition));
+            if (isValidEmptySpace(board, endPosition)) moves.add(new ChessMoveImpl(myPosition, endPosition));
 
         return moves;
     }

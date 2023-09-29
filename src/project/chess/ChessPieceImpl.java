@@ -90,17 +90,13 @@ public abstract class ChessPieceImpl implements ChessPiece {
     @Override
     public abstract Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition);
 
-    protected boolean isValidMoveEndPosition(ChessBoard board, ChessPosition position) {
-        return isOnBoard(position) && !isOnSameColorPiece(board, position);
+    protected boolean isValidEmptySpace(ChessBoard board, ChessPosition position) {
+        return isOnBoard(position) && board.getPiece(position) == null;
     }
 
+    // TODO? Make private, update Pawn to not use it?
     protected boolean isOnBoard(ChessPosition position) {
         return position.getRow() > 0 && position.getRow() < 9 && position.getColumn() > 0 && position.getColumn() < 9;
-    }
-
-    private boolean isOnSameColorPiece(ChessBoard board, ChessPosition position) {
-        ChessPiece otherPiece = board.getPiece(position);
-        return otherPiece != null && otherPiece.getTeamColor().equals(getTeamColor());
     }
 
     protected boolean hasNeverMoved() {
