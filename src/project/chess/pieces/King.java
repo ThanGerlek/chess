@@ -23,7 +23,7 @@ public class King extends ChessPieceImpl {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> moves = new LinkedList<>();
         for (ChessPosition endPosition : getPotentialEndPositions(myPosition))
-            if (isValidEndPosition(board, endPosition)) {
+            if (isValidEmptySpace(board, endPosition) || isValidCapturingSpace(board, endPosition)) {
                 moves.add(new ChessMoveImpl(myPosition, endPosition));
             }
 
@@ -43,10 +43,4 @@ public class King extends ChessPieceImpl {
         return positions;
     }
 
-    private boolean isValidEndPosition(ChessBoard board, ChessPosition position) {
-        if (isValidEmptySpace(board, position))
-            return true;
-        ChessPiece previousOccupant = board.getPiece(position);
-        return previousOccupant != null && previousOccupant.getTeamColor() != getTeamColor();
-    }
 }
