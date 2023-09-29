@@ -23,28 +23,17 @@ public class Bishop extends ChessPieceImpl {
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> moves = new LinkedList<>();
-        for (ChessPosition endPosition : getMoveEndPositions(myPosition))
-            if (isValidEmptySpace(board, endPosition)) moves.add(new ChessMoveImpl(myPosition, endPosition));
+
+        RelativeChessMove moveUpLeft = pos -> shift(pos, 1, -1);
+        RelativeChessMove moveUpRight = pos -> shift(pos, 1, 1);
+        RelativeChessMove moveDownLeft = pos -> shift(pos, -1, -1);
+        RelativeChessMove moveDownRight = pos -> shift(pos, -1, 1);
+
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveUpLeft));
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveUpRight));
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveDownLeft));
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveDownRight));
 
         return moves;
-    }
-
-    private Collection<ChessPosition> getMoveEndPositions(ChessPosition myPosition) {
-        Collection<ChessPosition> endPositions = new LinkedList<>();
-        for (int distance = 1; distance < 8; distance++)
-            endPositions.addAll(getEndPositionsOfDistance(distance, myPosition));
-
-        return endPositions;
-    }
-
-    private Collection<ChessPosition> getEndPositionsOfDistance(int dist, ChessPosition myPosition) {
-        Collection<ChessPosition> endPositions = new LinkedList<>();
-
-        endPositions.add(new ChessPositionImpl(myPosition.getRow() + dist, myPosition.getColumn() + dist));
-        endPositions.add(new ChessPositionImpl(myPosition.getRow() + dist, myPosition.getColumn() - dist));
-        endPositions.add(new ChessPositionImpl(myPosition.getRow() - dist, myPosition.getColumn() + dist));
-        endPositions.add(new ChessPositionImpl(myPosition.getRow() - dist, myPosition.getColumn() - dist));
-
-        return endPositions;
     }
 }
