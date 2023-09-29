@@ -67,4 +67,13 @@ public class ChessMoveImpl implements ChessMove {
     public int hashCode() {
         return 12345 * getStartPosition().hashCode() + 67890 * getEndPosition().hashCode();
     }
+
+    @Override
+    public String toString() {
+        String str = String.format("%s-%s", startPosition, endPosition);
+        if (getPromotionPiece() != null) {
+            str += "(" + getPromotionPiece().toString().substring(0, 2) + ")";
+        }
+        return str;
+    }
 }
