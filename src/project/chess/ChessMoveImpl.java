@@ -42,4 +42,29 @@ public class ChessMoveImpl implements ChessMove {
     public ChessPiece.PieceType getPromotionPiece() {
         return promotionPiece;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (hashCode() != o.hashCode()) return false;
+
+        if (!(o instanceof ChessMove other)) return false;
+
+        if ((getPromotionPiece() == null) != (other.getPromotionPiece() == null)) {
+            return false;
+        }
+
+        boolean samePromotionPiece = (getPromotionPiece() == null && other.getPromotionPiece() == null)
+                || getPromotionPiece().equals(other.getPromotionPiece());
+
+        return samePromotionPiece
+                && other.getStartPosition().equals(getStartPosition())
+                && other.getEndPosition().equals(getEndPosition());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return 12345 * getStartPosition().hashCode() + 67890 * getEndPosition().hashCode();
+    }
 }
