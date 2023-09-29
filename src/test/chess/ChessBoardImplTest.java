@@ -62,7 +62,7 @@ class ChessBoardImplTest {
     @Test
     void getting_a_piece_from_an_empty_board_returns_null() {
         ChessBoardImpl board = givenAnEmptyBoard();
-        ChessPosition position = new ChessPositionImpl(0, 0);
+        ChessPosition position = new ChessPositionImpl(2, 2);
         ChessPiece piece = board.getPiece(position);
 
         Assertions.assertNull(piece);
@@ -81,14 +81,14 @@ class ChessBoardImplTest {
     @Test
     void calling_hasPiece_on_a_board_with_one_piece_returns_false_for_adjacent_positions() {
         ChessBoardImpl board = givenAnEmptyBoard();
-        ChessPosition position = new ChessPositionImpl(2, 2);
+        ChessPosition position = new ChessPositionImpl(3, 3);
         ChessPiece piece = board.getPiece(position);
         board.addPiece(position, piece);
 
-        ChessPosition abovePos = new ChessPositionImpl(3, 2);
-        ChessPosition belowPos = new ChessPositionImpl(1, 2);
-        ChessPosition rightPos = new ChessPositionImpl(2, 3);
-        ChessPosition leftPos = new ChessPositionImpl(2, 1);
+        ChessPosition abovePos = new ChessPositionImpl(4, 3);
+        ChessPosition belowPos = new ChessPositionImpl(2, 3);
+        ChessPosition rightPos = new ChessPositionImpl(3, 4);
+        ChessPosition leftPos = new ChessPositionImpl(3, 2);
 
         Assertions.assertFalse(board.hasPieceAt(abovePos));
         Assertions.assertFalse(board.hasPieceAt(belowPos));
@@ -99,8 +99,8 @@ class ChessBoardImplTest {
     @Test
     void calling_hasPiece_on_an_empty_board_always_returns_false() {
         ChessBoardImpl board = givenAnEmptyBoard();
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+        for (int row = 1; row <= 8; row++) {
+            for (int col = 1; col <= 8; col++) {
                 ChessPosition position = new ChessPositionImpl(row, col);
                 Assertions.assertFalse(board.hasPieceAt(position));
             }
@@ -110,9 +110,9 @@ class ChessBoardImplTest {
     @Test
     void calling_hasPiece_on_a_setup_board_returns_true_for_rows_0_1_6_and_7() {
         ChessBoardImpl board = givenASetupBoard();
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                boolean expectedHasPiece = row < 2 || row >= 6;
+        for (int row = 1; row <= 8; row++) {
+            for (int col = 1; col <= 8; col++) {
+                boolean expectedHasPiece = row <= 2 || row >= 7;
                 boolean actualHasPiece = board.hasPieceAt(new ChessPositionImpl(row, col));
                 Assertions.assertEquals(expectedHasPiece, actualHasPiece);
             }
