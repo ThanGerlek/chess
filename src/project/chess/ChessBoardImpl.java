@@ -2,6 +2,7 @@ package chess;
 
 import chess.pieces.*;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,6 +66,22 @@ public class ChessBoardImpl implements ChessBoard {
 
     public void clearBoard() {
         pieces = new HashMap<>();
+    }
+
+    @Override
+    public Collection<ChessPosition> occupiedPositions() {
+        return pieces.keySet();
+    }
+
+    public ChessPosition getKingPosition(ChessGame.TeamColor color) {
+        for(ChessPosition position : pieces.keySet()) {
+            ChessPiece piece = getPiece(position);
+            if (piece.getPieceType() == ChessPiece.PieceType.KING
+                    && piece.getTeamColor() == color) {
+                return position;
+            }
+        }
+        throw new InvalidBoardException("Called getKingPosition() but no King piece was found");
     }
 
     private void placePawns() {
