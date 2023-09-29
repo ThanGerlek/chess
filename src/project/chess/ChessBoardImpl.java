@@ -140,24 +140,13 @@ public class ChessBoardImpl implements ChessBoard {
 
     @Override
     public String toString() {
-        // TODO delegate/centralize symbol calculation
         StringBuilder builder = new StringBuilder();
         for (int row = 8; row >= 1; row--) {
             for (int col = 1; col <= 8; col++) {
                 ChessPosition position = new ChessPositionImpl(row, col);
                 if (hasPieceAt(position)) {
                     ChessPiece piece = getPiece(position);
-                    char symbol = switch (piece.getPieceType()) {
-                        case KING -> 'K';
-                        case QUEEN -> 'Q';
-                        case BISHOP -> 'B';
-                        case KNIGHT -> 'N';
-                        case ROOK -> 'R';
-                        case PAWN -> 'P';
-                    };
-                    if (piece.getTeamColor() == ChessGame.TeamColor.BLACK) {
-                        symbol = (char) (symbol - 'A' + 'a');
-                    }
+                    char symbol = ChessPieces.symbol(piece);
                     builder.append(" ").append(symbol);
                 } else {
                     builder.append(" .");

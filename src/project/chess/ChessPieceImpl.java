@@ -18,17 +18,6 @@ public abstract class ChessPieceImpl implements ChessPiece {
         this.hasNeverMoved = true;
     }
 
-    public static ChessPiece FromType(PieceType type, ChessGame.TeamColor color) {
-        return switch (type) {
-            case KING -> new King(color);
-            case QUEEN -> new Queen(color);
-            case BISHOP -> new Bishop(color);
-            case KNIGHT -> new Knight(color);
-            case ROOK -> new Rook(color);
-            case PAWN -> new Pawn(color);
-        };
-    }
-
     /**
      * Returns a version of the given ChessPosition shifted by the given amounts.
      * Positive values shift up and right relative to the white player.
