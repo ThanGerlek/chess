@@ -144,15 +144,14 @@ public class ChessBoardImpl implements ChessBoard {
         for (int row = 8; row >= 1; row--) {
             for (int col = 1; col <= 8; col++) {
                 ChessPosition position = new ChessPositionImpl(row, col);
+                char symbol = ' ';
                 if (hasPieceAt(position)) {
                     ChessPiece piece = getPiece(position);
-                    char symbol = ChessPieces.symbol(piece);
-                    builder.append(" ").append(symbol);
-                } else {
-                    builder.append(" .");
+                    symbol = ChessPieces.symbol(piece);
                 }
+                builder.append("|").append(symbol);
             }
-            builder.append("\n");
+            builder.append("|\n");
         }
         return builder.toString();
     }
