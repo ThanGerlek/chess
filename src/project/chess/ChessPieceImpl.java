@@ -69,9 +69,10 @@ public abstract class ChessPieceImpl implements ChessPiece {
      * capture (one that ends on a space occupied by an enemy piece), it is
      * included in the Collection, but counts as an end condition and the
      * relativeMove is not applied again.
-     * @param board the ChessBoard.
+     *
+     * @param board         the ChessBoard.
      * @param startPosition the starting ChessPosition.
-     * @param relativeMove the RelativeChessMove to apply to the startPosition.
+     * @param relativeMove  the RelativeChessMove to apply to the startPosition.
      * @return a Collection of ChessMoves made by repeatedly applying relativeMove.
      */
     protected Collection<ChessMove> getMovesFromRepeatedRelativeMove(ChessBoard board, ChessPosition startPosition, RelativeChessMove relativeMove) {
