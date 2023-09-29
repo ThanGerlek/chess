@@ -36,7 +36,16 @@ public class ChessPositionImpl implements ChessPosition {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o.getClass() != this.getClass()) return false;
+
+        ChessPositionImpl other = (ChessPositionImpl) o;
+        return this.row == other.row && this.col == other.col;
+    }
+
+    @Override
     public int hashCode() {
-        return row * 16 + col;
+        return 9876000 + row * 16 + col;
     }
 }
