@@ -61,12 +61,16 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public void resetBoard() {
-        pieces = new HashMap<>();
+        clearBoard();
         placePawns();
         placeKnights();
         placeBishops();
         placeRooks();
         placeRoyals();
+    }
+
+    public void clearBoard() {
+        pieces = new HashMap<>();
     }
 
     private void placePawns() {
