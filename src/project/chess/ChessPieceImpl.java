@@ -129,6 +129,12 @@ public abstract class ChessPieceImpl implements ChessPiece {
         return isOnBoard(position) && board.getPiece(position) == null;
     }
 
+    protected boolean isValidCapturingSpace(ChessBoard board, ChessPosition position) {
+        return isOnBoard(position)
+                && board.getPiece(position) != null
+                && board.getPiece(position).getTeamColor() != getTeamColor();
+    }
+
     // TODO? Make private, update Pawn to not use it?
     protected boolean isOnBoard(ChessPosition position) {
         return position.getRow() > 0 && position.getRow() < 9 && position.getColumn() > 0 && position.getColumn() < 9;
