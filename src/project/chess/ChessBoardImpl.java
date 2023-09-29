@@ -137,4 +137,34 @@ public class ChessBoardImpl implements ChessBoard {
         this.whiteKingPosition = whiteKingPosition;
         this.blackKingPosition = blackKingPosition;
     }
+
+    public String toString() {
+        // TODO Test!!
+        // TODO Update; clear up symbol calculations
+        StringBuilder builder = new StringBuilder();
+        for (int row = 8; row >= 1; row--) {
+            for (int col = 1; col <= 8; col++) {
+                ChessPosition position = new ChessPositionImpl(row, col);
+                if (hasPieceAt(position)) {
+                    ChessPiece piece = getPiece(position);
+                    char symbol = switch (piece.getPieceType()) {
+                        case KING -> 'K';
+                        case QUEEN -> 'Q';
+                        case BISHOP -> 'B';
+                        case KNIGHT -> 'N';
+                        case ROOK -> 'R';
+                        case PAWN -> 'P';
+                    };
+                    if (piece.getTeamColor() == ChessGame.TeamColor.BLACK) {
+                        symbol = (char) (symbol - 'A' + 'a');
+                    }
+                    builder.append(" ").append(symbol);
+                } else {
+                    builder.append(" .");
+                }
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
 }
