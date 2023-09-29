@@ -72,7 +72,7 @@ class ChessBoardImplTest {
     void calling_hasPiece_on_a_board_with_one_piece_returns_true_for_that_position() {
         ChessBoardImpl board = givenAnEmptyBoard();
         ChessPosition position = new ChessPositionImpl(2, 2);
-        ChessPiece piece = board.getPiece(position);
+        ChessPiece piece = new Rook(ChessGame.TeamColor.WHITE);
         board.addPiece(position, piece);
 
         Assertions.assertTrue(board.hasPieceAt(position));
