@@ -100,7 +100,7 @@ public abstract class ChessPieceImpl implements ChessPiece {
 
     private boolean isOnSameColorPiece(ChessBoard board, ChessPosition position) {
         ChessPiece otherPiece = board.getPiece(position);
-        return otherPiece == null || otherPiece.getTeamColor().equals(getTeamColor());
+        return otherPiece != null && otherPiece.getTeamColor().equals(getTeamColor());
     }
 
     protected boolean hasNeverMoved() {
