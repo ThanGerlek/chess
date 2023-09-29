@@ -22,32 +22,28 @@ public class Queen extends ChessPieceImpl {
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> moves = new LinkedList<>();
-        for (ChessPosition endPosition : getMoveEndPositions(myPosition))
-            if (isValidMoveEndPosition(board, endPosition)) moves.add(new ChessMoveImpl(myPosition, endPosition));
+
+        RelativeChessMove moveUp = pos -> shift(pos, 1, 0);
+        RelativeChessMove moveDown = pos -> shift(pos, -1, 0);
+        RelativeChessMove moveLeft = pos -> shift(pos, 0, -1);
+        RelativeChessMove moveRight = pos -> shift(pos, 0, 1);
+
+        RelativeChessMove moveUpLeft = pos -> shift(pos, 1, -1);
+        RelativeChessMove moveUpRight = pos -> shift(pos, 1, 1);
+        RelativeChessMove moveDownLeft = pos -> shift(pos, -1, -1);
+        RelativeChessMove moveDownRight = pos -> shift(pos, -1, 1);
+
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveUp));
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveDown));
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveLeft));
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveRight));
+
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveUpLeft));
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveUpRight));
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveDownLeft));
+        moves.addAll(getMovesFromRepeatedRelativeMove(board, myPosition, moveDownRight));
 
         return moves;
     }
 
-    private Collection<ChessPosition> getMoveEndPositions(ChessPosition myPosition) {
-        Collection<ChessPosition> endPositions = new LinkedList<>();
-        for (int distance = 1; distance < 8; distance++)
-            endPositions.addAll(getEndPositionsOfDistance(distance, myPosition));
-
-        return endPositions;
-    }
-
-    private Collection<ChessPosition> getEndPositionsOfDistance(int dist, ChessPosition myPosition) {
-        Collection<ChessPosition> endPositions = new LinkedList<>();
-
-        endPositions.add(shift(myPosition, -dist, -dist));
-        endPositions.add(shift(myPosition, -dist, 0));
-        endPositions.add(shift(myPosition, -dist, dist));
-        endPositions.add(shift(myPosition, dist, -dist));
-        endPositions.add(shift(myPosition, dist, 0));
-        endPositions.add(shift(myPosition, dist, dist));
-        endPositions.add(shift(myPosition, 0, -dist));
-        endPositions.add(shift(myPosition, 0, dist));
-
-        return endPositions;
-    }
 }

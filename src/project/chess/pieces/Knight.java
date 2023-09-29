@@ -22,13 +22,15 @@ public class Knight extends ChessPieceImpl {
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> moves = new LinkedList<>();
-        for (ChessPosition endPosition : getMoveEndPositions(myPosition))
-            if (isValidMoveEndPosition(board, endPosition)) moves.add(new ChessMoveImpl(myPosition, endPosition));
+        for (ChessPosition endPosition : getPotentialEndPositions(myPosition))
+            if (isValidEmptySpace(board, endPosition) || isValidCapturingSpace(board, endPosition)) {
+                moves.add(new ChessMoveImpl(myPosition, endPosition));
+            }
 
         return moves;
     }
 
-    private Collection<ChessPosition> getMoveEndPositions(ChessPosition position) {
+    private Collection<ChessPosition> getPotentialEndPositions(ChessPosition position) {
         Collection<ChessPosition> positions = new LinkedList<>();
         positions.add(shift(position, 2, -1));
         positions.add(shift(position, 2, 1));

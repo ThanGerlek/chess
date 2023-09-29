@@ -48,4 +48,9 @@ public class ChessPositionImpl implements ChessPosition {
     public int hashCode() {
         return 9876000 + row * 16 + col;
     }
+
+    @Override
+    public String toString() {
+        return notation();
+    }
 }
