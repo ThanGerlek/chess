@@ -26,6 +26,10 @@ public class ChessBoardImpl implements ChessBoard {
         pieces.put(position, piece);
     }
 
+    public void removePiece(ChessPosition position) {
+        pieces.remove(position);
+    }
+
     /**
      * Gets a chess piece on the chessboard.
      *
@@ -40,6 +44,10 @@ public class ChessBoardImpl implements ChessBoard {
 
     public ChessPosition getKingPosition(ChessGame.TeamColor color) {
         return (color == ChessGame.TeamColor.WHITE) ? whiteKingPosition : blackKingPosition;
+    }
+
+    public boolean hasPieceAt(ChessPosition position) {
+        return pieces.get(position) != null;
     }
 
     /**
