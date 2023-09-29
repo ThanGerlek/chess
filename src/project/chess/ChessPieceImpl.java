@@ -136,8 +136,7 @@ public abstract class ChessPieceImpl implements ChessPiece {
                 && board.getPiece(position).getTeamColor() != getTeamColor();
     }
 
-    // TODO? Make private, update Pawn to not use it?
-    protected boolean isOnBoard(ChessPosition position) {
+    private boolean isOnBoard(ChessPosition position) {
         return position.getRow() > 0 && position.getRow() < 9 && position.getColumn() > 0 && position.getColumn() < 9;
     }
 
