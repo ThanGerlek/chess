@@ -10,6 +10,7 @@ public class ChessGameImpl implements ChessGame {
 
     public ChessGameImpl() {
         board = new ChessBoardImpl();
+        board.resetBoard();
         isWhitesTurn = true;
     }
 
