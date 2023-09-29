@@ -30,8 +30,7 @@ public class Pawn extends ChessPieceImpl {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessPosition> endPositions = new LinkedList<>();
 
-        addOneStepMoveIfValid(endPositions, board, myPosition);
-        addTwoStepMoveIfValid(endPositions, board, myPosition);
+        addForwardMovesIfValid(endPositions, board, myPosition);
         addDiagonalAttackMoveIfValid(endPositions, board, myPosition, 1);
         addDiagonalAttackMoveIfValid(endPositions, board, myPosition, -1);
 
@@ -44,33 +43,22 @@ public class Pawn extends ChessPieceImpl {
     }
 
 
-    private void addOneStepMoveIfValid(Collection<ChessPosition> endPositions, ChessBoard board, ChessPosition myPosition) {
-        ChessPosition endPosition = shiftRelative(myPosition, 1, 0);
-        if (isOnBoard(endPosition) && board.getPiece(endPosition) == null)
-            endPositions.add(endPosition);
-    }
+    private void addForwardMovesIfValid(Collection<ChessPosition> endPositions, ChessBoard board, ChessPosition myPosition) {
+        ChessPosition oneStepPosition = shiftRelative(myPosition, 1, 0);
+        if (isValidEmptySpace(board, oneStepPosition)) {
+            endPositions.add(oneStepPosition);
 
-    private void addTwoStepMoveIfValid(Collection<ChessPosition> endPositions, ChessBoard board, ChessPosition myPosition) {
-        ChessPosition endPosition = shiftRelative(myPosition, 2, 0);
-        if (isOnBoard(endPosition)
-                && board.getPiece(endPosition) == null
-                && hasNeverMoved()) {
-            endPositions.add(endPosition);
+            ChessPosition twoStepPosition = shiftRelative(myPosition, 2, 0);
+            if (hasNeverMoved() && isValidEmptySpace(board, twoStepPosition)) {
+                endPositions.add(twoStepPosition);
+            }
         }
     }
 
     private void addDiagonalAttackMoveIfValid(Collection<ChessPosition> endPositions, ChessBoard board, ChessPosition myPosition, int direction) {
         int deltaCol = (direction > 0) ? 1 : -1;
         ChessPosition endPosition = shiftRelative(myPosition, 1, deltaCol);
-        if (isOnBoard(endPosition)
-                && board.getPiece(endPosition) != null
-                && board.getPiece(endPosition).getTeamColor() != getTeamColor()) {
-            endPositions.add(endPosition);
-        }
+        if (isValidCapturingSpace(board, endPosition)) endPositions.add(endPosition);
     }
 
-    @Override
-    protected boolean isValidEmptySpace(ChessBoard board, ChessPosition position) {
-        return isOnBoard(position);
-    }
 }
