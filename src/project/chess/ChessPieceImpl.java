@@ -12,10 +12,14 @@ public abstract class ChessPieceImpl implements ChessPiece {
     private final ChessGame.TeamColor color;
     private boolean hasNeverMoved;
 
-    public ChessPieceImpl(PieceType type, ChessGame.TeamColor color) {
+    public ChessPieceImpl(PieceType type, ChessGame.TeamColor color, boolean hasNeverMoved) {
         this.type = type;
         this.color = color;
-        this.hasNeverMoved = true;
+        this.hasNeverMoved = hasNeverMoved;
+    }
+
+    public ChessPieceImpl(PieceType type, ChessGame.TeamColor color) {
+        this(type, color, true);
     }
 
     /**

@@ -6,13 +6,17 @@ public final class ChessPieces {
     private ChessPieces() {}
 
     public static ChessPiece FromType(ChessPiece.PieceType type, ChessGame.TeamColor color) {
+    return FromType(type, color, true);
+    }
+
+    public static ChessPiece FromType(ChessPiece.PieceType type, ChessGame.TeamColor color, boolean hasNeverMoved) {
         return switch (type) {
-            case KING -> new King(color);
-            case QUEEN -> new Queen(color);
-            case BISHOP -> new Bishop(color);
-            case KNIGHT -> new Knight(color);
-            case ROOK -> new Rook(color);
-            case PAWN -> new Pawn(color);
+            case KING -> new King(color, hasNeverMoved);
+            case QUEEN -> new Queen(color, hasNeverMoved);
+            case BISHOP -> new Bishop(color, hasNeverMoved);
+            case KNIGHT -> new Knight(color, hasNeverMoved);
+            case ROOK -> new Rook(color, hasNeverMoved);
+            case PAWN -> new Pawn(color, hasNeverMoved);
         };
     }
 

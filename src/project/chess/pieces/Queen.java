@@ -6,6 +6,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 public class Queen extends ChessPieceImpl {
+
+    public Queen(ChessGame.TeamColor color, boolean hasNeverMoved) {
+        super(PieceType.QUEEN, color, hasNeverMoved);
+    }
+
     public Queen(ChessGame.TeamColor color) {
         super(PieceType.QUEEN, color);
     }

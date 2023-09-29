@@ -6,6 +6,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 public class Pawn extends ChessPieceImpl {
+
+    public Pawn(ChessGame.TeamColor color, boolean hasNeverMoved) {
+        super(PieceType.PAWN, color, hasNeverMoved);
+    }
+
     public Pawn(ChessGame.TeamColor color) {
         super(PieceType.PAWN, color);
     }

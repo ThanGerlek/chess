@@ -7,6 +7,10 @@ import java.util.LinkedList;
 
 public class Bishop extends ChessPieceImpl {
 
+    public Bishop(ChessGame.TeamColor color, boolean hasNeverMoved) {
+        super(PieceType.BISHOP, color, hasNeverMoved);
+    }
+
     public Bishop(ChessGame.TeamColor color) {
         super(PieceType.BISHOP, color);
     }

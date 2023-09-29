@@ -6,6 +6,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 public class Rook extends ChessPieceImpl {
+
+    public Rook(ChessGame.TeamColor color, boolean hasNeverMoved) {
+        super(PieceType.ROOK, color, hasNeverMoved);
+    }
+
     public Rook(ChessGame.TeamColor color) {
         super(PieceType.ROOK, color);
     }
