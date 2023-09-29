@@ -108,7 +108,7 @@ class ChessBoardImplTest {
     }
 
     @Test
-    void calling_hasPiece_on_a_setup_board_returns_true_for_rows_0_1_6_and_7() {
+    void calling_hasPiece_on_a_setup_board_returns_true_for_rows_1_2_7_and_8() {
         ChessBoardImpl board = givenASetupBoard();
         for (int row = 1; row <= 8; row++) {
             for (int col = 1; col <= 8; col++) {
