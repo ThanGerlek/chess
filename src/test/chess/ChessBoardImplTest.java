@@ -71,7 +71,7 @@ class ChessBoardImplTest {
     @Test
     void calling_hasPiece_on_a_board_with_one_piece_returns_true_for_that_position() {
         ChessBoardImpl board = givenAnEmptyBoard();
-        ChessPosition position = new ChessPositionImpl(0, 0);
+        ChessPosition position = new ChessPositionImpl(2, 2);
         ChessPiece piece = board.getPiece(position);
         board.addPiece(position, piece);
 
@@ -122,7 +122,7 @@ class ChessBoardImplTest {
     @Test
     void removing_a_piece_means_the_piece_is_not_there() {
         ChessBoardImpl board = givenASetupBoard();
-        ChessPositionImpl position = new ChessPositionImpl(1, 1);
+        ChessPositionImpl position = new ChessPositionImpl(2, 2);
         board.removePiece(position);
         Assertions.assertFalse(board.hasPieceAt(position));
     }
