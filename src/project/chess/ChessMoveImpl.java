@@ -50,16 +50,8 @@ public class ChessMoveImpl implements ChessMove {
 
         if (!(o instanceof ChessMove other)) return false;
 
-        if ((getPromotionPiece() == null) != (other.getPromotionPiece() == null)) {
-            return false;
-        }
 
-        boolean samePromotionPiece = (getPromotionPiece() == null && other.getPromotionPiece() == null)
-                || getPromotionPiece().equals(other.getPromotionPiece());
-
-        return samePromotionPiece
-                && other.getStartPosition().equals(getStartPosition())
-                && other.getEndPosition().equals(getEndPosition());
+        return other.getStartPosition().equals(getStartPosition()) && other.getEndPosition().equals(getEndPosition());
 
     }
 
