@@ -42,4 +42,12 @@ public final class ChessPieces {
     public static ChessGame.TeamColor not(ChessGame.TeamColor color) {
         return color == ChessGame.TeamColor.WHITE ? ChessGame.TeamColor.BLACK : ChessGame.TeamColor.WHITE;
     }
+
+    public static boolean isValidPromotionPiece(ChessPiece.PieceType type) {
+        return type != ChessPiece.PieceType.PAWN && type != ChessPiece.PieceType.KING;
+    }
+
+    public static ChessPiece promote(ChessPiece piece, ChessPiece.PieceType promotionPiece) {
+        return FromType(promotionPiece, piece.getTeamColor(), false);
+    }
 }

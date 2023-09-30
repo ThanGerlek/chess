@@ -2,7 +2,6 @@ package chess;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 public class ChessGameImpl implements ChessGame {
 
@@ -90,8 +89,29 @@ public class ChessGameImpl implements ChessGame {
         }
 
         board.forceApplyMove(move);
-        board.getPiece(move.getEndPosition()).markAsHavingMoved();
+
+        ChessPiece piece = board.getPiece(move.getEndPosition());
+        piece.markAsHavingMoved();
+        promoteIfValid(move.getEndPosition(), move.getPromotionPiece());
         changeTeamTurn();
+    }
+
+    private void promoteIfValid(ChessPosition position, ChessPiece.PieceType promotionPiece) throws InvalidMoveException {
+        if (!board.hasPieceAt(position)) {
+            throw new IllegalArgumentException("Tried to promote an empty space");
+        }
+        ChessPiece piece = board.getPiece(position);
+
+        if (piece.getPieceType() == ChessPiece.PieceType.PAWN && promotionPiece != null) {
+            if (ChessPieces.isValidPromotionPiece(promotionPiece)) {
+                ChessPiece newPiece = ChessPieces.promote(piece, promotionPiece);
+                board.removePiece(position);
+                board.addPiece(position, newPiece);
+            } else {
+                throw new InvalidMoveException("Tried to promote to an invalid type: "
+                        + promotionPiece.toString());
+            }
+        }
     }
 
     /**
