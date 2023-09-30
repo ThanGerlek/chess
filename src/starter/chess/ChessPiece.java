@@ -31,6 +31,8 @@ public interface ChessPiece {
 
     public ChessPiece copy();
 
+    public void markAsHavingMoved();
+
     /**
      * The various different chess piece options
      */
