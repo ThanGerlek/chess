@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class ChessGameImpl implements ChessGame {
@@ -41,8 +42,25 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        // TODO validMoves()
-        return null;
+        Collection<ChessMove> validMoves = new HashSet<>();
+
+        ChessPiece piece = board.getPiece(startPosition);
+        Collection<ChessMove> potentialMoves = piece.pieceMoves(board, startPosition);
+        for (ChessMove move : potentialMoves) {
+            if (!wouldLeaveInCheck(move)) {
+                validMoves.add(move);
+            }
+        }
+
+        return validMoves;
+    }
+
+    private boolean wouldLeaveInCheck(ChessMove move) {
+        TeamColor color = board.getPiece(move.getStartPosition()).getTeamColor();
+        ChessPiece capturedPiece = board.forceApplyMove(move);
+        boolean result = isInCheck(color);
+        board.forceRestoreFromMove(move, capturedPiece);
+        return result;
     }
 
     /**
