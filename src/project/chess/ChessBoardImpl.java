@@ -30,7 +30,6 @@ public class ChessBoardImpl implements ChessBoard {
         pieces.put(position, piece);
     }
 
-    @Override
     public void removePiece(ChessPosition position) {
         pieces.remove(position);
     }

@@ -39,8 +39,6 @@ public interface ChessBoard {
     // TODO Replace with something more efficient?
     Collection<ChessPosition> occupiedPositions();
 
-    void removePiece(ChessPosition position);
-
     ChessPiece forceApplyMove(ChessMove move);
 
     void forceRestoreFromMove(ChessMove move, ChessPiece capturedPiece);

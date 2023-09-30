@@ -3,15 +3,9 @@ package chess;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ChessBoardImplTest {
-
-
-    @BeforeEach
-    void setUp() {
-    }
 
     public ChessBoardImpl givenAnEmptyBoard() {
         return new ChessBoardImpl();

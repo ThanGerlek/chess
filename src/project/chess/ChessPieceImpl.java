@@ -1,8 +1,6 @@
 package chess;
 
 
-import chess.pieces.*;
-
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -47,9 +45,11 @@ public abstract class ChessPieceImpl implements ChessPiece {
      * @return a shifted ChessPosition.
      */
     protected ChessPosition shiftRelative(ChessPosition position, int deltaRow, int deltaCol) {
-        if (color == ChessGame.TeamColor.WHITE)
+        if (color == ChessGame.TeamColor.WHITE) {
             return shift(position, deltaRow, deltaCol);
-        return shift(position, -deltaRow, -deltaCol);
+        } else {
+            return shift(position, -deltaRow, -deltaCol);
+        }
     }
 
     /**
