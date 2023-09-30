@@ -42,5 +42,6 @@ public interface ChessBoard {
 
     void forceRestoreFromMove(ChessMove move, ChessPiece capturedPiece);
 
+    boolean containsKing(ChessGame.TeamColor color);
 
 }

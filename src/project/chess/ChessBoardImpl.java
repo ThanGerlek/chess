@@ -109,6 +109,17 @@ public class ChessBoardImpl implements ChessBoard {
         }
     }
 
+    public boolean containsKing(ChessGame.TeamColor color) {
+        for (ChessPosition position : pieces.keySet()) {
+            ChessPiece piece = getPiece(position);
+            if (piece.getPieceType() == ChessPiece.PieceType.KING
+                    && piece.getTeamColor() == color) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void placePawns() {
         for (int col = 1; col <= 8; col++) {
             Pawn whitePawn = new Pawn(ChessGame.TeamColor.WHITE);
