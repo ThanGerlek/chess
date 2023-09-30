@@ -175,15 +175,13 @@ public class ChessGameImpl implements ChessGame {
     private boolean isPositionUnderAttackFrom(ChessPosition position, TeamColor attackColor) {
         // TODO Implement caching?
 
-        for (ChessPosition attackPosition : board.getTeamPieces(ChessPieces.not(attackColor))) {
+        for (ChessPosition attackPosition : board.getTeamPieces(attackColor)) {
 
             ChessPiece attacker = board.getPiece(attackPosition);
-            if (attacker.getTeamColor() == attackColor) {
-                Collection<ChessMove> attackerMoves = attacker.pieceMoves(board, attackPosition);
-                ChessMove attackMove = new ChessMoveImpl(attackPosition, position);
-                if (attackerMoves.contains(attackMove)) {
-                    return true;
-                }
+            Collection<ChessMove> attackerMoves = attacker.pieceMoves(board, attackPosition);
+            ChessMove attackMove = new ChessMoveImpl(attackPosition, position);
+            if (attackerMoves.contains(attackMove)) {
+                return true;
             }
         }
 
