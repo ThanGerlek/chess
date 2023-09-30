@@ -34,7 +34,7 @@ public class ChessGameImpl implements ChessGame {
     }
 
     public void changeTeamTurn() {
-        teamTurn = teamTurn == TeamColor.WHITE ? TeamColor.BLACK : TeamColor.WHITE;
+        teamTurn = ChessPieces.not(teamTurn);
     }
 
     /**
@@ -107,8 +107,7 @@ public class ChessGameImpl implements ChessGame {
         }
 
         ChessPosition kingPosition = board.getKingPosition(teamColor);
-        TeamColor attackColor = (teamColor == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
-        return isPositionUnderAttackFrom(kingPosition, attackColor);
+        return isPositionUnderAttackFrom(kingPosition, ChessPieces.not(teamColor));
     }
 
     /**

@@ -38,4 +38,8 @@ public final class ChessPieces {
     public static char symbol(ChessPiece piece) {
         return symbol(piece.getPieceType(), piece.getTeamColor());
     }
+
+    public static ChessGame.TeamColor not(ChessGame.TeamColor color) {
+        return color == ChessGame.TeamColor.WHITE ? ChessGame.TeamColor.BLACK : ChessGame.TeamColor.WHITE;
+    }
 }
