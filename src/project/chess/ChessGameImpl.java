@@ -75,9 +75,23 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        //TODO makeMove()
-        // Don't forget to update flags: let the piece know it's been
-        // moved, and let the Board know if the king has been moved
+        ChessPosition startPosition = move.getStartPosition();
+
+        if (!board.hasPieceAt(startPosition)) {
+            throw new InvalidMoveException("Called makeMove() on an empty position");
+        }
+
+        if (board.getPiece(startPosition).getTeamColor() != getTeamTurn()) {
+            throw new InvalidMoveException("Called makeMove() on the opponent's turn");
+        }
+
+        if (!validMoves(startPosition).contains(move)) {
+            throw new InvalidMoveException("Called makeMove() on an invalid move");
+        }
+
+        board.forceApplyMove(move);
+        board.getPiece(move.getEndPosition()).markAsHavingMoved();
+        changeTeamTurn();
     }
 
     /**
