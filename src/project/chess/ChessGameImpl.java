@@ -7,12 +7,12 @@ import java.util.LinkedList;
 public class ChessGameImpl implements ChessGame {
 
     private ChessBoard board;
-    private boolean isWhitesTurn;
+    private TeamColor teamTurn;
 
     public ChessGameImpl() {
         board = new ChessBoardImpl();
         board.resetBoard();
-        isWhitesTurn = true;
+        teamTurn = TeamColor.WHITE;
     }
 
     /**
@@ -20,7 +20,7 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public TeamColor getTeamTurn() {
-        return isWhitesTurn ? TeamColor.WHITE : TeamColor.BLACK;
+        return teamTurn;
     }
 
     /**
@@ -30,7 +30,11 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public void setTeamTurn(TeamColor team) {
-        isWhitesTurn = team == TeamColor.WHITE;
+        teamTurn = team;
+    }
+
+    public void changeTeamTurn() {
+        teamTurn = teamTurn == TeamColor.WHITE ? TeamColor.BLACK : TeamColor.WHITE;
     }
 
     /**
