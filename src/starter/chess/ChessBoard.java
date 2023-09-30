@@ -36,8 +36,7 @@ public interface ChessBoard {
 
     ChessPosition getKingPosition(ChessGame.TeamColor color) throws InvalidBoardException;
 
-    // TODO Replace with something more efficient?
-    Collection<ChessPosition> occupiedPositions();
+    Collection<ChessPosition> getTeamPieces(ChessGame.TeamColor teamColor);
 
     ChessPiece forceApplyMove(ChessMove move);
 

@@ -2,6 +2,7 @@ package chess;
 
 import chess.pieces.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,11 +70,6 @@ public class ChessBoardImpl implements ChessBoard {
         pieces = new HashMap<>();
     }
 
-    @Override
-    public Collection<ChessPosition> occupiedPositions() {
-        return pieces.keySet();
-    }
-
     public ChessPosition getKingPosition(ChessGame.TeamColor color) {
         for (ChessPosition position : pieces.keySet()) {
             ChessPiece piece = getPiece(position);
@@ -83,6 +79,17 @@ public class ChessBoardImpl implements ChessBoard {
             }
         }
         throw new InvalidBoardException("Called getKingPosition() but no King piece was found");
+    }
+
+    @Override
+    public Collection<ChessPosition> getTeamPieces(ChessGame.TeamColor teamColor) {
+        Collection<ChessPosition> positions = new ArrayList<>();
+        for (ChessPosition position : pieces.keySet()) {
+            if (getPiece(position).getTeamColor() == teamColor) {
+                positions.add(position);
+            }
+        }
+        return positions;
     }
 
     public ChessPiece forceApplyMove(ChessMove move) {
