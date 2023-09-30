@@ -173,8 +173,11 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public boolean isInStalemate(TeamColor teamColor) {
-        // TODO isInStaleMate
-        return false;
+        for (ChessPosition position : board.getTeamPieces(teamColor))
+            if (!validMoves(position).isEmpty())
+                return false;
+
+        return true;
     }
 
     /**
