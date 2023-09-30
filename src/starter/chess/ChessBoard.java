@@ -26,6 +26,8 @@ public interface ChessBoard {
      */
     ChessPiece getPiece(ChessPosition position);
 
+    boolean hasPieceAt(ChessPosition position);
+
     /**
      * Sets the board to the default starting board
      * (How the game of chess normally starts)
@@ -34,6 +36,7 @@ public interface ChessBoard {
 
     ChessPosition getKingPosition(ChessGame.TeamColor color) throws InvalidBoardException;
 
+    // TODO Replace with something more efficient?
     Collection<ChessPosition> occupiedPositions();
 
     void removePiece(ChessPosition position);

@@ -47,6 +47,7 @@ public class ChessBoardImpl implements ChessBoard {
         return pieces.get(position);
     }
 
+    @Override
     public boolean hasPieceAt(ChessPosition position) {
         return pieces.get(position) != null;
     }
