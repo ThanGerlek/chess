@@ -119,24 +119,29 @@ public class ChessGameImpl implements ChessGame {
     @Override
     public boolean isInCheckmate(TeamColor teamColor) {
         // TODO optimize?
-        ChessPosition kingPosition = board.getKingPosition(teamColor);
-        Collection<ChessPosition> potentialSpaces = new LinkedList<>();
-        TeamColor attackColor = (teamColor == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
-
-        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 1, 1));
-        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 1, 0));
-        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 1, -1));
-        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 0, 1));
-        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 0, 0));
-        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, 0, -1));
-        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, -1, 1));
-        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, -1, 0));
-        potentialSpaces.add(ChessPieceImpl.shift(kingPosition, -1, -1));
-
-        for (ChessPosition position : potentialSpaces) {
-            if (!isPositionUnderAttackFrom(position, attackColor)) return false;
+        if (!isInCheck(teamColor)) {
+            return false;
         }
+
+        ChessPosition kingPosition = board.getKingPosition(teamColor);
+        if (canEscapeCheckWithPiece(kingPosition)) return false;
+
+        Collection<ChessPosition> teamPositions = board.getTeamPieces(teamColor);
+        for (ChessPosition teammatePosition : teamPositions) {
+            if (canEscapeCheckWithPiece(teammatePosition)) return false;
+        }
+
         return true;
+    }
+
+    private boolean canEscapeCheckWithPiece(ChessPosition position) {
+        ChessPiece piece = board.getPiece(position);
+        for (ChessMove potentialMove : piece.pieceMoves(board, position)) {
+            if (!wouldLeaveInCheck(potentialMove)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
