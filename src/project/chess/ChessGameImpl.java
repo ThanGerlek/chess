@@ -88,6 +88,10 @@ public class ChessGameImpl implements ChessGame {
      */
     @Override
     public boolean isInCheck(TeamColor teamColor) {
+        if (!board.containsKing(teamColor)) {
+            return false;
+        }
+
         ChessPosition kingPosition = board.getKingPosition(teamColor);
         TeamColor attackColor = (teamColor == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
         return isPositionUnderAttackFrom(kingPosition, attackColor);
