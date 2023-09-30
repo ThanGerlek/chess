@@ -130,14 +130,14 @@ class ChessBoardImplTest {
     @Test
     void printing_an_empty_board() {
         String expected = """
-                 . . . . . . . .
-                 . . . . . . . .
-                 . . . . . . . .
-                 . . . . . . . .
-                 . . . . . . . .
-                 . . . . . . . .
-                 . . . . . . . .
-                 . . . . . . . .
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
                 """;
         ChessBoardImpl board = givenAnEmptyBoard();
         Assertions.assertEquals(expected, board.toString());
@@ -146,14 +146,14 @@ class ChessBoardImplTest {
     @Test
     void printing_a_reset_board() {
         String expected = """
-                 r n b q k b n r
-                 p p p p p p p p
-                 . . . . . . . .
-                 . . . . . . . .
-                 . . . . . . . .
-                 . . . . . . . .
-                 P P P P P P P P
-                 R N B Q K B N R
+                |r|n|b|q|k|b|n|r|
+                |p|p|p|p|p|p|p|p|
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                |P|P|P|P|P|P|P|P|
+                |R|N|B|Q|K|B|N|R|
                 """;
         ChessBoardImpl board = givenASetupBoard();
         Assertions.assertEquals(expected, board.toString());
