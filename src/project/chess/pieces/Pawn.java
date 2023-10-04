@@ -20,8 +20,6 @@ public class Pawn extends ChessPieceImpl {
     //  when this pawn becomes capable of attacking? Make sure it
     //  resets it afterward!
 
-    // TODO Promotion pieces?
-
     /**
      * Calculates all the positions this chess piece can move to.
      * Does not take into account moves that are illegal due to leaving the king in
