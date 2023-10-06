@@ -3,10 +3,11 @@ package chess;
 import chess.pieces.*;
 
 public final class ChessPieces {
-    private ChessPieces() {}
+    private ChessPieces() {
+    }
 
     public static ChessPiece FromType(ChessPiece.PieceType type, ChessGame.TeamColor color) {
-    return FromType(type, color, true);
+        return FromType(type, color, true);
     }
 
     public static ChessPiece FromType(ChessPiece.PieceType type, ChessGame.TeamColor color, boolean hasNeverMoved) {
@@ -18,6 +19,10 @@ public final class ChessPieces {
             case ROOK -> new Rook(color, hasNeverMoved);
             case PAWN -> new Pawn(color, hasNeverMoved);
         };
+    }
+
+    public static char symbol(ChessPiece piece) {
+        return symbol(piece.getPieceType(), piece.getTeamColor());
     }
 
     public static char symbol(ChessPiece.PieceType type, ChessGame.TeamColor color) {
@@ -33,10 +38,6 @@ public final class ChessPieces {
             symbol = (char) (symbol - 'A' + 'a');
         }
         return symbol;
-    }
-
-    public static char symbol(ChessPiece piece) {
-        return symbol(piece.getPieceType(), piece.getTeamColor());
     }
 
     public static ChessGame.TeamColor not(ChessGame.TeamColor color) {
