@@ -1,6 +1,7 @@
 package models;
 
 import chess.ChessGame;
+import chess.ChessGameImpl;
 
 /**
  * A model object representing the core data of a chess game.
@@ -14,16 +15,15 @@ public class Game {
     private String gameName;
 
     /**
-     * Creates a new Game object.
+     * Creates a new empty game with no players.
      *
-     * @param gameID    the unique ID of this Game
-     * @param gameName  a human-readable name for this Game
-     * @param chessGame a ChessGame object representing the current game state
+     * @param gameID   the unique ID of this game
+     * @param gameName a human-readable name for this game
      */
-    public Game(int gameID, String gameName, ChessGame chessGame) {
+    public Game(int gameID, String gameName) {
         this.gameID = gameID;
         this.gameName = gameName;
-        this.chessGame = chessGame;
+        this.chessGame = new ChessGameImpl();
         this.whiteUsername = "";
         this.blackUsername = "";
     }
