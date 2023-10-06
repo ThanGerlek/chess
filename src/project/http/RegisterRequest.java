@@ -1,7 +1,7 @@
 package http;
 
 /**
- * A record representing an HTTP request to the Register service.
+ * A record representing an HTTP request to the {@link services.RegisterService}.
  *
  * @param username the username for the new user
  * @param password the password for the new user

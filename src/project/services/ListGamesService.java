@@ -8,9 +8,9 @@ import http.ListGamesResponse;
 public class ListGamesService {
 
     /**
-     * Get a list of all games currently in progress.
+     * Gets a list of all games currently in progress.
      *
-     * @return a ListGamesResponse representing the resulting HTTP response.
+     * @return a {@link http.ListGamesResponse} representing the resulting HTTP response.
      */
     public ListGamesResponse listGames() {
         return null;

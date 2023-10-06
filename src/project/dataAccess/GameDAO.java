@@ -6,16 +6,16 @@ import models.Game;
 import java.util.ArrayList;
 
 /**
- * A DAO (Data Access Object) for CRUD operations on Games currently being
- * played.
+ * A DAO (Data Access Object) for CRUD operations on games currently being played.
  */
 public class GameDAO {
 
     /**
-     * Inserts a new Game into the database.
+     * Inserts a new {@link models.Game} into the database.
      *
-     * @param game the Game to insert
-     * @throws DataAccessException if a Game with the same gameID already exists
+     * @param game the game to insert
+     * @throws DataAccessException if a game with the same ID already exists
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     public void insertNewGame(Game game) throws DataAccessException {
         /* Failures
@@ -25,11 +25,12 @@ public class GameDAO {
     }
 
     /**
-     * Fetches the Game with the given ID from the database.
+     * Fetches the {@link models.Game} with the given ID from the database.
      *
-     * @param gameID the ID of the Game to return
-     * @return the Game with the given ID
-     * @throws DataAccessException if a Game with the given ID was not found
+     * @param gameID the ID of the {@code Game} to return
+     * @return the fetched {@code Game}
+     * @throws DataAccessException if a {@code Game} with the given ID was not found
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     public Game findGame(int gameID) throws DataAccessException {
         /* Failures
@@ -40,9 +41,10 @@ public class GameDAO {
     }
 
     /**
-     * Returns a list of all Games currently in the database.
+     * Returns a list of all games currently in the database.
      *
-     * @return a list of all Games in the database
+     * @return a list of all games in the database
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     public ArrayList<Game> allGames() throws DataAccessException {
         /* Failures
@@ -58,8 +60,10 @@ public class GameDAO {
      * @param username  the username of the user
      * @param roleColor the role to assign to the user
      * @throws DataAccessException if the game or the user was not found
+     * @throws DataAccessException if there was a problem accessing the data store
      */
-    public void assignPlayerRole(int gameID, String username, ChessGame.TeamColor roleColor) throws DataAccessException {
+    public void assignPlayerRole(int gameID, String username, ChessGame.TeamColor roleColor)
+            throws DataAccessException {
         /* Failures
         can't access database
         game not found
@@ -74,10 +78,11 @@ public class GameDAO {
     }
 
     /**
-     * Updates the game state of a Game in the database to match the given version.
+     * Updates the game state of a {@link models.Game} in the database to match the given version.
      *
-     * @param game the updated version of the Game
-     * @throws DataAccessException if no Game with a matching gameID was found
+     * @param game the updated version of the {@code Game}
+     * @throws DataAccessException if no game with a matching gameID was found
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     public void updateGameSate(Game game) throws DataAccessException {
         /* Failures
@@ -93,7 +98,8 @@ public class GameDAO {
     /**
      * Removes a single game from the database.
      *
-     * @param gameID the ID of the Game to remove
+     * @param gameID the ID of the game to remove
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     public void removeGame(int gameID) throws DataAccessException {
         /* Failures
@@ -104,6 +110,8 @@ public class GameDAO {
 
     /**
      * Removes every game from the database.
+     *
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     public void clearGames() throws DataAccessException {
         /* Failures

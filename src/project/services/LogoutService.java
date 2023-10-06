@@ -8,9 +8,9 @@ import http.MessageResponse;
 public class LogoutService {
 
     /**
-     * Log out a currently logged-in user.
+     * Logs out a currently logged-in user.
      *
-     * @return a MessageResponse representing the resulting HTTP response.
+     * @return a {@link http.MessageResponse} representing the resulting HTTP response.
      */
     public MessageResponse logout() {
         return null;

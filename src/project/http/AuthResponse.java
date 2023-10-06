@@ -3,7 +3,8 @@ package http;
 import models.AuthToken;
 
 /**
- * A record representing an HTTP response to an authorization request.
+ * A record representing an HTTP response to an authorization request. Used by {@link services.LoginService} and
+ * {@link services.RegisterService}.
  *
  * @param authToken a new authorization token
  * @param username  the username of the user the token represents

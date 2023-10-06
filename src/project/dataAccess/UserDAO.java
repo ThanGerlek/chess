@@ -3,16 +3,16 @@ package dataAccess;
 import models.User;
 
 /**
- * A DAO (Data Access Object) for CRUD operations on the list of registered
- * Users.
+ * A DAO (Data Access Object) for CRUD operations on the list of registered users.
  */
 public class UserDAO {
 
     /**
-     * Adds a new User to the database.
+     * Adds a new {@link models.User} to the database.
      *
-     * @param user the User to insert
+     * @param user the user to insert
      * @throws DataAccessException if the username is already in the database
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     public void insertNewUser(User user) throws DataAccessException {
         /* Failures
@@ -22,11 +22,12 @@ public class UserDAO {
     }
 
     /**
-     * Gets the User with the given username from the database.
+     * Gets the {@link models.User} with the given username from the database.
      *
-     * @param username the username of the User to fetch
-     * @return the User
-     * @throws DataAccessException if the User was not found
+     * @param username the username of the user to fetch
+     * @return the fetched {@code User}
+     * @throws DataAccessException if the user was not found
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     public User getUser(String username) throws DataAccessException {
         /* Failures
@@ -37,9 +38,10 @@ public class UserDAO {
     }
 
     /**
-     * Removes a single User from the database.
+     * Removes a single user from the database.
      *
-     * @param user the User to remove
+     * @param user the user to remove
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     public void removeUser(User user) throws DataAccessException {
         /* Failures
@@ -49,7 +51,9 @@ public class UserDAO {
     }
 
     /**
-     * Removes every User from the database.
+     * Removes every user from the database.
+     *
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     public void clearUsers() throws DataAccessException {
         /* Failures

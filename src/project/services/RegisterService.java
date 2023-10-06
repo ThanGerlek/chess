@@ -9,10 +9,10 @@ import http.RegisterRequest;
 public class RegisterService {
 
     /**
-     * Register a new user.
+     * Registers a new user. Returns a new authorization token for that user via an {@link http.AuthResponse}.
      *
-     * @param request a RegisterRequest representing the HTTP request.
-     * @return an AuthResponse representing the resulting HTTP response.
+     * @param request a {@link http.RegisterRequest} representing the HTTP request.
+     * @return an {@code AuthResponse} representing the resulting HTTP response.
      */
     public AuthResponse register(RegisterRequest request) {
         return null;

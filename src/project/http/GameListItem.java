@@ -1,8 +1,8 @@
 package http;
 
 /**
- * A serializable representation of the basic data about a single game.
- * Designed for use in ListGamesService HTTP responses.
+ * A serializable representation of the basic data about a single game. Designed for use in
+ * {@link http.ListGamesResponse} HTTP responses.
  *
  * @param gameID        the ID of the game.
  * @param whiteUsername the username of the user playing White.

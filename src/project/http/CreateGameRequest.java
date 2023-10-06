@@ -1,7 +1,7 @@
 package http;
 
 /**
- * A record representing an HTTP request to the Create Game service.
+ * A record representing an HTTP request to the {@link services.CreateGameService}.
  *
  * @param gameName a human-readable name for the game to create
  */
