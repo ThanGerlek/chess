@@ -1,10 +1,9 @@
 package dataAccess;
 
-import models.User;
+import server.User;
 
 /**
- * A DAO (Data Access Object) for CRUD operations on the list of registered
- * Users.
+ * A DAO (Data Access Object) for CRUD operations on the list of registered Users.
  */
 public class UserDAO {
 

@@ -1,4 +1,4 @@
-package models;
+package server;
 
 /**
  * A model object representing the core data of a user.

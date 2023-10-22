@@ -1,4 +1,4 @@
-package http;
+package server.http;
 
 /**
  * A record representing an HTTP request to the Create Game service.

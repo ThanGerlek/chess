@@ -1,7 +1,7 @@
-package services;
+package server.services;
 
-import http.AuthResponse;
-import http.RegisterRequest;
+import server.http.AuthResponse;
+import server.http.RegisterRequest;
 
 /**
  * Provides the Register service, which registers a new user.

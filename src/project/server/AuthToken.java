@@ -1,4 +1,4 @@
-package models;
+package server;
 
 /**
  * An authorization token for the given user.

@@ -1,8 +1,8 @@
-package services;
+package server.services;
 
-import http.CreateGameRequest;
-import http.CreateGameResponse;
-import models.AuthToken;
+import server.http.CreateGameRequest;
+import server.http.CreateGameResponse;
+import server.AuthToken;
 
 /**
  * Provides the Create New Game service, which registers and initializes a new empty game.

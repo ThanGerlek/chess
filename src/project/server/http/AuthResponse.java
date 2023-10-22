@@ -1,6 +1,6 @@
-package http;
+package server.http;
 
-import models.AuthToken;
+import server.AuthToken;
 
 /**
  * A record representing an HTTP response to an authorization request.

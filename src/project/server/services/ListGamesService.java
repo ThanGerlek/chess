@@ -1,7 +1,7 @@
-package services;
+package server.services;
 
-import http.ListGamesResponse;
-import models.AuthToken;
+import server.http.ListGamesResponse;
+import server.AuthToken;
 
 /**
  * Provides the List Games service, which returns data about all games currently in progress.

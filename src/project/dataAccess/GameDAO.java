@@ -1,13 +1,12 @@
 package dataAccess;
 
 import chess.ChessGame;
-import models.Game;
+import server.Game;
 
 import java.util.ArrayList;
 
 /**
- * A DAO (Data Access Object) for CRUD operations on Games currently being
- * played.
+ * A DAO (Data Access Object) for CRUD operations on Games currently being played.
  */
 public class GameDAO {
 
@@ -59,7 +58,8 @@ public class GameDAO {
      * @param roleColor the role to assign to the user
      * @throws DataAccessException if the game or the user was not found
      */
-    public void assignPlayerRole(int gameID, String username, ChessGame.TeamColor roleColor) throws DataAccessException {
+    public void assignPlayerRole(int gameID, String username, ChessGame.TeamColor roleColor)
+            throws DataAccessException {
         /* Failures
         can't access database
         game not found

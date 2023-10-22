@@ -1,7 +1,7 @@
-package services;
+package server.services;
 
-import http.MessageResponse;
-import models.AuthToken;
+import server.http.MessageResponse;
+import server.AuthToken;
 
 /**
  * Provides the Logout service, which logs out an existing user.

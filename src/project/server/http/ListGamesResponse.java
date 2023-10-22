@@ -1,4 +1,4 @@
-package http;
+package server.http;
 
 /**
  * A record representing an HTTP response to a List Games service call.
