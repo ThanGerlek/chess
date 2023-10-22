@@ -3,12 +3,12 @@ package dataAccess;
 import server.AuthToken;
 
 /**
- * A DAO (Data Access Object) for <code>AuthToken</code> objects and authentication data.
+ * A DAO (Data Access Object) for {@code AuthToken} objects and authentication data.
  */
 public class AuthDAO {
 
     /**
-     * Registers the given </code>AuthToken</code> as a valid token.
+     * Registers the given {@code AuthToken} as a valid token.
      *
      * @param token the AuthToken to register
      * @throws DataAccessException if the AuthToken already exists or the user doesn't exist
@@ -22,7 +22,7 @@ public class AuthDAO {
     }
 
     /**
-     * Checks if the given </code>AuthToken</code> is currently valid.
+     * Checks if the given {@code AuthToken} is currently valid.
      *
      * @param token the token to validate
      * @return true iff the given token is currently valid
@@ -35,8 +35,8 @@ public class AuthDAO {
     }
 
     /**
-     * Invalidates the given </code>AuthToken</code>. Future calls requiring authorization for the given user will need
-     * to generate a new token by re-authenticating.
+     * Invalidates the given {@code AuthToken}. Future calls requiring authorization for the given user will need to
+     * generate a new token by re-authenticating.
      *
      * @param token the token to invalidate
      */
@@ -48,8 +48,8 @@ public class AuthDAO {
     }
 
     /**
-     * Invalidates every currently valid </code>AuthToken</code>. Future calls requiring authorization will need to
-     * generate new tokens by re-authenticating.
+     * Invalidates every currently valid {@code AuthToken}. Future calls requiring authorization will need to generate
+     * new tokens by re-authenticating.
      */
     public void clearAuthTokens() throws DataAccessException {
         /* Failures
