@@ -3,9 +3,8 @@ package chess;
 import java.util.Collection;
 
 /**
- * A chessboard that can hold and rearrange chess pieces.
- * Note: You can add to this interface, but you should not alter the existing
- * methods.
+ * A chessboard that can hold and rearrange chess pieces. Note: You can add to this interface, but you should not alter
+ * the existing methods.
  */
 public interface ChessBoard {
 
@@ -24,16 +23,14 @@ public interface ChessBoard {
      * Gets a chess piece on the chessboard
      *
      * @param position The position to get the piece from
-     * @return Either the piece at the position, or null if no piece is at that
-     * position
+     * @return Either the piece at the position, or null if no piece is at that position
      */
     ChessPiece getPiece(ChessPosition position);
 
     boolean hasPieceAt(ChessPosition position);
 
     /**
-     * Sets the board to the default starting board
-     * (How the game of chess normally starts)
+     * Sets the board to the default starting board (How the game of chess normally starts)
      */
     void resetBoard();
 

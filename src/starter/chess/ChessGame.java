@@ -3,9 +3,8 @@ package chess;
 import java.util.Collection;
 
 /**
- * For a class that can manage a chess game, making moves on a board.
- * Note: You can add to this interface, but you should not alter the existing
- * methods.
+ * For a class that can manage a chess game, making moves on a board. Note: You can add to this interface, but you
+ * should not alter the existing methods.
  */
 public interface ChessGame {
 
@@ -25,8 +24,7 @@ public interface ChessGame {
      * Gets a valid moves for a piece at the given location
      *
      * @param startPosition the piece to get valid moves for
-     * @return Set of valid moves for requested piece, or null if no piece at
-     * startPosition
+     * @return Set of valid moves for requested piece, or null if no piece at startPosition
      */
     Collection<ChessMove> validMoves(ChessPosition startPosition);
 
@@ -55,8 +53,7 @@ public interface ChessGame {
     boolean isInCheckmate(TeamColor teamColor);
 
     /**
-     * Determines if the given team is in stalemate, which here is defined as having
-     * no valid moves
+     * Determines if the given team is in stalemate, which here is defined as having no valid moves
      *
      * @param teamColor which team to check for stalemate
      * @return True if the specified team is in stalemate, otherwise false

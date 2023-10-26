@@ -27,12 +27,9 @@ public class ChessPositionImpl implements ChessPosition {
         return col;
     }
 
-    /**
-     * @return this ChessPosition's representation in algebraic chess notation.
-     */
-    public String notation() {
-        char colChar = (char) ('a' + col - 1);
-        return "" + colChar + row;
+    @Override
+    public int hashCode() {
+        return 9876000 + row * 16 + col;
     }
 
     @Override
@@ -45,12 +42,15 @@ public class ChessPositionImpl implements ChessPosition {
     }
 
     @Override
-    public int hashCode() {
-        return 9876000 + row * 16 + col;
-    }
-
-    @Override
     public String toString() {
         return notation();
+    }
+
+    /**
+     * @return this ChessPosition's representation in algebraic chess notation.
+     */
+    public String notation() {
+        char colChar = (char) ('a' + col - 1);
+        return "" + colChar + row;
     }
 }

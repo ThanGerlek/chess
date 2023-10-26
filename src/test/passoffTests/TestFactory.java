@@ -3,8 +3,7 @@ package passoffTests;
 import chess.*;
 
 /**
- * Used for testing your code
- * Add in code using your classes for each method for each FIX ME
+ * Used for testing your code Add in code using your classes for each method for each FIX ME
  */
 public class TestFactory {
 
@@ -26,7 +25,8 @@ public class TestFactory {
         return new ChessPositionImpl(row, col);
     }
 
-    public static ChessMove getNewMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece) {
+    public static ChessMove getNewMove(ChessPosition startPosition, ChessPosition endPosition,
+            ChessPiece.PieceType promotionPiece) {
         return new ChessMoveImpl(startPosition, endPosition, promotionPiece);
     }
     //------------------------------------------------------------------------------------------------------------------

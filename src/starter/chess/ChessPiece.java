@@ -5,8 +5,7 @@ import java.util.Collection;
 /**
  * Represents a single chess piece
  * <p>
- * Note: You can add to this interface, but you should not alter the existing
- * methods.
+ * Note: You can add to this interface, but you should not alter the existing methods.
  */
 public interface ChessPiece {
 
@@ -21,9 +20,8 @@ public interface ChessPiece {
     PieceType getPieceType();
 
     /**
-     * Calculates all the positions a chess piece can move to
-     * Does not take into account moves that are illegal due to leaving the king in
-     * danger
+     * Calculates all the positions a chess piece can move to Does not take into account moves that are illegal due to
+     * leaving the king in danger
      *
      * @return Collection of valid moves
      */
@@ -37,6 +35,11 @@ public interface ChessPiece {
      * The various different chess piece options
      */
     enum PieceType {
-        KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN
+        KING,
+        QUEEN,
+        BISHOP,
+        KNIGHT,
+        ROOK,
+        PAWN
     }
 }

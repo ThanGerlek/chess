@@ -18,9 +18,8 @@ public class Rook extends ChessPieceImpl {
     // TODO castling
 
     /**
-     * Calculates all the positions this chess piece can move to.
-     * Does not take into account moves that are illegal due to leaving the king in
-     * danger.
+     * Calculates all the positions this chess piece can move to. Does not take into account moves that are illegal due
+     * to leaving the king in danger.
      *
      * @param board      the current ChessBoard.
      * @param myPosition this Rook's current position.

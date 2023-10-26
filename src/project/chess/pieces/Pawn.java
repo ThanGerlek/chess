@@ -21,9 +21,8 @@ public class Pawn extends ChessPieceImpl {
     //  resets it afterward!
 
     /**
-     * Calculates all the positions this chess piece can move to.
-     * Does not take into account moves that are illegal due to leaving the king in
-     * danger.
+     * Calculates all the positions this chess piece can move to. Does not take into account moves that are illegal due
+     * to leaving the king in danger.
      *
      * @param board      the current ChessBoard.
      * @param myPosition this Pawn's current position.
@@ -46,7 +45,8 @@ public class Pawn extends ChessPieceImpl {
     }
 
 
-    private void addForwardMovesIfValid(Collection<ChessPosition> endPositions, ChessBoard board, ChessPosition myPosition) {
+    private void addForwardMovesIfValid(Collection<ChessPosition> endPositions, ChessBoard board,
+            ChessPosition myPosition) {
         ChessPosition oneStepPosition = shiftRelative(myPosition, 1, 0);
         if (isValidEmptySpace(board, oneStepPosition)) {
             endPositions.add(oneStepPosition);
@@ -58,7 +58,8 @@ public class Pawn extends ChessPieceImpl {
         }
     }
 
-    private void addDiagonalAttackMoveIfValid(Collection<ChessPosition> endPositions, ChessBoard board, ChessPosition myPosition, int direction) {
+    private void addDiagonalAttackMoveIfValid(Collection<ChessPosition> endPositions, ChessBoard board,
+            ChessPosition myPosition, int direction) {
         int deltaCol = (direction > 0) ? 1 : -1;
         ChessPosition endPosition = shiftRelative(myPosition, 1, deltaCol);
         if (isValidCapturingSpace(board, endPosition)) endPositions.add(endPosition);

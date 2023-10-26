@@ -15,6 +15,24 @@ public class ChessBoardImpl implements ChessBoard {
         this.pieces = new HashMap<>();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (int row = 8; row >= 1; row--) {
+            for (int col = 1; col <= 8; col++) {
+                ChessPosition position = new ChessPositionImpl(row, col);
+                char symbol = ' ';
+                if (hasPieceAt(position)) {
+                    ChessPiece piece = getPiece(position);
+                    symbol = ChessPieces.symbol(piece);
+                }
+                builder.append("|").append(symbol);
+            }
+            builder.append("|\n");
+        }
+        return builder.toString();
+    }
+
     /**
      * Adds a chess piece to the chessboard.
      *
@@ -24,7 +42,9 @@ public class ChessBoardImpl implements ChessBoard {
     @Override
     public void addPiece(ChessPosition position, ChessPiece piece) {
         if (hasPieceAt(position)) {
-            String errMsg = String.format("Tried to add a piece to a nonempty position. Position: '%s', piece to add: '%s', existing piece: '%s'",
+            String errMsg = String.format(
+                    "Tried to add a piece to a nonempty position. Position: '%s', piece to add: '%s', existing piece:" +
+                            " '%s'",
                     position.toString(), piece.toString(), getPiece(position).toString());
             throw new IllegalArgumentException(errMsg);
         }
@@ -39,8 +59,7 @@ public class ChessBoardImpl implements ChessBoard {
      * Gets a chess piece on the chessboard.
      *
      * @param position the position to get the piece from.
-     * @return the piece at the position, or null if no piece is at that
-     * position.
+     * @return the piece at the position, or null if no piece is at that position.
      */
     @Override
     public ChessPiece getPiece(ChessPosition position) {
@@ -53,8 +72,7 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     * Sets the board to the default starting board
-     * (how the game of chess normally starts).
+     * Sets the board to the default starting board (how the game of chess normally starts).
      */
     @Override
     public void resetBoard() {
@@ -198,21 +216,5 @@ public class ChessBoardImpl implements ChessBoard {
         pieces.put(blackQueenPosition, blackQueen);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (int row = 8; row >= 1; row--) {
-            for (int col = 1; col <= 8; col++) {
-                ChessPosition position = new ChessPositionImpl(row, col);
-                char symbol = ' ';
-                if (hasPieceAt(position)) {
-                    ChessPiece piece = getPiece(position);
-                    symbol = ChessPieces.symbol(piece);
-                }
-                builder.append("|").append(symbol);
-            }
-            builder.append("|\n");
-        }
-        return builder.toString();
-    }
+
 }

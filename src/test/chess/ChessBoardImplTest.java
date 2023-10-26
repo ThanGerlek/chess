@@ -7,16 +7,6 @@ import org.junit.jupiter.api.Test;
 
 class ChessBoardImplTest {
 
-    public ChessBoardImpl givenAnEmptyBoard() {
-        return new ChessBoardImpl();
-    }
-
-    public ChessBoardImpl givenASetupBoard() {
-        ChessBoardImpl board = new ChessBoardImpl();
-        board.resetBoard();
-        return board;
-    }
-
     @Test
     void adding_one_piece_to_an_empty_board_then_getting_it_returns_that_piece() {
         ChessBoardImpl board = givenAnEmptyBoard();
@@ -26,6 +16,10 @@ class ChessBoardImplTest {
         board.addPiece(position, piece);
 
         Assertions.assertEquals(piece, board.getPiece(position));
+    }
+
+    public ChessBoardImpl givenAnEmptyBoard() {
+        return new ChessBoardImpl();
     }
 
     @Test
@@ -111,6 +105,12 @@ class ChessBoardImplTest {
                 Assertions.assertEquals(expectedHasPiece, actualHasPiece);
             }
         }
+    }
+
+    public ChessBoardImpl givenASetupBoard() {
+        ChessBoardImpl board = new ChessBoardImpl();
+        board.resetBoard();
+        return board;
     }
 
     @Test
