@@ -29,7 +29,7 @@ public class MemoryGameDAO implements GameDAO {
         */
         Integer id = game.gameID();
         if (gameDatabase.containsKey(id)) {
-            throw new DataAccessException(
+            throw new ValueAlreadyTakenException(
                     "Tried to insert a new Game with a gameID that already exists in the database");
         }
         gameDatabase.put(id, game);
@@ -83,7 +83,7 @@ public class MemoryGameDAO implements GameDAO {
         assertIDExists(gameID);
 
         if (!(new MemoryUserDAO().hasUser(username))) {
-            throw new DataAccessException("Unrecognized username");
+            throw new NoSuchItemException("Unrecognized username");
         }
 
         if (roleColor == null) {
@@ -148,7 +148,7 @@ public class MemoryGameDAO implements GameDAO {
 
     private void assertIDExists(Integer gameID) throws DataAccessException {
         if (!gameDatabase.containsKey(gameID)) {
-            throw new DataAccessException("Tried to access a Game with an unrecognized gameID");
+            throw new NoSuchItemException("Tried to access a Game with an unrecognized gameID");
         }
     }
 }

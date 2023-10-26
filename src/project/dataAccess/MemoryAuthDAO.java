@@ -5,6 +5,8 @@ import server.AuthToken;
 import java.util.ArrayList;
 import java.util.Objects;
 
+// TODO Update Javadocs with DataAccessException subclasses
+
 /**
  * A DAO (Data Access Object) for {@code AuthToken} objects and authentication data.
  */
@@ -26,12 +28,12 @@ public class MemoryAuthDAO implements AuthDAO {
         */
         UserDAO userDAO = new MemoryUserDAO();
         if (!userDAO.hasUser(token.username())) {
-            throw new DataAccessException("User not found");
+            throw new NoSuchItemException("User not found");
         }
 
         for (AuthToken existingToken : tokenDatabase) {
             if (Objects.equals(existingToken.authToken(), token.authToken())) {
-                throw new DataAccessException("Tried to register an already existing token");
+                throw new ValueAlreadyTakenException("Tried to register an already existing token");
             }
         }
 

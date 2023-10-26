@@ -23,7 +23,7 @@ public class MemoryUserDAO implements UserDAO {
         username already exists
         */
         if (hasUser(user.username())) {
-            throw new DataAccessException("Tried to insert a user with an already-taken username");
+            throw new ValueAlreadyTakenException("Tried to insert a user with an already-taken username");
         }
     }
 
@@ -44,7 +44,7 @@ public class MemoryUserDAO implements UserDAO {
                 return user;
             }
         }
-        throw new DataAccessException("User not found");
+        throw new NoSuchItemException("User not found");
     }
 
     /**
