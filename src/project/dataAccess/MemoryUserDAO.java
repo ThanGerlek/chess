@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class MemoryUserDAO implements UserDAO {
 
-    private static ArrayList<User> userDatabase = new ArrayList<>();
+    private static final ArrayList<User> userDatabase = new ArrayList<>();
 
     /**
      * Adds a new User to the database.
@@ -22,7 +22,9 @@ public class MemoryUserDAO implements UserDAO {
         can't access database
         username already exists
         */
-        // TODO
+        if (hasUser(user.username())) {
+            throw new DataAccessException("Tried to insert a user with an already-taken username");
+        }
     }
 
     /**
@@ -37,8 +39,12 @@ public class MemoryUserDAO implements UserDAO {
         can't access database
         user not found
         */
-        // TODO
-        return null;
+        for (User user : userDatabase) {
+            if (user.username().equals(username)) {
+                return user;
+            }
+        }
+        throw new DataAccessException("User not found");
     }
 
     /**
@@ -51,7 +57,11 @@ public class MemoryUserDAO implements UserDAO {
         /* Failures
         can't access database
         */
-        // TODO
+        for (User user : userDatabase) {
+            if (user.username().equals(username)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -65,7 +75,7 @@ public class MemoryUserDAO implements UserDAO {
         can't access database
         (if user DNE, just return)
         */
-        // TODO
+        userDatabase.remove(user);
     }
 
     /**
@@ -76,6 +86,6 @@ public class MemoryUserDAO implements UserDAO {
         can't access database
         (if no users, just return)
         */
-        // TODO
+        userDatabase.clear();
     }
 }
