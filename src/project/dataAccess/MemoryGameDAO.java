@@ -5,13 +5,16 @@ import server.Game;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A DAO (Data Access Object) for CRUD operations on Games currently being played.
  */
 public class MemoryGameDAO implements GameDAO {
 
-    private static ArrayList<Game> gameDatabase = new ArrayList<>();
+    private static final Map<Integer, Game> gameDatabase = new HashMap<>();
+    private static final Map<Integer, ArrayList<String>> spectatorDatabase = new HashMap<>();
 
     /**
      * Inserts a new Game into the database.
@@ -24,7 +27,13 @@ public class MemoryGameDAO implements GameDAO {
         can't access database
         game already exists (same gameID)
         */
-        // TODO
+        Integer id = game.gameID();
+        if (gameDatabase.containsKey(id)) {
+            throw new DataAccessException(
+                    "Tried to insert a new Game with a gameID that already exists in the database");
+        }
+        gameDatabase.put(id, game);
+        spectatorDatabase.put(id, new ArrayList<>());
     }
 
     /**
@@ -39,8 +48,8 @@ public class MemoryGameDAO implements GameDAO {
         can't access database
         game not found
         */
-        // TODO
-        return null;
+        assertIDExists(gameID);
+        return gameDatabase.get(gameID);
     }
 
     /**
@@ -52,8 +61,7 @@ public class MemoryGameDAO implements GameDAO {
         /* Failures
         can't access database
         */
-        // TODO
-        return null;
+        return new ArrayList<>(gameDatabase.values());
     }
 
     /**
@@ -72,6 +80,19 @@ public class MemoryGameDAO implements GameDAO {
         user not found
         */
         // TODO
+        assertIDExists(gameID);
+
+        if (!(new MemoryUserDAO().hasUser(username))) {
+            throw new DataAccessException("Unrecognized username");
+        }
+
+        if (roleColor == null) {
+            spectatorDatabase.get(gameID).add(username);
+        } else if (roleColor == ChessGame.TeamColor.WHITE) {
+            gameDatabase.get(gameID).setWhiteUsername(username);
+        } else {
+            gameDatabase.get(gameID).setBlackUsername(username);
+        }
 
         /* TODO Not handled:
         role already claimed by different user (violation of SRP?)
@@ -91,7 +112,8 @@ public class MemoryGameDAO implements GameDAO {
         can't access database
         game not found
         */
-        // TODO
+        assertIDExists(game.gameID());
+        gameDatabase.put(game.gameID(), game);
 
         /* TODO Not handled:
         games don't match, i.e. different players (violation of SRP)
@@ -108,7 +130,8 @@ public class MemoryGameDAO implements GameDAO {
         can't access database
         (if game DNE, just return)
         */
-        // TODO
+        gameDatabase.remove(gameID);
+        spectatorDatabase.remove(gameID);
     }
 
     /**
@@ -119,6 +142,13 @@ public class MemoryGameDAO implements GameDAO {
         can't access database
         (if no games, just return)
         */
-        // TODO
+        gameDatabase.clear();
+        spectatorDatabase.clear();
+    }
+
+    private void assertIDExists(Integer gameID) throws DataAccessException {
+        if (!gameDatabase.containsKey(gameID)) {
+            throw new DataAccessException("Tried to access a Game with an unrecognized gameID");
+        }
     }
 }
