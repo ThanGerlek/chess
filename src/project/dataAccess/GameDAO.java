@@ -101,4 +101,11 @@ public interface GameDAO {
         can't access database
         (if no games, just return)
         */
+
+    /**
+     * Generates a new, unused gameID.
+     *
+     * @return a new gameID
+     */
+    int generateNewGameID();
 }

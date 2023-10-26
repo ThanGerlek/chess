@@ -15,6 +15,7 @@ public class MemoryGameDAO implements GameDAO {
 
     private static final Map<Integer, Game> gameDatabase = new HashMap<>();
     private static final Map<Integer, ArrayList<String>> spectatorDatabase = new HashMap<>();
+    private static int maxUsedGameID;
 
     /**
      * Inserts a new Game into the database.
@@ -34,6 +35,8 @@ public class MemoryGameDAO implements GameDAO {
         }
         gameDatabase.put(id, game);
         spectatorDatabase.put(id, new ArrayList<>());
+
+        maxUsedGameID = Math.max(maxUsedGameID, game.gameID());
     }
 
     /**
@@ -141,6 +144,16 @@ public class MemoryGameDAO implements GameDAO {
         */
         gameDatabase.clear();
         spectatorDatabase.clear();
+    }
+
+    /**
+     * Generates a new, unused gameID.
+     *
+     * @return a new gameID
+     */
+    public int generateNewGameID() {
+        maxUsedGameID++;
+        return maxUsedGameID;
     }
 
     private void assertIDExists(Integer gameID) throws DataAccessException {
