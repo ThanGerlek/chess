@@ -18,14 +18,10 @@ public class ClearApplicationService {
      *
      * @return a MessageResponse representing the resulting HTTP response.
      */
-    public MessageResponse clearApplication() {
-        try {
-            authDAO.clearAuthTokens();
-            gameDAO.clearGames();
-            userDAO.clearUsers();
-            return new MessageResponse(200, "Okay!");
-        } catch (DataAccessException e) {
-            return new MessageResponse(500, String.format("Error: %s", e.getMessage()));
-        }
+    public MessageResponse clearApplication() throws DataAccessException {
+        authDAO.clearAuthTokens();
+        gameDAO.clearGames();
+        userDAO.clearUsers();
+        return new MessageResponse(200, "Okay!");
     }
 }

@@ -8,8 +8,6 @@ import server.http.RegisterRequest;
 
 import java.util.UUID;
 
-// TODO style: move all errorResponse functions into a superclass or something
-
 /**
  * Provides the Register service, which registers a new user.
  */
@@ -23,17 +21,11 @@ public class RegisterService {
      * @param request a RegisterRequest representing the HTTP request.
      * @return an AuthResponse representing the resulting HTTP response.
      */
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) throws DataAccessException {
         User user = new User(request.username(), request.password(), request.email());
-        try {
-            userDAO.insertNewUser(user);
-            AuthToken authToken = registerNewAuthToken(request.username());
-            return new AuthResponse(200, authToken, request.username(), "Okay!");
-        } catch (ValueAlreadyTakenException e) {
-            return errorResponse(403, e);
-        } catch (DataAccessException e) {
-            return errorResponse(500, e);
-        }
+        userDAO.insertNewUser(user);
+        AuthToken authToken = registerNewAuthToken(request.username());
+        return new AuthResponse(200, authToken, request.username(), "Okay!");
     }
 
     private AuthToken registerNewAuthToken(String username) throws DataAccessException {
@@ -42,12 +34,8 @@ public class RegisterService {
         authDAO.addAuthToken(authToken);
         return authToken;
     }
-
-    private AuthResponse errorResponse(int status, Exception e) {
-        return new AuthResponse(status, null, null, String.format("Error: %s", e.getMessage()));
-    }
-
 }
+
 /*
 
 | **Body**             | `{ "username":"", "password":"", "email":"" }` |

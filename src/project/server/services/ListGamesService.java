@@ -3,7 +3,6 @@ package server.services;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.MemoryGameDAO;
-import dataAccess.UnauthorizedAccessException;
 import server.http.ListGamesResponse;
 
 /**
@@ -17,21 +16,11 @@ public class ListGamesService {
      *
      * @return a ListGamesResponse representing the resulting HTTP response.
      */
-    public ListGamesResponse listGames() {
-        try {
-            return new ListGamesResponse(200, gameDAO.allGames(), "Okay!");
-        } catch (UnauthorizedAccessException e) {
-            return errorResponse(401, e);
-        } catch (DataAccessException e) {
-            return errorResponse(500, e);
-        }
+    public ListGamesResponse listGames() throws DataAccessException {
+        return new ListGamesResponse(200, gameDAO.allGames(), "Okay!");
     }
 
-    private ListGamesResponse errorResponse(int status, Exception e) {
-        return new ListGamesResponse(500, null, String.format("Error: %s", e.getMessage()));
-    }
-
-    /*
+/*
 
 | **Headers**          | `authorization: <authToken>`                                                                 |
 | **Success response** | [200] `{ "games": ["gameID": 1234, "whiteUsername":"", "blackUsername":"", "gameName:""} ]}` |

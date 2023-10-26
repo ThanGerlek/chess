@@ -18,13 +18,9 @@ public class LogoutService {
      * @param token the AuthToken to invalidate.
      * @return a MessageResponse representing the resulting HTTP response.
      */
-    public MessageResponse logout(AuthToken token) {
-        try {
-            authDAO.removeAuthToken(token);
-            return new MessageResponse(200, "Okay!");
-        } catch (DataAccessException e) {
-            return new MessageResponse(500, String.format("Error: %s", e.getMessage()));
-        }
+    public MessageResponse logout(AuthToken token) throws DataAccessException {
+        authDAO.removeAuthToken(token);
+        return new MessageResponse(200, "Okay!");
     }
 
     /*

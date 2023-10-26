@@ -4,7 +4,6 @@ import chess.ChessGameImpl;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.MemoryGameDAO;
-import dataAccess.UnauthorizedAccessException;
 import server.Game;
 import server.http.CreateGameRequest;
 import server.http.CreateGameResponse;
@@ -21,15 +20,9 @@ public class CreateGameService {
      * @param request a CreateGameRequest representing the HTTP request.
      * @return a CreateGameResponse representing the resulting HTTP response.
      */
-    public CreateGameResponse createGame(CreateGameRequest request) {
-        try {
-            int gameID = registerNewGame(request.gameName());
-            return new CreateGameResponse(200, gameID, "Okay!");
-        } catch (UnauthorizedAccessException e) {
-            return errorResponse(401, e);
-        } catch (DataAccessException e) {
-            return errorResponse(500, e);
-        }
+    public CreateGameResponse createGame(CreateGameRequest request) throws DataAccessException {
+        int gameID = registerNewGame(request.gameName());
+        return new CreateGameResponse(200, gameID, "Okay!");
     }
 
     private int registerNewGame(String gameName) throws DataAccessException {
@@ -39,11 +32,7 @@ public class CreateGameService {
         return gameID;
     }
 
-    private CreateGameResponse errorResponse(int status, Exception e) {
-        return new CreateGameResponse(status, null, String.format("Error: %s", e.getMessage()));
-    }
-
-    /*
+/*
 
 | **Headers**          | `authorization: <authToken>`                 |
 | **Body**             | `{ "gameName":"" }`                          |

@@ -1,7 +1,9 @@
 package server.services;
 
 import chess.ChessGame;
-import dataAccess.*;
+import dataAccess.DataAccessException;
+import dataAccess.GameDAO;
+import dataAccess.MemoryGameDAO;
 import server.http.JoinGameRequest;
 import server.http.MessageResponse;
 
@@ -21,34 +23,19 @@ public class JoinGameService {
      * @param username the username to assign to the role.
      * @return a MessageResponse representing the resulting HTTP response.
      */
-    public MessageResponse joinGame(JoinGameRequest request, String username) {
-        try {
-            ChessGame.PlayerRole role = switch (request.playerColor()) {
-                case "WHITE" -> ChessGame.PlayerRole.WHITE_PLAYER;
-                case "BLACK" -> ChessGame.PlayerRole.BLACK_PLAYER;
-                default -> ChessGame.PlayerRole.SPECTATOR;
-            };
-            int gameID = request.gameID();
-            gameDAO.assignPlayerRole(gameID, username, role);
+    public MessageResponse joinGame(JoinGameRequest request, String username) throws DataAccessException {
+        ChessGame.PlayerRole role = switch (request.playerColor()) {
+            case "WHITE" -> ChessGame.PlayerRole.WHITE_PLAYER;
+            case "BLACK" -> ChessGame.PlayerRole.BLACK_PLAYER;
+            default -> ChessGame.PlayerRole.SPECTATOR;
+        };
+        int gameID = request.gameID();
+        gameDAO.assignPlayerRole(gameID, username, role);
 
-            return new MessageResponse(200, "Okay!");
-
-        } catch (NoSuchItemException e) {
-            return errorResponse(400, e);
-        } catch (UnauthorizedAccessException e) {
-            return errorResponse(401, e);
-        } catch (ValueAlreadyTakenException e) {
-            return errorResponse(403, e);
-        } catch (DataAccessException e) {
-            return errorResponse(500, e);
-        }
+        return new MessageResponse(200, "Okay!");
     }
 
-    private MessageResponse errorResponse(int status, Exception e) {
-        return new MessageResponse(status, String.format("Error: %s", e.getMessage()));
-    }
-
-    /*
+/*
 
 | **Headers**          | `authorization: <authToken>`
 | **Body**             | `{ "playerColor":"WHITE/BLACK", "gameID": 1234 }`

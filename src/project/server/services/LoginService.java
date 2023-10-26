@@ -21,16 +21,10 @@ public class LoginService {
      * @param request a LoginRequest representing the HTTP request.
      * @return an AuthResponse representing the resulting HTTP response.
      */
-    public AuthResponse login(LoginRequest request) {
-        try {
-            User user = userDAO.getUser(request.username());
-            AuthToken token = authenticate(user, request.password());
-            return new AuthResponse(200, token, request.username(), "Okay!");
-        } catch (NoSuchItemException | UnauthorizedAccessException e) {
-            return errorResponse(401, e);
-        } catch (DataAccessException e) {
-            return errorResponse(500, e);
-        }
+    public AuthResponse login(LoginRequest request) throws DataAccessException {
+        User user = userDAO.getUser(request.username());
+        AuthToken token = authenticate(user, request.password());
+        return new AuthResponse(200, token, request.username(), "Okay!");
     }
 
     private AuthToken authenticate(User user, String password) throws DataAccessException {
@@ -42,10 +36,6 @@ public class LoginService {
         return token;
     }
 
-    private AuthResponse errorResponse(int status, Exception e) {
-        return new AuthResponse(status, null, null, String.format("Error: %s", e.getMessage()));
-    }
-
     // TODO Consolidate with RegisterService's registerNewAuthToken() method
     private AuthToken registerNewAuthToken(String username) throws DataAccessException {
         String tokenString = UUID.randomUUID().toString();
@@ -54,7 +44,7 @@ public class LoginService {
         return authToken;
     }
 
-    /*
+/*
 
 | **Body**             | `{ "username":"", "password":"" }`                  |
 | **Success response** | [200] `{ "username":"", "authToken":"" }`           |
