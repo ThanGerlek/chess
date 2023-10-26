@@ -67,13 +67,12 @@ public class MemoryGameDAO implements GameDAO {
     /**
      * Assigns a role to a user if not already assigned.
      *
-     * @param gameID    the ID of the game to add the user to
-     * @param username  the username of the user
-     * @param roleColor the role to assign to the user
+     * @param gameID   the ID of the game to add the user to
+     * @param username the username of the user
+     * @param role     the role to assign to the user
      * @throws DataAccessException if the game or the user was not found
      */
-    public void assignPlayerRole(int gameID, String username, ChessGame.TeamColor roleColor)
-            throws DataAccessException {
+    public void assignPlayerRole(int gameID, String username, ChessGame.PlayerRole role) throws DataAccessException {
         /* Failures
         can't access database
         game not found
@@ -86,12 +85,10 @@ public class MemoryGameDAO implements GameDAO {
             throw new NoSuchItemException("Unrecognized username");
         }
 
-        if (roleColor == null) {
-            spectatorDatabase.get(gameID).add(username);
-        } else if (roleColor == ChessGame.TeamColor.WHITE) {
-            gameDatabase.get(gameID).setWhiteUsername(username);
-        } else {
-            gameDatabase.get(gameID).setBlackUsername(username);
+        switch (role) {
+            case WHITE_PLAYER -> gameDatabase.get(gameID).setWhiteUsername(username);
+            case BLACK_PLAYER -> gameDatabase.get(gameID).setBlackUsername(username);
+            case SPECTATOR -> spectatorDatabase.get(gameID).add(username);
         }
 
         /* TODO Not handled:
