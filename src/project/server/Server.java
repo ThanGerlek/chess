@@ -1,6 +1,11 @@
 package server;
 
+import com.google.gson.Gson;
+import spark.Request;
+import spark.Response;
 import spark.Spark;
+
+import java.util.Map;
 
 public class Server {
     private static final int PORT = 8080;
@@ -27,7 +32,7 @@ public class Server {
     }
 
     private void createRoutes() {
-        createNotFoundRoutes();
+        createErrorRoutes();
         createBeforeRoutes();
         createServiceRoutes();
         createAfterRoutes();
@@ -45,14 +50,14 @@ public class Server {
         }));
     }
 
-    private void createNotFoundRoutes() {
-        // TODO? See web-api/example-code/.../Custom...Server2
+    private void createErrorRoutes() {
+        // See web-api/example-code/.../Custom...Server2
         Spark.notFound((req, res) -> {
-            res.type("text/html");
-            return "<html><body>My custom 404 page</body></html>";
-            // Replace string with text read from a file ^^^
-            // (there's code that does this in the above example-code)
+            String errMsg = String.format("[%s] %s not found", req.requestMethod(), req.pathInfo());
+            Exception e = new Exception(errMsg);
+            return errorHandler(e, req, res);
         });
+        Spark.exception(Exception.class, this::errorHandler);
     }
 
     private void createBeforeRoutes() {
@@ -70,6 +75,15 @@ public class Server {
 
     private void createAfterRoutes() {
         Spark.after((req, res) -> System.out.println("Finished executing route: " + req.pathInfo()));
+    }
+
+    private Object errorHandler(Exception e, Request req, Response res) {
+        String body =
+                new Gson().toJson(Map.of("message", String.format("Error: %s", e.getMessage()), "success", false));
+        res.type("application/json");
+        res.status(500);
+        res.body(body);
+        return body;
     }
 
 }
