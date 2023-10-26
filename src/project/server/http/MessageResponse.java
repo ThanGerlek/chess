@@ -3,9 +3,10 @@ package server.http;
 /**
  * A record representing a simple HTTP response with only a message header.
  *
+ * @param status  the status code
  * @param message the response message
  */
-public record MessageResponse(String message) {
+public record MessageResponse(int status, String message) {
 }
 
 // Clear application:
