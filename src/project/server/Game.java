@@ -68,7 +68,7 @@ public class Game {
 
     @Override
     public int hashCode() {
-        return Objects.hash(gameID, chessGame, whiteUsername, blackUsername, gameName);
+        return Objects.hash(gameID, chessGame, gameName);
     }
 
     @Override
@@ -77,8 +77,6 @@ public class Game {
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
         return gameID == game.gameID && Objects.equals(chessGame, game.chessGame) &&
-                Objects.equals(whiteUsername, game.whiteUsername) &&
-                Objects.equals(blackUsername, game.blackUsername) &&
                 Objects.equals(gameName, game.gameName);
     }
 }
