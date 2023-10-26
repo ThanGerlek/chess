@@ -2,6 +2,7 @@ package dataAccess;
 
 import chess.ChessGame;
 import server.Game;
+import server.http.GameListItem;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,15 +57,19 @@ public class MemoryGameDAO implements GameDAO {
     }
 
     /**
-     * Returns a list of all Games currently in the database.
+     * Returns an array containing data about each Game in the database.
      *
-     * @return a list of all Games in the database
+     * @return an array of data about each Game in the database
      */
-    public Collection<Game> allGames() throws DataAccessException {
+    public GameListItem[] allGames() throws DataAccessException {
         /* Failures
         can't access database
         */
-        return new ArrayList<>(gameDatabase.values());
+        Collection<GameListItem> gameList = new ArrayList<>();
+        for (Game game : gameDatabase.values()) {
+            gameList.add(new GameListItem(game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName()));
+        }
+        return gameList.toArray(new GameListItem[0]);
     }
 
     /**

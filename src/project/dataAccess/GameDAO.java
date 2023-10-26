@@ -2,8 +2,7 @@ package dataAccess;
 
 import chess.ChessGame;
 import server.Game;
-
-import java.util.Collection;
+import server.http.GameListItem;
 
 /**
  * A DAO (Data Access Object) for CRUD operations on Games currently being played.
@@ -36,11 +35,11 @@ public interface GameDAO {
         */
 
     /**
-     * Returns a list of all Games currently in the database.
+     * Returns an array containing data about each Game in the database.
      *
-     * @return a list of all Games in the database
+     * @return an array of data about each Game in the database
      */
-    Collection<Game> allGames() throws DataAccessException;
+    GameListItem[] allGames() throws DataAccessException;
         /* Failures
         can't access database
         */
