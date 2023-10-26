@@ -1,6 +1,6 @@
 package server.handlers;
 
-import com.google.gson.Gson;
+import dataAccess.DataAccessException;
 import server.http.MessageResponse;
 import server.services.ClearApplicationService;
 import spark.Request;
@@ -10,8 +10,10 @@ public class ClearApplicationHandler extends Handler {
     private static final ClearApplicationService service = new ClearApplicationService();
 
     @Override
-    public Object handleRequest(Request req, Response res) {
-        return new Gson().toJson(new MessageResponse(40, "ClearApplicationHandler"));
+    protected Object route(Request req, Response res) throws DataAccessException {
+        MessageResponse body = service.clearApplication();
+        res.status(200);
+        return gson.toJson(body);
     }
 }
 

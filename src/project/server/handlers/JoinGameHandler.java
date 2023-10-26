@@ -1,6 +1,7 @@
 package server.handlers;
 
-import com.google.gson.Gson;
+import dataAccess.DataAccessException;
+import server.http.JoinGameRequest;
 import server.http.MessageResponse;
 import server.services.JoinGameService;
 import spark.Request;
@@ -10,9 +11,13 @@ public class JoinGameHandler extends Handler {
     private static final JoinGameService service = new JoinGameService();
 
     @Override
-    public Object handleRequest(Request req, Response res) {
-        return new Gson().toJson(new MessageResponse(40, "JoinGameHandler"));
+    protected Object route(Request req, Response res) throws DataAccessException {
+        JoinGameRequest joinGameRequest = gson.fromJson(req.body(), JoinGameRequest.class);
+        MessageResponse body = service.joinGame(joinGameRequest, req.headers("username"));
+        res.status(200);
+        return gson.toJson(body);
     }
+    // TODO Auth
 }
 
 /*

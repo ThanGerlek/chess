@@ -1,7 +1,7 @@
 package server.handlers;
 
-import com.google.gson.Gson;
-import server.http.MessageResponse;
+import dataAccess.DataAccessException;
+import server.http.ListGamesResponse;
 import server.services.ListGamesService;
 import spark.Request;
 import spark.Response;
@@ -10,9 +10,12 @@ public class ListGamesHandler extends Handler {
     private static final ListGamesService service = new ListGamesService();
 
     @Override
-    public Object handleRequest(Request req, Response res) {
-        return new Gson().toJson(new MessageResponse(40, "ListGamesHandler"));
+    public Object route(Request req, Response res) throws DataAccessException {
+        ListGamesResponse body = service.listGames();
+        res.status(200);
+        return gson.toJson(body);
     }
+    // TODO Auth
 }
 
 /*

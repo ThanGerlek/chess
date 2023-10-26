@@ -1,7 +1,8 @@
 package server.handlers;
 
-import com.google.gson.Gson;
-import server.http.MessageResponse;
+import dataAccess.DataAccessException;
+import server.http.AuthResponse;
+import server.http.LoginRequest;
 import server.services.LoginService;
 import spark.Request;
 import spark.Response;
@@ -10,8 +11,11 @@ public class LoginHandler extends Handler {
     private static final LoginService service = new LoginService();
 
     @Override
-    public Object handleRequest(Request req, Response res) {
-        return new Gson().toJson(new MessageResponse(40, "LoginHandler"));
+    public Object route(Request req, Response res) throws DataAccessException {
+        LoginRequest loginRequest = gson.fromJson(req.body(), LoginRequest.class);
+        AuthResponse body = service.login(loginRequest);
+        res.status(200);
+        return gson.toJson(body);
     }
 }
 
