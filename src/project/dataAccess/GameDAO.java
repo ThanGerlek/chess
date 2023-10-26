@@ -72,7 +72,7 @@ public interface GameDAO {
      * @param game the updated version of the Game
      * @throws DataAccessException if no Game with a matching gameID was found
      */
-    void updateGameSate(Game game) throws DataAccessException;
+    void updateGameState(Game game) throws DataAccessException;
         /* Failures
         can't access database
         game not found

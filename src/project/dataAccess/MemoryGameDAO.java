@@ -86,7 +86,7 @@ public class MemoryGameDAO implements GameDAO {
      * @param game the updated version of the Game
      * @throws DataAccessException if no Game with a matching gameID was found
      */
-    public void updateGameSate(Game game) throws DataAccessException {
+    public void updateGameState(Game game) throws DataAccessException {
         /* Failures
         can't access database
         game not found
