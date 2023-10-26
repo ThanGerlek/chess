@@ -16,17 +16,10 @@ public class Server {
 
     private void run() {
         System.out.println("Starting the server");
-
         Spark.port(PORT);
-
-        // TODO Move /web to /src/main/resources? See Server Wep API powerpoint
-        // https://docs.google.com/presentation/d/1Nvb0fUObt-An0nMOFEhgIufnSN6qpixF/edit#slide=id.p13
         Spark.externalStaticFileLocation("web");
-
         createRoutes();
-
         addShutdownHook();
-
         Spark.awaitInitialization();
         System.out.println("Listening on port " + PORT);
     }

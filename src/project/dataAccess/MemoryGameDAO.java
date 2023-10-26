@@ -67,6 +67,7 @@ public class MemoryGameDAO implements GameDAO {
         */
         Collection<GameListItem> gameList = new ArrayList<>();
         for (Game game : gameDatabase.values()) {
+            // TODO test: that usernames being null doesn't cause problems
             gameList.add(new GameListItem(game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName()));
         }
         return gameList.toArray(new GameListItem[0]);
@@ -86,7 +87,6 @@ public class MemoryGameDAO implements GameDAO {
         game not found
         user not found
         */
-        // TODO
         assertIDExists(gameID);
 
         if (!(new MemoryUserDAO().hasUser(username))) {
@@ -120,7 +120,7 @@ public class MemoryGameDAO implements GameDAO {
         assertIDExists(game.gameID());
         gameDatabase.put(game.gameID(), game);
 
-        /* TODO Not handled:
+        /* Not handled:
         games don't match, i.e. different players (violation of SRP)
         */
     }

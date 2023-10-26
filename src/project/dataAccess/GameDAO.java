@@ -77,7 +77,7 @@ public interface GameDAO {
         game not found
         */
 
-        /* TODO Not handled:
+        /* Not handled:
         games don't match, i.e. different players (violation of SRP)
         */
 
