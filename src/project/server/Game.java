@@ -2,6 +2,8 @@ package server;
 
 import chess.ChessGame;
 
+import java.util.Objects;
+
 /**
  * A model object representing the core data of a chess game.
  */
@@ -62,5 +64,21 @@ public class Game {
 
     public void setGameName(String gameName) {
         this.gameName = gameName;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gameID, chessGame, whiteUsername, blackUsername, gameName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game = (Game) o;
+        return gameID == game.gameID && Objects.equals(chessGame, game.chessGame) &&
+                Objects.equals(whiteUsername, game.whiteUsername) &&
+                Objects.equals(blackUsername, game.blackUsername) &&
+                Objects.equals(gameName, game.gameName);
     }
 }
