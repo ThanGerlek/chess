@@ -3,6 +3,7 @@ package dataAccess;
 import server.User;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A DAO (Data Access Object) for CRUD operations on the list of registered Users.
@@ -58,7 +59,7 @@ public class MemoryUserDAO implements UserDAO {
         can't access database
         */
         for (User user : userDatabase) {
-            if (user.username().equals(username)) {
+            if (Objects.equals(user.username(), username)) {
                 return true;
             }
         }

@@ -37,7 +37,6 @@ public interface UserDAO {
      *
      * @param username the username of the User to fetch
      * @return true if the User was found, false otherwise
-     * @throws DataAccessException if the User was not found
      */
     boolean hasUser(String username) throws DataAccessException;
         /* Failures
