@@ -24,7 +24,7 @@ public class Server {
         System.out.println("Listening on port " + PORT);
     }
 
-    private void createRoutes() {
+    private static void createRoutes() {
         createErrorRoutes();
         createBeforeRoutes();
         createServiceRoutes();
@@ -43,34 +43,34 @@ public class Server {
         }));
     }
 
-    private void createErrorRoutes() {
+    private static void createErrorRoutes() {
         // See web-api/example-code/.../Custom...Server2
         Spark.notFound((req, res) -> {
             String errMsg = String.format("[%s] %s not found", req.requestMethod(), req.pathInfo());
             Exception e = new Exception(errMsg);
             return errorHandler(e, req, res);
         });
-        Spark.exception(Exception.class, this::errorHandler);
+        Spark.exception(Exception.class, Server::errorHandler);
     }
 
-    private void createBeforeRoutes() {
+    private static void createBeforeRoutes() {
         Spark.before((req, res) -> System.out.println("Executing route: " + req.pathInfo()));
         // Filters take an optional pattern to restrict the routes to which they are applied:
         // before("/protected/*", (req, res) -> {…});
     }
 
-    private void createServiceRoutes() {
+    private static void createServiceRoutes() {
         // TODO Register handlers for each endpoint
 
         Spark.get("/hello", (req, res) -> "Hello BYU!");
         // Spark.post("/user", (req, res) -> (new RegisterHandler()).handleRequest(req, res));
     }
 
-    private void createAfterRoutes() {
+    private static void createAfterRoutes() {
         Spark.after((req, res) -> System.out.println("Finished executing route: " + req.pathInfo()));
     }
 
-    private Object errorHandler(Exception e, Request req, Response res) {
+    private static Object errorHandler(Exception e, Request req, Response res) {
         String body =
                 new Gson().toJson(Map.of("message", String.format("Error: %s", e.getMessage()), "success", false));
         res.type("application/json");
