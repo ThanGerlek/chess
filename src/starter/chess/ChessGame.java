@@ -84,4 +84,13 @@ public interface ChessGame {
         WHITE,
         BLACK
     }
+
+    /**
+     * Enum identifying the 3 possible roles in a chess game
+     */
+    enum PlayerRole {
+        WHITE_PLAYER,
+        BLACK_PLAYER,
+        SPECTATOR
+    }
 }

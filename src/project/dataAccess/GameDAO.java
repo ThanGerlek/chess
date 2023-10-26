@@ -48,12 +48,12 @@ public interface GameDAO {
     /**
      * Assigns a role to a user if not already assigned.
      *
-     * @param gameID    the ID of the game to add the user to
-     * @param username  the username of the user
-     * @param roleColor the role to assign to the user
+     * @param gameID   the ID of the game to add the user to
+     * @param username the username of the user
+     * @param role     the role to assign to the user
      * @throws DataAccessException if the game or the user was not found
      */
-    void assignPlayerRole(int gameID, String username, ChessGame.TeamColor roleColor) throws DataAccessException;
+    void assignPlayerRole(int gameID, String username, ChessGame.PlayerRole role) throws DataAccessException;
         /* Failures
         can't access database
         game not found
