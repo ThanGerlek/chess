@@ -3,6 +3,7 @@ package dataAccess;
 import server.AuthToken;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A DAO (Data Access Object) for {@code AuthToken} objects and authentication data.
@@ -23,7 +24,18 @@ public class MemoryAuthDAO implements AuthDAO {
         token already exists (incl. for different user)
         username doesn't exist
         */
-        // TODO
+        UserDAO userDAO = new MemoryUserDAO();
+        if (!userDAO.hasUser(token.username())) {
+            throw new DataAccessException("User not found");
+        }
+
+        for (AuthToken existingToken : tokenDatabase) {
+            if (Objects.equals(existingToken.authToken(), token.authToken())) {
+                throw new DataAccessException("Tried to register an already existing token");
+            }
+        }
+
+        tokenDatabase.add(token);
     }
 
     /**
@@ -36,7 +48,11 @@ public class MemoryAuthDAO implements AuthDAO {
         /* Failures
         can't access database
         */
-        // TODO
+        for (AuthToken existingToken : tokenDatabase) {
+            if (existingToken == token) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -51,7 +67,7 @@ public class MemoryAuthDAO implements AuthDAO {
         can't access database
         (if token not found, just return)
         */
-        // TODO
+        tokenDatabase.remove(token);
     }
 
     /**
@@ -63,6 +79,6 @@ public class MemoryAuthDAO implements AuthDAO {
         can't access database
         (if no tokens, just return)
         */
-        // TODO
+        tokenDatabase.clear();
     }
 }
