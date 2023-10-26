@@ -1,5 +1,6 @@
 package server.services;
 
+import dataAccess.*;
 import server.http.MessageResponse;
 
 /**
@@ -7,6 +8,9 @@ import server.http.MessageResponse;
  * auth tokens.
  */
 public class ClearApplicationService {
+    private static final AuthDAO authDAO = new MemoryAuthDAO();
+    private static final GameDAO gameDAO = new MemoryGameDAO();
+    private static final UserDAO userDAO = new MemoryUserDAO();
 
     /**
      * Clear the application. WARNING: This performs a hard reset, erasing all registered users, games, and auth
@@ -15,7 +19,13 @@ public class ClearApplicationService {
      * @return a MessageResponse representing the resulting HTTP response.
      */
     public MessageResponse clearApplication() {
-        return null;
+        try {
+            authDAO.clearAuthTokens();
+            gameDAO.clearGames();
+            userDAO.clearUsers();
+            return new MessageResponse(200, "Okay!");
+        } catch (DataAccessException e) {
+            return new MessageResponse(500, String.format("Error: %s", e.getMessage()));
+        }
     }
-
 }
