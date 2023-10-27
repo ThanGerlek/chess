@@ -17,12 +17,11 @@ public class LogoutHandler extends Handler {
 
     @Override
     public Object route(Request req, Response res) throws DataAccessException {
-        AuthToken authToken = gson.fromJson(req.headers("token"), AuthToken.class);
+        AuthToken authToken = gson.fromJson(req.headers("authorization"), AuthToken.class);
         MessageResponse body = service.logout(authToken);
         res.status(200);
         return gson.toJson(body);
     }
-    // TODO Auth
 }
 
 /*

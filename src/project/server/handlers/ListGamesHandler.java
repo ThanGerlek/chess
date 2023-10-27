@@ -2,6 +2,7 @@ package server.handlers;
 
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
+import server.AuthToken;
 import server.http.ListGamesResponse;
 import server.services.ListGamesService;
 import spark.Request;
@@ -16,11 +17,11 @@ public class ListGamesHandler extends Handler {
 
     @Override
     public Object route(Request req, Response res) throws DataAccessException {
-        ListGamesResponse body = service.listGames();
+        AuthToken authToken = gson.fromJson(req.headers("authorization"), AuthToken.class);
+        ListGamesResponse body = service.listGames(authToken);
         res.status(200);
         return gson.toJson(body);
     }
-    // TODO Auth
 }
 
 /*

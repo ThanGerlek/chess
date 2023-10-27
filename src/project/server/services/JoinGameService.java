@@ -3,6 +3,7 @@ package server.services;
 import chess.ChessGame;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
+import server.AuthToken;
 import server.http.JoinGameRequest;
 import server.http.MessageResponse;
 
@@ -22,20 +23,21 @@ public class JoinGameService {
      * if a color is specified, adds the caller as the requested color to the game. If no color is specified the user is
      * joined as an observer. This request is idempotent.
      *
-     * @param request  a JoinGameRequest representing the HTTP request.
-     * @param username the username to assign to the role.
+     * @param request   a JoinGameRequest representing the HTTP request.
+     * @param authToken the AuthToken representing the user to assign.
      * @return a MessageResponse representing the resulting HTTP response.
      */
-    public MessageResponse joinGame(JoinGameRequest request, String username) throws DataAccessException {
+    public MessageResponse joinGame(JoinGameRequest request, AuthToken authToken) throws DataAccessException {
         ChessGame.PlayerRole role = switch (request.playerColor()) {
             case "WHITE" -> ChessGame.PlayerRole.WHITE_PLAYER;
             case "BLACK" -> ChessGame.PlayerRole.BLACK_PLAYER;
             default -> ChessGame.PlayerRole.SPECTATOR;
         };
         int gameID = request.gameID();
-        gameDAO.assignPlayerRole(gameID, username, role);
+        gameDAO.assignPlayerRole(gameID, authToken.username(), role);
 
         return new MessageResponse(200, "Okay!");
+        // TODO Auth
     }
 
 /*

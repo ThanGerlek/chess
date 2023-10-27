@@ -2,6 +2,7 @@ package server.services;
 
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
+import server.AuthToken;
 import server.http.ListGamesResponse;
 
 /**
@@ -19,8 +20,9 @@ public class ListGamesService {
      *
      * @return a ListGamesResponse representing the resulting HTTP response.
      */
-    public ListGamesResponse listGames() throws DataAccessException {
+    public ListGamesResponse listGames(AuthToken authToken) throws DataAccessException {
         return new ListGamesResponse(200, gameDAO.allGames(), "Okay!");
+        // TODO Auth
     }
 
 /*

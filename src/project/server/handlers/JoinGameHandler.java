@@ -2,6 +2,7 @@ package server.handlers;
 
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
+import server.AuthToken;
 import server.http.JoinGameRequest;
 import server.http.MessageResponse;
 import server.services.JoinGameService;
@@ -18,11 +19,11 @@ public class JoinGameHandler extends Handler {
     @Override
     protected Object route(Request req, Response res) throws DataAccessException {
         JoinGameRequest joinGameRequest = gson.fromJson(req.body(), JoinGameRequest.class);
-        MessageResponse body = service.joinGame(joinGameRequest, req.headers("username"));
+        AuthToken authToken = gson.fromJson(req.headers("authorization"), AuthToken.class);
+        MessageResponse body = service.joinGame(joinGameRequest, authToken);
         res.status(200);
         return gson.toJson(body);
     }
-    // TODO Auth
 }
 
 /*

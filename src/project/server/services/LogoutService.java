@@ -18,12 +18,13 @@ public class LogoutService {
     /**
      * Log out a currently logged-in user by invalidating the given token.
      *
-     * @param token the AuthToken to invalidate.
+     * @param authToken the AuthToken to invalidate.
      * @return a MessageResponse representing the resulting HTTP response.
      */
-    public MessageResponse logout(AuthToken token) throws DataAccessException {
-        authDAO.removeAuthToken(token);
+    public MessageResponse logout(AuthToken authToken) throws DataAccessException {
+        authDAO.removeAuthToken(authToken);
         return new MessageResponse(200, "Okay!");
+        // TODO Auth
     }
 
     /*

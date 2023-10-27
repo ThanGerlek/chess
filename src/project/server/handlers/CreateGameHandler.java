@@ -2,6 +2,7 @@ package server.handlers;
 
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
+import server.AuthToken;
 import server.http.CreateGameRequest;
 import server.http.CreateGameResponse;
 import server.services.CreateGameService;
@@ -18,11 +19,11 @@ public class CreateGameHandler extends Handler {
     @Override
     protected Object route(Request req, Response res) throws DataAccessException {
         CreateGameRequest createGameRequest = gson.fromJson(req.body(), CreateGameRequest.class);
-        CreateGameResponse body = service.createGame(createGameRequest);
+        AuthToken authToken = gson.fromJson(req.headers("authorization"), AuthToken.class);
+        CreateGameResponse body = service.createGame(createGameRequest, authToken);
         res.status(200);
         return gson.toJson(body);
     }
-    // TODO auth check
 }
 
 /*
