@@ -1,6 +1,7 @@
 package server.services;
 
 import dataAccess.DataAccessException;
+import dataAccess.UnauthorizedAccessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -31,8 +32,8 @@ class LoginServiceTest extends ServiceTest {
     // Negative test
     @Test
     void login_incorrect_password_returns_forbidden() throws DataAccessException {
-        AuthResponse response = service.login(new LoginRequest("user1", "iAmIncorrect"));
-        Assertions.assertEquals(401, response.status());
+        Assertions.assertThrows(UnauthorizedAccessException.class,
+                () -> service.login(new LoginRequest("user1", "iAmIncorrect")));
     }
 
     @Test

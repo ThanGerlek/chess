@@ -2,6 +2,7 @@ package server.services;
 
 import chess.ChessGameImpl;
 import dataAccess.DataAccessException;
+import dataAccess.NoSuchItemException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -40,8 +41,8 @@ class JoinGameServiceTest extends ServiceTest {
     // Negative test
     @Test
     void join_nonexistent_Game_returns_bad_request_error() throws DataAccessException {
-        MessageResponse response = service.joinGame(new JoinGameRequest("WHITE", INVALID_GAME_ID), token);
-        Assertions.assertEquals(400, response.status());
+        Assertions.assertThrows(NoSuchItemException.class,
+                () -> service.joinGame(new JoinGameRequest("WHITE", INVALID_GAME_ID), token));
     }
 
     @Test

@@ -6,6 +6,7 @@ import chess.ChessPositionImpl;
 import chess.pieces.King;
 import chess.pieces.Queen;
 import dataAccess.DataAccessException;
+import dataAccess.UnauthorizedAccessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,8 +50,8 @@ class ListGamesServiceTest extends ServiceTest {
     // Negative test
     @Test
     void list_Games_with_invalid_token_returns_forbidden() throws DataAccessException {
-        ListGamesResponse response = service.listGames(new AuthToken("1234", "iDoNotExist"));
-        Assertions.assertEquals(401, response.status());
+        Assertions.assertThrows(UnauthorizedAccessException.class,
+                () -> service.listGames(new AuthToken("1234", "iDoNotExist")));
     }
 
 }

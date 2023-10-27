@@ -1,6 +1,7 @@
 package server.services;
 
 import dataAccess.DataAccessException;
+import dataAccess.ValueAlreadyTakenException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -31,8 +32,8 @@ class RegisterServiceTest extends ServiceTest {
     // Negative test
     @Test
     void register_existing_user_returns_already_taken() throws DataAccessException {
-        AuthResponse response = service.register(new RegisterRequest("existingUser", "pass1", "mail1"));
-        Assertions.assertEquals(403, response.status());
+        Assertions.assertThrows(ValueAlreadyTakenException.class,
+                () -> service.register(new RegisterRequest("existingUser", "pass1", "mail1")));
     }
 
     @Test

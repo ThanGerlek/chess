@@ -1,6 +1,7 @@
 package server.services;
 
 import dataAccess.DataAccessException;
+import dataAccess.UnauthorizedAccessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,8 +36,8 @@ class CreateGameServiceTest extends ServiceTest {
     // Negative test
     @Test
     void create_Game_with_invalid_token_returns_forbidden() throws DataAccessException {
-        CreateGameResponse response = service.createGame(request, new AuthToken("1234", "iDoNotExist"));
-        Assertions.assertEquals(401, response.status());
+        Assertions.assertThrows(UnauthorizedAccessException.class,
+                () -> service.createGame(request, new AuthToken("1234", "iDoNotExist")));
     }
 
 }

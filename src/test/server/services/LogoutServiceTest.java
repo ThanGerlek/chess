@@ -1,6 +1,7 @@
 package server.services;
 
 import dataAccess.DataAccessException;
+import dataAccess.UnauthorizedAccessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,14 +35,14 @@ class LogoutServiceTest extends ServiceTest {
     // Negative test
     @Test
     void logout_fake_user_returns_bad_request_error() throws DataAccessException {
-        MessageResponse response = service.logout(new AuthToken("iDoNotExist", "1234"));
-        Assertions.assertEquals(400, response.status());
+        Assertions.assertThrows(UnauthorizedAccessException.class,
+                () -> service.logout(new AuthToken("iDoNotExist", "1234")));
     }
 
     @Test
     void logout_invalid_token_errors() throws DataAccessException {
-        MessageResponse response = service.logout(new AuthToken("1234", "iAmIncorrect"));
-        Assertions.assertEquals(400, response.status());
+        Assertions.assertThrows(UnauthorizedAccessException.class,
+                () -> service.logout(new AuthToken("1234", "iAmIncorrect")));
     }
 
 }
