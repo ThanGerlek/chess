@@ -2,6 +2,7 @@ package server;
 
 import chess.ChessGame;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -10,6 +11,7 @@ import java.util.Objects;
 public class Game {
 
     private final int gameID;
+    private final ArrayList<String> spectators;
     private ChessGame chessGame;
     private String whiteUsername;
     private String blackUsername;
@@ -28,6 +30,7 @@ public class Game {
         this.chessGame = chessGame;
         this.whiteUsername = "";
         this.blackUsername = "";
+        this.spectators = new ArrayList<>();
     }
 
     public int gameID() {
@@ -64,6 +67,14 @@ public class Game {
 
     public void setGameName(String gameName) {
         this.gameName = gameName;
+    }
+
+    public void addSpectator(String username) {
+        this.spectators.add(username);
+    }
+
+    public ArrayList<String> getSpectators() {
+        return new ArrayList<>(spectators);
     }
 
     @Override

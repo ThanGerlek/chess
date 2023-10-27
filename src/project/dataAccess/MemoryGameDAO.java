@@ -15,7 +15,6 @@ import java.util.Map;
 public class MemoryGameDAO implements GameDAO {
 
     private final Map<Integer, Game> gameDatabase = new HashMap<>();
-    private final Map<Integer, ArrayList<String>> spectatorDatabase = new HashMap<>();
     private final UserDAO userDAO;
     private int maxUsedGameID = 0;
 
@@ -37,8 +36,6 @@ public class MemoryGameDAO implements GameDAO {
                     "Tried to insert a new Game with a gameID that already exists in the database");
         }
         gameDatabase.put(id, game);
-        spectatorDatabase.put(id, new ArrayList<>());
-
         maxUsedGameID = Math.max(maxUsedGameID, game.gameID());
     }
 
@@ -86,10 +83,11 @@ public class MemoryGameDAO implements GameDAO {
             throw new NoSuchItemException("Unrecognized username");
         }
 
+        Game game = gameDatabase.get(gameID);
         switch (role) {
-            case WHITE_PLAYER -> gameDatabase.get(gameID).setWhiteUsername(username);
-            case BLACK_PLAYER -> gameDatabase.get(gameID).setBlackUsername(username);
-            case SPECTATOR -> spectatorDatabase.get(gameID).add(username);
+            case WHITE_PLAYER -> game.setWhiteUsername(username);
+            case BLACK_PLAYER -> game.setBlackUsername(username);
+            case SPECTATOR -> game.addSpectator(username);
         }
 
         /* TODO Not handled:
@@ -123,7 +121,6 @@ public class MemoryGameDAO implements GameDAO {
     public void removeGame(int gameID) throws DataAccessException {
         // Failures: can't access database (if game DNE, just return)
         gameDatabase.remove(gameID);
-        spectatorDatabase.remove(gameID);
     }
 
     /**
@@ -132,7 +129,6 @@ public class MemoryGameDAO implements GameDAO {
     public void clearGames() throws DataAccessException {
         // Failures: can't access database (if no games, just return)
         gameDatabase.clear();
-        spectatorDatabase.clear();
     }
 
     /**
