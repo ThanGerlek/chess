@@ -19,7 +19,7 @@ class JoinGameServiceTest extends ServiceTest {
 
     @Test
     void join_Game_does_not_error() throws DataAccessException {
-        service.joinGame(new JoinGameRequest("WHTIE", 4), token);
+        service.joinGame(new JoinGameRequest("WHITE", 4), token);
         // TODO test
     }
 
@@ -31,13 +31,13 @@ class JoinGameServiceTest extends ServiceTest {
 
     @Test
     void join_nonexistent_Game_errors() throws DataAccessException {
-        service.joinGame(new JoinGameRequest("WHTIE", 4), token);
+        service.joinGame(new JoinGameRequest("WHITE", 4), token);
         // TODO test
     }
 
     @Test
     void join_Game_with_invalid_token_errors() throws DataAccessException {
-        service.joinGame(new JoinGameRequest("WHTIE", 4), token);
+        service.joinGame(new JoinGameRequest("WHITE", 4), token);
         // TODO test
     }
 
