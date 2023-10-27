@@ -11,7 +11,7 @@ import server.http.MessageResponse;
 class ClearApplicationServiceTest extends ServiceTest {
     private ClearApplicationService service;
 
-    // TODO 200, 500?
+    // TODO 500?
 
     @BeforeEach
     void setUp() {

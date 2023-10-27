@@ -1,44 +1,51 @@
 package server.services;
 
 import dataAccess.DataAccessException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import server.User;
+import server.http.AuthResponse;
 import server.http.RegisterRequest;
 
 class RegisterServiceTest extends ServiceTest {
     private RegisterService service;
 
-    // TODO 200, 400 bad req, 403 taken, 500
+    // TODO 200, 400 bad req, 500
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws DataAccessException {
         initDAOs();
+        userDAO.insertNewUser(new User("existingUser", "existingPass", "existingMail"));
         service = new RegisterService(authDAO, userDAO);
     }
 
     // Positive test
     @Test
     void register_new_user_returns_okay() throws DataAccessException {
-        service.register(new RegisterRequest("user1", "pass1", "mail1"));
-        // TODO test
+        AuthResponse response = service.register(new RegisterRequest("user1", "pass1", "mail1"));
+        Assertions.assertEquals(200, response.status());
     }
 
     // Negative test
     @Test
     void register_existing_user_returns_already_taken() throws DataAccessException {
-        service.register(new RegisterRequest("user1", "pass1", "mail1"));
-        // TODO test
+        AuthResponse response = service.register(new RegisterRequest("existingUser", "pass1", "mail1"));
+        Assertions.assertEquals(403, response.status());
     }
 
     @Test
+    @Disabled
+        // TODO test
     void register_with_empty_username_returns_bad_request_error() throws DataAccessException {
-        service.register(new RegisterRequest("user1", "pass1", "mail1"));
-        // TODO test
+        AuthResponse response = service.register(new RegisterRequest("user1", "pass1", "mail1"));
     }
 
     @Test
-    void register_with_empty_password_returns_bad_request_error() throws DataAccessException {
-        service.register(new RegisterRequest("user1", "pass1", "mail1"));
+    @Disabled
         // TODO test
+    void register_with_empty_password_returns_bad_request_error() throws DataAccessException {
+        AuthResponse response = service.register(new RegisterRequest("user1", "pass1", "mail1"));
     }
 }
