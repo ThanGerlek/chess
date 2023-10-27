@@ -19,9 +19,8 @@ public class LoginHandler extends Handler {
     @Override
     public Object route(Request req, Response res) throws DataAccessException {
         LoginRequest loginRequest = gson.fromJson(req.body(), LoginRequest.class);
-        AuthResponse body = service.login(loginRequest);
-        res.status(200);
-        return gson.toJson(body);
+        AuthResponse response = service.login(loginRequest);
+        return parseToBody(res, response, 200);
     }
 }
 

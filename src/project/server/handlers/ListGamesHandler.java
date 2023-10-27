@@ -19,9 +19,8 @@ public class ListGamesHandler extends Handler {
     @Override
     public Object route(Request req, Response res) throws DataAccessException {
         AuthToken authToken = gson.fromJson(req.headers("authorization"), AuthToken.class);
-        ListGamesResponse body = service.listGames(authToken);
-        res.status(200);
-        return gson.toJson(body);
+        ListGamesResponse response = service.listGames(authToken);
+        return parseToBody(res, response, 200);
     }
 }
 

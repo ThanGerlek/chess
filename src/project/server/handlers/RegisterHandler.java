@@ -19,9 +19,8 @@ public class RegisterHandler extends Handler {
     @Override
     public Object route(Request req, Response res) throws DataAccessException {
         RegisterRequest registerRequest = gson.fromJson(req.body(), RegisterRequest.class);
-        AuthResponse body = service.register(registerRequest);
-        res.status(200);
-        return gson.toJson(body);
+        AuthResponse response = service.register(registerRequest);
+        return parseToBody(res, response, 200);
     }
 }
 

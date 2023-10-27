@@ -34,9 +34,16 @@ public abstract class Handler {
     protected abstract Object route(Request request, Response response) throws DataAccessException;
 
     protected String handleError(Response res, int status, String errMsg) {
-        res.status(status);
         MessageResponse response = new MessageResponse(0, String.format("Error: %s", errMsg));
-        return gson.toJson(response);
+        return parseToBody(res, response, status);
+    }
+
+    protected String parseToBody(Response res, Object response, int status) {
+        String bodyStr = gson.toJson(response);
+        res.type("application/json");
+        res.status(status);
+        res.body(bodyStr);
+        return bodyStr;
     }
 
 }

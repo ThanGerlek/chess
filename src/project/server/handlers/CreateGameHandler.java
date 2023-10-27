@@ -21,9 +21,8 @@ public class CreateGameHandler extends Handler {
     protected Object route(Request req, Response res) throws DataAccessException {
         CreateGameRequest createGameRequest = gson.fromJson(req.body(), CreateGameRequest.class);
         AuthToken authToken = gson.fromJson(req.headers("authorization"), AuthToken.class);
-        CreateGameResponse body = service.createGame(createGameRequest, authToken);
-        res.status(200);
-        return gson.toJson(body);
+        CreateGameResponse response = service.createGame(createGameRequest, authToken);
+        return parseToBody(res, response, 200);
     }
 }
 

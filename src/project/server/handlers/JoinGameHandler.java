@@ -21,9 +21,8 @@ public class JoinGameHandler extends Handler {
     protected Object route(Request req, Response res) throws DataAccessException {
         JoinGameRequest joinGameRequest = gson.fromJson(req.body(), JoinGameRequest.class);
         AuthToken authToken = gson.fromJson(req.headers("authorization"), AuthToken.class);
-        MessageResponse body = service.joinGame(joinGameRequest, authToken);
-        res.status(200);
-        return gson.toJson(body);
+        MessageResponse response = service.joinGame(joinGameRequest, authToken);
+        return parseToBody(res, response, 200);
     }
 }
 

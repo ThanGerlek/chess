@@ -18,9 +18,8 @@ public class ClearApplicationHandler extends Handler {
 
     @Override
     protected Object route(Request req, Response res) throws DataAccessException {
-        MessageResponse body = service.clearApplication();
-        res.status(200);
-        return gson.toJson(body);
+        MessageResponse response = service.clearApplication();
+        return parseToBody(res, response, 200);
     }
 }
 
