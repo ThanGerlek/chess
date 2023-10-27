@@ -26,7 +26,7 @@ public class LogoutService {
     public MessageResponse logout(AuthToken authToken) throws DataAccessException {
         if (authDAO.isValidAuthToken(authToken)) {
             authDAO.removeAuthToken(authToken);
-            return new MessageResponse(200, "Okay!");
+            return new MessageResponse("Okay!");
         } else {
             throw new UnauthorizedAccessException("Could not log out: provided token is invalid");
         }

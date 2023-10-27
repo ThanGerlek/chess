@@ -31,6 +31,6 @@ public class ClearApplicationService {
         authDAO.clearAuthTokens();
         gameDAO.clearGames();
         userDAO.clearUsers();
-        return new MessageResponse(200, "Okay!");
+        return new MessageResponse("Okay!");
     }
 }

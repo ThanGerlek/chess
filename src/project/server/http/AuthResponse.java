@@ -5,12 +5,11 @@ import server.AuthToken;
 /**
  * A record representing an HTTP response to an authorization request.
  *
- * @param status    the HTTP status code
  * @param authToken a new authorization token
  * @param username  the username of the user the token represents
  * @param message   the response message
  */
-public record AuthResponse(int status, AuthToken authToken, String username, String message) {
+public record AuthResponse(AuthToken authToken, String username, String message) {
 }
 
 // Login:

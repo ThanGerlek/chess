@@ -32,7 +32,7 @@ public class LoginService {
     public AuthResponse login(LoginRequest request) throws DataAccessException {
         User user = userDAO.getUser(request.username());
         AuthToken token = authenticate(user, request.password());
-        return new AuthResponse(200, token, request.username(), "Okay!");
+        return new AuthResponse(token, request.username(), "Okay!");
     }
 
     private AuthToken authenticate(User user, String password) throws DataAccessException {

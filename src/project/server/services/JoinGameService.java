@@ -40,7 +40,7 @@ public class JoinGameService {
             int gameID = request.gameID();
             gameDAO.assignPlayerRole(gameID, authToken.username(), role);
 
-            return new MessageResponse(200, "Okay!");
+            return new MessageResponse("Okay!");
         } else {
             throw new DataAccessException("Could not create game: provided token was invalid");
         }

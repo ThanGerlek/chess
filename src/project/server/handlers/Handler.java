@@ -34,7 +34,7 @@ public abstract class Handler {
     protected abstract Object route(Request request, Response response) throws DataAccessException;
 
     protected String handleError(Response res, int status, String errMsg) {
-        MessageResponse response = new MessageResponse(0, String.format("Error: %s", errMsg));
+        MessageResponse response = new MessageResponse(String.format("Error: %s", errMsg));
         return parseToBody(res, response, status);
     }
 

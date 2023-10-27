@@ -31,7 +31,7 @@ public class CreateGameService {
     public CreateGameResponse createGame(CreateGameRequest request, AuthToken authToken) throws DataAccessException {
         if (authDAO.isValidAuthToken(authToken)) {
             int gameID = registerNewGame(request.gameName());
-            return new CreateGameResponse(200, gameID, "Okay!");
+            return new CreateGameResponse(gameID, "Okay!");
         } else {
             throw new UnauthorizedAccessException("Could not create game: provided token was invalid");
         }

@@ -32,7 +32,7 @@ public class RegisterService {
         User user = new User(request.username(), request.password(), request.email());
         userDAO.insertNewUser(user);
         AuthToken authToken = registerNewAuthToken(request.username());
-        return new AuthResponse(200, authToken, request.username(), "Okay!");
+        return new AuthResponse(authToken, request.username(), "Okay!");
     }
 
     private AuthToken registerNewAuthToken(String username) throws DataAccessException {
