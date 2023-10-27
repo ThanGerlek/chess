@@ -3,6 +3,7 @@ package server.services;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
+import dataAccess.UnauthorizedAccessException;
 import server.AuthToken;
 import server.http.ListGamesResponse;
 
@@ -27,7 +28,7 @@ public class ListGamesService {
         if (authDAO.isValidAuthToken(authToken)) {
             return new ListGamesResponse(200, gameDAO.allGames(), "Okay!");
         } else {
-            throw new DataAccessException("Could not create game: provided token was invalid");
+            throw new UnauthorizedAccessException("Could not create game: provided token was invalid");
         }
 
     }

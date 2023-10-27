@@ -2,6 +2,7 @@ package server.services;
 
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
+import dataAccess.UnauthorizedAccessException;
 import server.AuthToken;
 import server.http.MessageResponse;
 
@@ -27,7 +28,7 @@ public class LogoutService {
             authDAO.removeAuthToken(authToken);
             return new MessageResponse(200, "Okay!");
         } else {
-            throw new DataAccessException("Could not log in: provided token is invalid");
+            throw new UnauthorizedAccessException("Could not log out: provided token is invalid");
         }
     }
 

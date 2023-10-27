@@ -4,6 +4,7 @@ import chess.ChessGameImpl;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
+import dataAccess.UnauthorizedAccessException;
 import server.AuthToken;
 import server.Game;
 import server.http.CreateGameRequest;
@@ -32,7 +33,7 @@ public class CreateGameService {
             int gameID = registerNewGame(request.gameName());
             return new CreateGameResponse(200, gameID, "Okay!");
         } else {
-            throw new DataAccessException("Could not create game: provided token was invalid");
+            throw new UnauthorizedAccessException("Could not create game: provided token was invalid");
         }
     }
 
