@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class MemoryUserDAO implements UserDAO {
 
-    private static final ArrayList<User> userDatabase = new ArrayList<>();
+    private final ArrayList<User> userDatabase = new ArrayList<>();
 
     /**
      * Adds a new User to the database.

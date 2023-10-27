@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class MemoryAuthDAO implements AuthDAO {
 
-    private static final ArrayList<AuthToken> tokenDatabase = new ArrayList<>();
+    private final ArrayList<AuthToken> tokenDatabase = new ArrayList<>();
     private final UserDAO userDAO;
 
     public MemoryAuthDAO(UserDAO userDAO) {

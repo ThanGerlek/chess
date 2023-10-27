@@ -14,10 +14,10 @@ import java.util.Map;
  */
 public class MemoryGameDAO implements GameDAO {
 
-    private static final Map<Integer, Game> gameDatabase = new HashMap<>();
-    private static final Map<Integer, ArrayList<String>> spectatorDatabase = new HashMap<>();
-    private static int maxUsedGameID;
+    private final Map<Integer, Game> gameDatabase = new HashMap<>();
+    private final Map<Integer, ArrayList<String>> spectatorDatabase = new HashMap<>();
     private final UserDAO userDAO;
+    private int maxUsedGameID = 0;
 
     public MemoryGameDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
