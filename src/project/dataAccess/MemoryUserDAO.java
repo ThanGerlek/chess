@@ -19,10 +19,7 @@ public class MemoryUserDAO implements UserDAO {
      * @throws DataAccessException if the username is already in the database
      */
     public void insertNewUser(User user) throws DataAccessException {
-        /* Failures
-        can't access database
-        username already exists
-        */
+        // Failures: can't access database; username already exists
         if (hasUser(user.username())) {
             throw new ValueAlreadyTakenException("Tried to insert a user with an already-taken username");
         }
@@ -36,10 +33,7 @@ public class MemoryUserDAO implements UserDAO {
      * @throws DataAccessException if the User was not found
      */
     public User getUser(String username) throws DataAccessException {
-        /* Failures
-        can't access database
-        user not found
-        */
+        // Failures: can't access database; user not found
         for (User user : userDatabase) {
             if (user.username().equals(username)) {
                 return user;
@@ -55,9 +49,7 @@ public class MemoryUserDAO implements UserDAO {
      * @return true if the User was found, false otherwise
      */
     public boolean hasUser(String username) throws DataAccessException {
-        /* Failures
-        can't access database
-        */
+        // Failures: can't access database
         for (User user : userDatabase) {
             if (Objects.equals(user.username(), username)) {
                 return true;
@@ -72,10 +64,7 @@ public class MemoryUserDAO implements UserDAO {
      * @param user the User to remove
      */
     public void removeUser(User user) throws DataAccessException {
-        /* Failures
-        can't access database
-        (if user DNE, just return)
-        */
+        // Failures: can't access database (if user DNE, just return)
         userDatabase.remove(user);
     }
 
@@ -83,10 +72,7 @@ public class MemoryUserDAO implements UserDAO {
      * Removes every User from the database.
      */
     public void clearUsers() throws DataAccessException {
-        /* Failures
-        can't access database
-        (if no users, just return)
-        */
+        // Failures: can't access database (if no users, just return)
         userDatabase.clear();
     }
 }

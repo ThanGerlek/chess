@@ -30,10 +30,7 @@ public class MemoryGameDAO implements GameDAO {
      * @throws DataAccessException if a Game with the same gameID already exists
      */
     public void insertNewGame(Game game) throws DataAccessException {
-        /* Failures
-        can't access database
-        game already exists (same gameID)
-        */
+        // Failures: can't access database; game already exists (same gameID)
         Integer id = game.gameID();
         if (gameDatabase.containsKey(id)) {
             throw new ValueAlreadyTakenException(
@@ -53,10 +50,7 @@ public class MemoryGameDAO implements GameDAO {
      * @throws DataAccessException if a Game with the given ID was not found
      */
     public Game findGame(int gameID) throws DataAccessException {
-        /* Failures
-        can't access database
-        game not found
-        */
+        // Failures: can't access database; game not found
         assertIDExists(gameID);
         return gameDatabase.get(gameID);
     }
@@ -67,9 +61,7 @@ public class MemoryGameDAO implements GameDAO {
      * @return an array of data about each Game in the database
      */
     public GameListItem[] allGames() throws DataAccessException {
-        /* Failures
-        can't access database
-        */
+        // Failures: can't access database
         Collection<GameListItem> gameList = new ArrayList<>();
         for (Game game : gameDatabase.values()) {
             // TODO test: that usernames being null doesn't cause problems
@@ -87,11 +79,7 @@ public class MemoryGameDAO implements GameDAO {
      * @throws DataAccessException if the game or the user was not found
      */
     public void assignPlayerRole(int gameID, String username, ChessGame.PlayerRole role) throws DataAccessException {
-        /* Failures
-        can't access database
-        game not found
-        user not found
-        */
+        // Failures: can't access database; game not found; user not found
         assertIDExists(gameID);
 
         if (!userDAO.hasUser(username)) {
@@ -118,10 +106,7 @@ public class MemoryGameDAO implements GameDAO {
      * @throws DataAccessException if no Game with a matching gameID was found
      */
     public void updateGameState(Game game) throws DataAccessException {
-        /* Failures
-        can't access database
-        game not found
-        */
+        // Failures: can't access database; game not found
         assertIDExists(game.gameID());
         gameDatabase.put(game.gameID(), game);
 
@@ -136,10 +121,7 @@ public class MemoryGameDAO implements GameDAO {
      * @param gameID the ID of the Game to remove
      */
     public void removeGame(int gameID) throws DataAccessException {
-        /* Failures
-        can't access database
-        (if game DNE, just return)
-        */
+        // Failures: can't access database (if game DNE, just return)
         gameDatabase.remove(gameID);
         spectatorDatabase.remove(gameID);
     }
@@ -148,10 +130,7 @@ public class MemoryGameDAO implements GameDAO {
      * Removes every game from the database.
      */
     public void clearGames() throws DataAccessException {
-        /* Failures
-        can't access database
-        (if no games, just return)
-        */
+        // Failures: can't access database (if no games, just return)
         gameDatabase.clear();
         spectatorDatabase.clear();
     }

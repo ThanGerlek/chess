@@ -7,6 +7,8 @@ import server.User;
  */
 public interface UserDAO {
 
+    // TODO? change remove to take a username?
+
     /**
      * Adds a new User to the database.
      *

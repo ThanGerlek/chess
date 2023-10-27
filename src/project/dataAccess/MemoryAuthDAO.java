@@ -26,11 +26,7 @@ public class MemoryAuthDAO implements AuthDAO {
      * @throws DataAccessException if the AuthToken already exists or the user doesn't exist
      */
     public void addAuthToken(AuthToken token) throws DataAccessException {
-        /* Failures
-        can't access database
-        token already exists (incl. for different user)
-        username doesn't exist
-        */
+        // Failures: can't access database; token already exists; username doesn't exist
         if (!userDAO.hasUser(token.username())) {
             throw new NoSuchItemException("User not found");
         }
@@ -51,9 +47,7 @@ public class MemoryAuthDAO implements AuthDAO {
      * @return true iff the given token is currently valid
      */
     public boolean isValidAuthToken(AuthToken token) throws DataAccessException {
-        /* Failures
-        can't access database
-        */
+        // Failures: can't access database
         for (AuthToken existingToken : tokenDatabase) {
             if (existingToken == token) {
                 return true;
@@ -69,10 +63,7 @@ public class MemoryAuthDAO implements AuthDAO {
      * @param token the token to invalidate
      */
     public void removeAuthToken(AuthToken token) throws DataAccessException {
-        /* Failures
-        can't access database
-        (if token not found, just return)
-        */
+        // Failures: can't access database (if token not found, just return)
         tokenDatabase.remove(token);
     }
 
@@ -81,10 +72,7 @@ public class MemoryAuthDAO implements AuthDAO {
      * new tokens by re-authenticating.
      */
     public void clearAuthTokens() throws DataAccessException {
-        /* Failures
-        can't access database
-        (if no tokens, just return)
-        */
+        // Failures: can't access database (if no tokens, just return)
         tokenDatabase.clear();
     }
 }
