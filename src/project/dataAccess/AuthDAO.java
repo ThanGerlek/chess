@@ -36,13 +36,10 @@ public interface AuthDAO {
      * generate a new token by re-authenticating.
      *
      * @param token the token to invalidate
-     * @throws DataAccessException if the token is invalid
      */
     void removeAuthToken(AuthToken token) throws DataAccessException;
         /* Failures
         can't access database
-        invalid token (no, it's not idempotent. Per the Phase3 specs, logoutService has to be able to
-            return "401: unauthorized".)
         */
 
     /**
