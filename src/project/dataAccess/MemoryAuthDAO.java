@@ -49,7 +49,7 @@ public class MemoryAuthDAO implements AuthDAO {
     public boolean isValidAuthToken(AuthToken token) throws DataAccessException {
         // Failures: can't access database
         for (AuthToken existingToken : tokenDatabase) {
-            if (existingToken == token) {
+            if (existingToken.equals(token)) {
                 return true;
             }
         }
