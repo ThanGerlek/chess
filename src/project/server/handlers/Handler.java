@@ -16,7 +16,7 @@ public abstract class Handler {
         return defaultErrorHandler(req, res);
     }
 
-    protected Object defaultErrorHandler(Request req, Response res, Route route) {
+    protected Object defaultErrorHandler(Request req, Response res) {
         try {
             return route(req, res);
         } catch (NoSuchItemException e) {
