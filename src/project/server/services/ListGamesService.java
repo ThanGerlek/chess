@@ -28,7 +28,7 @@ public class ListGamesService {
         if (authDAO.isValidAuthToken(authToken)) {
             return new ListGamesResponse(gameDAO.allGames(), "Okay!");
         } else {
-            throw new UnauthorizedAccessException("Could not create game: provided token was invalid");
+            throw new UnauthorizedAccessException("Could not list games: provided token was invalid");
         }
 
     }

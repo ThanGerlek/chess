@@ -42,7 +42,7 @@ public class JoinGameService {
 
             return new MessageResponse("Okay!");
         } else {
-            throw new DataAccessException("Could not create game: provided token was invalid");
+            throw new DataAccessException("Could not join game: provided token was invalid");
         }
 
     }
