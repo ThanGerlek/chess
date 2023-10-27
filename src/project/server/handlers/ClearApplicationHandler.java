@@ -1,13 +1,20 @@
 package server.handlers;
 
+import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
+import dataAccess.GameDAO;
+import dataAccess.UserDAO;
 import server.http.MessageResponse;
 import server.services.ClearApplicationService;
 import spark.Request;
 import spark.Response;
 
 public class ClearApplicationHandler extends Handler {
-    private static final ClearApplicationService service = new ClearApplicationService();
+    private final ClearApplicationService service;
+
+    public ClearApplicationHandler(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO) {
+        service = new ClearApplicationService(authDAO, gameDAO, userDAO);
+    }
 
     @Override
     protected Object route(Request req, Response res) throws DataAccessException {

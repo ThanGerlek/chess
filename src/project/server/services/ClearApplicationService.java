@@ -1,6 +1,9 @@
 package server.services;
 
-import dataAccess.*;
+import dataAccess.AuthDAO;
+import dataAccess.DataAccessException;
+import dataAccess.GameDAO;
+import dataAccess.UserDAO;
 import server.http.MessageResponse;
 
 /**
@@ -8,9 +11,15 @@ import server.http.MessageResponse;
  * auth tokens.
  */
 public class ClearApplicationService {
-    private static final AuthDAO authDAO = new MemoryAuthDAO();
-    private static final GameDAO gameDAO = new MemoryGameDAO();
-    private static final UserDAO userDAO = new MemoryUserDAO();
+    private final AuthDAO authDAO;
+    private final GameDAO gameDAO;
+    private final UserDAO userDAO;
+
+    public ClearApplicationService(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO) {
+        this.authDAO = authDAO;
+        this.gameDAO = gameDAO;
+        this.userDAO = userDAO;
+    }
 
     /**
      * Clear the application. WARNING: This performs a hard reset, erasing all registered users, games, and auth

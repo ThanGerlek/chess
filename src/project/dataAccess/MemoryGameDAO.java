@@ -17,6 +17,11 @@ public class MemoryGameDAO implements GameDAO {
     private static final Map<Integer, Game> gameDatabase = new HashMap<>();
     private static final Map<Integer, ArrayList<String>> spectatorDatabase = new HashMap<>();
     private static int maxUsedGameID;
+    private final UserDAO userDAO;
+
+    public MemoryGameDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     /**
      * Inserts a new Game into the database.
@@ -89,7 +94,7 @@ public class MemoryGameDAO implements GameDAO {
         */
         assertIDExists(gameID);
 
-        if (!(new MemoryUserDAO().hasUser(username))) {
+        if (!userDAO.hasUser(username)) {
             throw new NoSuchItemException("Unrecognized username");
         }
 

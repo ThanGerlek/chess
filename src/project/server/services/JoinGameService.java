@@ -3,7 +3,6 @@ package server.services;
 import chess.ChessGame;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
-import dataAccess.MemoryGameDAO;
 import server.http.JoinGameRequest;
 import server.http.MessageResponse;
 
@@ -12,7 +11,11 @@ import server.http.MessageResponse;
  * request is idempotent.
  */
 public class JoinGameService {
-    private static final GameDAO gameDAO = new MemoryGameDAO();
+    private final GameDAO gameDAO;
+
+    public JoinGameService(GameDAO gameDAO) {
+        this.gameDAO = gameDAO;
+    }
 
     /**
      * Connect a user to an existing game as either a player or spectator. Verifies that the specified game exists, and,

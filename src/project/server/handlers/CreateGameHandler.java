@@ -1,6 +1,7 @@
 package server.handlers;
 
 import dataAccess.DataAccessException;
+import dataAccess.GameDAO;
 import server.http.CreateGameRequest;
 import server.http.CreateGameResponse;
 import server.services.CreateGameService;
@@ -8,7 +9,11 @@ import spark.Request;
 import spark.Response;
 
 public class CreateGameHandler extends Handler {
-    private static final CreateGameService service = new CreateGameService();
+    private final CreateGameService service;
+
+    public CreateGameHandler(GameDAO gameDAO) {
+        service = new CreateGameService(gameDAO);
+    }
 
     @Override
     protected Object route(Request req, Response res) throws DataAccessException {

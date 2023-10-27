@@ -1,13 +1,18 @@
 package server.handlers;
 
 import dataAccess.DataAccessException;
+import dataAccess.GameDAO;
 import server.http.ListGamesResponse;
 import server.services.ListGamesService;
 import spark.Request;
 import spark.Response;
 
 public class ListGamesHandler extends Handler {
-    private static final ListGamesService service = new ListGamesService();
+    private final ListGamesService service;
+
+    public ListGamesHandler(GameDAO gameDAO) {
+        service = new ListGamesService(gameDAO);
+    }
 
     @Override
     public Object route(Request req, Response res) throws DataAccessException {

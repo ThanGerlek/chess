@@ -3,7 +3,6 @@ package server.services;
 import chess.ChessGameImpl;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
-import dataAccess.MemoryGameDAO;
 import server.Game;
 import server.http.CreateGameRequest;
 import server.http.CreateGameResponse;
@@ -12,7 +11,11 @@ import server.http.CreateGameResponse;
  * Provides the Create New Game service, which registers and initializes a new empty game.
  */
 public class CreateGameService {
-    private static final GameDAO gameDAO = new MemoryGameDAO();
+    private final GameDAO gameDAO;
+
+    public CreateGameService(GameDAO gameDAO) {
+        this.gameDAO = gameDAO;
+    }
 
     /**
      * Create a new game from the given CreateGameRequest.

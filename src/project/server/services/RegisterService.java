@@ -1,6 +1,8 @@
 package server.services;
 
-import dataAccess.*;
+import dataAccess.AuthDAO;
+import dataAccess.DataAccessException;
+import dataAccess.UserDAO;
 import server.AuthToken;
 import server.User;
 import server.http.AuthResponse;
@@ -12,8 +14,13 @@ import java.util.UUID;
  * Provides the Register service, which registers a new user.
  */
 public class RegisterService {
-    private static final UserDAO userDAO = new MemoryUserDAO();
-    private static final AuthDAO authDAO = new MemoryAuthDAO();
+    private final AuthDAO authDAO;
+    private final UserDAO userDAO;
+
+    public RegisterService(AuthDAO authDAO, UserDAO userDAO) {
+        this.authDAO = authDAO;
+        this.userDAO = userDAO;
+    }
 
     /**
      * Register a new user.

@@ -1,6 +1,7 @@
 package server.handlers;
 
 import dataAccess.DataAccessException;
+import dataAccess.GameDAO;
 import server.http.JoinGameRequest;
 import server.http.MessageResponse;
 import server.services.JoinGameService;
@@ -8,7 +9,11 @@ import spark.Request;
 import spark.Response;
 
 public class JoinGameHandler extends Handler {
-    private static final JoinGameService service = new JoinGameService();
+    private final JoinGameService service;
+
+    public JoinGameHandler(GameDAO gameDAO) {
+        service = new JoinGameService(gameDAO);
+    }
 
     @Override
     protected Object route(Request req, Response res) throws DataAccessException {

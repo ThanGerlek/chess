@@ -1,6 +1,9 @@
 package server.services;
 
-import dataAccess.*;
+import dataAccess.AuthDAO;
+import dataAccess.DataAccessException;
+import dataAccess.UnauthorizedAccessException;
+import dataAccess.UserDAO;
 import server.AuthToken;
 import server.User;
 import server.http.AuthResponse;
@@ -12,8 +15,13 @@ import java.util.UUID;
  * Provides the Login service, which authenticates an existing user.
  */
 public class LoginService {
-    private static final UserDAO userDAO = new MemoryUserDAO();
-    private static final AuthDAO authDAO = new MemoryAuthDAO();
+    private final AuthDAO authDAO;
+    private final UserDAO userDAO;
+
+    public LoginService(AuthDAO authDAO, UserDAO userDAO) {
+        this.authDAO = authDAO;
+        this.userDAO = userDAO;
+    }
 
     /**
      * Log in an existing user. Returns a new authToken for that user.

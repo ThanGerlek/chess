@@ -2,7 +2,6 @@ package server.services;
 
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
-import dataAccess.MemoryAuthDAO;
 import server.AuthToken;
 import server.http.MessageResponse;
 
@@ -10,7 +9,11 @@ import server.http.MessageResponse;
  * Provides the Logout service, which logs out an existing user.
  */
 public class LogoutService {
-    private static final AuthDAO authDAO = new MemoryAuthDAO();
+    private final AuthDAO authDAO;
+
+    public LogoutService(AuthDAO authDAO) {
+        this.authDAO = authDAO;
+    }
 
     /**
      * Log out a currently logged-in user by invalidating the given token.

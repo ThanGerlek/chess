@@ -13,6 +13,11 @@ import java.util.Objects;
 public class MemoryAuthDAO implements AuthDAO {
 
     private static final ArrayList<AuthToken> tokenDatabase = new ArrayList<>();
+    private final UserDAO userDAO;
+
+    public MemoryAuthDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     /**
      * Registers the given {@code AuthToken} as a valid token.
@@ -26,7 +31,6 @@ public class MemoryAuthDAO implements AuthDAO {
         token already exists (incl. for different user)
         username doesn't exist
         */
-        UserDAO userDAO = new MemoryUserDAO();
         if (!userDAO.hasUser(token.username())) {
             throw new NoSuchItemException("User not found");
         }

@@ -1,5 +1,6 @@
 package server.handlers;
 
+import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import server.AuthToken;
 import server.http.MessageResponse;
@@ -8,7 +9,11 @@ import spark.Request;
 import spark.Response;
 
 public class LogoutHandler extends Handler {
-    private static final LogoutService service = new LogoutService();
+    private final LogoutService service;
+
+    public LogoutHandler(AuthDAO authDAO) {
+        service = new LogoutService(authDAO);
+    }
 
     @Override
     public Object route(Request req, Response res) throws DataAccessException {

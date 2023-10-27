@@ -2,14 +2,17 @@ package server.services;
 
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
-import dataAccess.MemoryGameDAO;
 import server.http.ListGamesResponse;
 
 /**
  * Provides the List Games service, which returns data about all games currently in progress.
  */
 public class ListGamesService {
-    private static final GameDAO gameDAO = new MemoryGameDAO();
+    private final GameDAO gameDAO;
+
+    public ListGamesService(GameDAO gameDAO) {
+        this.gameDAO = gameDAO;
+    }
 
     /**
      * Get a list of all games currently in progress.

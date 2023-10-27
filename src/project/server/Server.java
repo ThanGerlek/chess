@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import dataAccess.*;
 import server.handlers.*;
 import spark.Request;
 import spark.Response;
@@ -10,13 +11,28 @@ import java.util.Map;
 
 public class Server {
     private static final int PORT = 8080;
-    private static final ClearApplicationHandler CLEAR_APPLICATION_HANDLER = new ClearApplicationHandler();
-    private static final CreateGameHandler CREATE_GAME_HANDLER = new CreateGameHandler();
-    private static final JoinGameHandler JOIN_GAME_HANDLER = new JoinGameHandler();
-    private static final ListGamesHandler LIST_GAMES_HANDLER = new ListGamesHandler();
-    private static final LoginHandler LOGIN_HANDLER = new LoginHandler();
-    private static final LogoutHandler LOGOUT_HANDLER = new LogoutHandler();
-    private static final RegisterHandler REGISTER_HANDLER = new RegisterHandler();
+
+    private final ClearApplicationHandler CLEAR_APPLICATION_HANDLER;
+    private final CreateGameHandler CREATE_GAME_HANDLER;
+    private final JoinGameHandler JOIN_GAME_HANDLER;
+    private final ListGamesHandler LIST_GAMES_HANDLER;
+    private final LoginHandler LOGIN_HANDLER;
+    private final LogoutHandler LOGOUT_HANDLER;
+    private final RegisterHandler REGISTER_HANDLER;
+
+    public Server() {
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO(userDAO);
+        GameDAO gameDAO = new MemoryGameDAO(userDAO);
+
+        CLEAR_APPLICATION_HANDLER = new ClearApplicationHandler(authDAO, gameDAO, userDAO);
+        CREATE_GAME_HANDLER = new CreateGameHandler(gameDAO);
+        JOIN_GAME_HANDLER = new JoinGameHandler(gameDAO);
+        LIST_GAMES_HANDLER = new ListGamesHandler(gameDAO);
+        LOGIN_HANDLER = new LoginHandler(authDAO, userDAO);
+        LOGOUT_HANDLER = new LogoutHandler(authDAO);
+        REGISTER_HANDLER = new RegisterHandler(authDAO, userDAO);
+    }
 
     public static void main(String[] args) {
         new Server().run();
@@ -32,7 +48,7 @@ public class Server {
         System.out.println("Listening on port " + PORT);
     }
 
-    private static void createRoutes() {
+    private void createRoutes() {
         createErrorRoutes();
         createBeforeRoutes();
         createServiceRoutes();
@@ -43,7 +59,7 @@ public class Server {
      * Create a shutdown hook to ensure the server has a chance to complete any routes in progress and release resources
      * before shutting down.
      */
-    private static void addShutdownHook() {
+    private void addShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("Stopping the server...");
             Spark.stop();
@@ -51,22 +67,22 @@ public class Server {
         }));
     }
 
-    private static void createErrorRoutes() {
+    private void createErrorRoutes() {
         // See web-api/example-code/.../Custom...Server2
         Spark.notFound((req, res) -> {
             String errMsg = String.format("[%s] %s not found", req.requestMethod(), req.pathInfo());
             return errorHandler(new Exception(errMsg), req, res);
         });
-        Spark.exception(Exception.class, Server::errorHandler);
+        Spark.exception(Exception.class, this::errorHandler);
     }
 
-    private static void createBeforeRoutes() {
+    private void createBeforeRoutes() {
         Spark.before((req, res) -> System.out.println("Executing route: " + req.pathInfo()));
         // Filters take an optional pattern to restrict the routes to which they are applied:
         // before("/protected/*", (req, res) -> {…});
     }
 
-    private static void createServiceRoutes() {
+    private void createServiceRoutes() {
         Spark.delete("/db", CLEAR_APPLICATION_HANDLER::handleRequest);
         Spark.post("/user", REGISTER_HANDLER::handleRequest);
         Spark.post("/session", LOGIN_HANDLER::handleRequest);
@@ -76,11 +92,11 @@ public class Server {
         Spark.put("/game", JOIN_GAME_HANDLER::handleRequest);
     }
 
-    private static void createAfterRoutes() {
+    private void createAfterRoutes() {
         Spark.after((req, res) -> System.out.println("Finished executing route: " + req.pathInfo()));
     }
 
-    private static Object errorHandler(Exception e, Request req, Response res) {
+    private Object errorHandler(Exception e, Request req, Response res) {
         String body =
                 new Gson().toJson(Map.of("message", String.format("Error: %s", e.getMessage()), "origin", "Server"));
         res.type("application/json");
