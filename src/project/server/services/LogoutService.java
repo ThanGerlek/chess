@@ -20,11 +20,15 @@ public class LogoutService {
      *
      * @param authToken the AuthToken to invalidate.
      * @return a MessageResponse representing the resulting HTTP response.
+     * @throws DataAccessException if the token was already invalid
      */
     public MessageResponse logout(AuthToken authToken) throws DataAccessException {
-        authDAO.removeAuthToken(authToken);
-        return new MessageResponse(200, "Okay!");
-        // TODO Auth
+        if (authDAO.isValidAuthToken(authToken)) {
+            authDAO.removeAuthToken(authToken);
+            return new MessageResponse(200, "Okay!");
+        } else {
+            throw new DataAccessException("Could not log in: provided token is invalid");
+        }
     }
 
     /*

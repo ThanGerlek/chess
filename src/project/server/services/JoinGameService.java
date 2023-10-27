@@ -31,16 +31,20 @@ public class JoinGameService {
      * @return a MessageResponse representing the resulting HTTP response.
      */
     public MessageResponse joinGame(JoinGameRequest request, AuthToken authToken) throws DataAccessException {
-        ChessGame.PlayerRole role = switch (request.playerColor()) {
-            case "WHITE" -> ChessGame.PlayerRole.WHITE_PLAYER;
-            case "BLACK" -> ChessGame.PlayerRole.BLACK_PLAYER;
-            default -> ChessGame.PlayerRole.SPECTATOR;
-        };
-        int gameID = request.gameID();
-        gameDAO.assignPlayerRole(gameID, authToken.username(), role);
+        if (authDAO.isValidAuthToken(authToken)) {
+            ChessGame.PlayerRole role = switch (request.playerColor()) {
+                case "WHITE" -> ChessGame.PlayerRole.WHITE_PLAYER;
+                case "BLACK" -> ChessGame.PlayerRole.BLACK_PLAYER;
+                default -> ChessGame.PlayerRole.SPECTATOR;
+            };
+            int gameID = request.gameID();
+            gameDAO.assignPlayerRole(gameID, authToken.username(), role);
 
-        return new MessageResponse(200, "Okay!");
-        // TODO Auth
+            return new MessageResponse(200, "Okay!");
+        } else {
+            throw new DataAccessException("Could not create game: provided token was invalid");
+        }
+
     }
 
 /*

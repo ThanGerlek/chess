@@ -28,9 +28,12 @@ public class CreateGameService {
      * @return a CreateGameResponse representing the resulting HTTP response.
      */
     public CreateGameResponse createGame(CreateGameRequest request, AuthToken authToken) throws DataAccessException {
-        int gameID = registerNewGame(request.gameName());
-        return new CreateGameResponse(200, gameID, "Okay!");
-        // TODO Auth
+        if (authDAO.isValidAuthToken(authToken)) {
+            int gameID = registerNewGame(request.gameName());
+            return new CreateGameResponse(200, gameID, "Okay!");
+        } else {
+            throw new DataAccessException("Could not create game: provided token was invalid");
+        }
     }
 
     private int registerNewGame(String gameName) throws DataAccessException {

@@ -24,8 +24,12 @@ public class ListGamesService {
      * @return a ListGamesResponse representing the resulting HTTP response.
      */
     public ListGamesResponse listGames(AuthToken authToken) throws DataAccessException {
-        return new ListGamesResponse(200, gameDAO.allGames(), "Okay!");
-        // TODO Auth
+        if (authDAO.isValidAuthToken(authToken)) {
+            return new ListGamesResponse(200, gameDAO.allGames(), "Okay!");
+        } else {
+            throw new DataAccessException("Could not create game: provided token was invalid");
+        }
+
     }
 
 /*
