@@ -5,6 +5,7 @@ import chess.pieces.King;
 import chess.pieces.Queen;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import server.Game;
 import server.http.GameListItem;
@@ -93,28 +94,33 @@ class GameDAOTest {
     }
 
     @Test
+    @Disabled
+        // TODO test: assignPlayerRoleWhite
     void assignPlayerRoleWhite() throws DataAccessException {
-        // TODO
     }
 
     @Test
+    @Disabled
+        // TODO test: assignPlayerRoleBlack
     void assignPlayerRoleBlack() throws DataAccessException {
-        // TODO
     }
 
     @Test
+    @Disabled
+        // TODO test: assignPlayerRoleUndefined
     void assignPlayerRoleUndefined() throws DataAccessException {
-        // TODO
     }
 
     @Test
+    @Disabled
+        // TODO test: assignPlayerRoleOther
     void assignPlayerRoleOther() throws DataAccessException {
-        // TODO
     }
 
     @Test
+    @Disabled
+        // TODO test: updateGameState
     void updateGameState() throws DataAccessException {
-        // TODO
     }
 
     @Test
