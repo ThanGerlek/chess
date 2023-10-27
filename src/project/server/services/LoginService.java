@@ -39,9 +39,7 @@ public class LoginService {
         if (!user.password().equals(password)) {
             throw new UnauthorizedAccessException("Invalid credentials.");
         }
-        AuthToken token = registerNewAuthToken(user.username());
-        authDAO.addAuthToken(token);
-        return token;
+        return registerNewAuthToken(user.username());
     }
 
     // TODO Consolidate with RegisterService's registerNewAuthToken() method
