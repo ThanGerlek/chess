@@ -7,9 +7,6 @@ import server.AuthToken;
  */
 public interface AuthDAO {
 
-    //TODO Adding an authToken with the same string but a different username DOES WORK.
-    //If it fails, now they know it's a valid token for someone else.
-
     /**
      * Registers the given {@code AuthToken} as a valid token.
      *

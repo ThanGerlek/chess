@@ -32,7 +32,7 @@ public class MemoryAuthDAO implements AuthDAO {
         }
 
         for (AuthToken existingToken : tokenDatabase) {
-            if (Objects.equals(existingToken.authToken(), token.authToken())) {
+            if (Objects.equals(existingToken, token)) {
                 throw new ValueAlreadyTakenException("Tried to register an already existing token");
             }
         }
