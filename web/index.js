@@ -24,7 +24,8 @@ function send(path, params, method, authToken) {
     },
   })
     .then((response) => {
-      if (!response.ok) errStr = response.status + ': ' + response.statusText + '\n';
+//      if (!response.ok) errStr = response.status + ': ' + response.statusText + '\n';
+      errStr = response.status + ': ' + response.statusText + '\n';
       return response.json();
     })
     .then((data) => {
