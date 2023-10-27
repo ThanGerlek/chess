@@ -10,6 +10,8 @@ class JoinGameServiceTest extends ServiceTest {
     private final AuthToken token = new AuthToken("1234", "user1");
     private JoinGameService service;
 
+    // TODO 200, 400 bad req, 401 forbidden, 403 taken, 500?
+
     @BeforeEach
     void setUp() throws DataAccessException {
         initDAOs();
@@ -17,21 +19,23 @@ class JoinGameServiceTest extends ServiceTest {
         service = new JoinGameService(authDAO, gameDAO);
     }
 
+    // Positive test
     @Test
-    void join_Game_does_not_error() throws DataAccessException {
+    void join_Game_returns_okay() throws DataAccessException {
+        service.joinGame(new JoinGameRequest("WHITE", 4), token);
+        // TODO test
+    }
+
+    // Negative test
+    @Test
+    void join_nonexistent_Game_returns_bad_request_error() throws DataAccessException {
         service.joinGame(new JoinGameRequest("WHITE", 4), token);
         // TODO test
     }
 
     @Test
-    void join_Game_without_color_does_not_error() throws DataAccessException {
+    void join_Game_without_color_returns_okay() throws DataAccessException {
         service.joinGame(new JoinGameRequest(null, 4), token);
-        // TODO test
-    }
-
-    @Test
-    void join_nonexistent_Game_errors() throws DataAccessException {
-        service.joinGame(new JoinGameRequest("WHITE", 4), token);
         // TODO test
     }
 

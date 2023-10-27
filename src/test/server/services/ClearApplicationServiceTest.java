@@ -6,14 +6,31 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.AuthToken;
+import server.http.MessageResponse;
 
 class ClearApplicationServiceTest extends ServiceTest {
     private ClearApplicationService service;
+
+    // TODO 200, 500?
 
     @BeforeEach
     void setUp() {
         initDAOs();
         service = new ClearApplicationService(authDAO, gameDAO, userDAO);
+    }
+
+    // Positive test
+    @Test
+    void clearing_returns_okay() throws DataAccessException {
+        MessageResponse response = service.clearApplication();
+        Assertions.assertEquals(200, response.status());
+    }
+
+    @Test
+    void clearing_empty_returns_okay() throws DataAccessException {
+        service.clearApplication();
+        service.clearApplication();
+        Assertions.assertTrue(true);
     }
 
     @Test
@@ -41,12 +58,5 @@ class ClearApplicationServiceTest extends ServiceTest {
 
         Assertions.assertFalse(authDAO.isValidAuthToken(token1));
         Assertions.assertFalse(authDAO.isValidAuthToken(token2));
-    }
-
-    @Test
-    void clearing_empty_does_not_error() throws DataAccessException {
-        service.clearApplication();
-        service.clearApplication();
-        Assertions.assertTrue(true);
     }
 }

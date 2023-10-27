@@ -9,6 +9,8 @@ class ListGamesServiceTest extends ServiceTest {
     private final AuthToken token = new AuthToken("1234", "user1");
     private ListGamesService service;
 
+    // TODO 200, 401 forbidden, 500?
+
     @BeforeEach
     void setUp() throws DataAccessException {
         initDAOs();
@@ -16,14 +18,16 @@ class ListGamesServiceTest extends ServiceTest {
         service = new ListGamesService(authDAO, gameDAO);
     }
 
+    // Positive test
     @Test
-    void list_Games_successfully() throws DataAccessException {
+    void list_Games_returns_okay() throws DataAccessException {
         service.listGames(token);
         // TODO test
     }
 
+    // Negative test
     @Test
-    void list_Games_with_invalid_token_errors() throws DataAccessException {
+    void list_Games_with_invalid_token_returns_forbidden() throws DataAccessException {
         service.listGames(new AuthToken("1234", "iDoNotExist"));
         // TODO test
     }
