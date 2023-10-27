@@ -1,13 +1,10 @@
 package server;
 
-import com.google.gson.Gson;
 import dataAccess.*;
 import server.handlers.*;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
-
-import java.util.Map;
 
 public class Server {
     private static final int PORT = 8080;
@@ -97,12 +94,8 @@ public class Server {
     }
 
     private Object errorHandler(Exception e, Request req, Response res) {
-        String body =
-                new Gson().toJson(Map.of("message", String.format("Error: %s", e.getMessage()), "origin", "Server"));
-        res.type("application/json");
-        res.status(500);
-        res.body(body);
-        return body;
+        MessageResponse response = new MessageResponse(String.format("Error: %s", e.getMessage()));
+        return Handler.parseToBody(res, response, 500);
     }
 
 }

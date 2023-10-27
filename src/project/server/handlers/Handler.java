@@ -8,18 +8,17 @@ import dataAccess.ValueAlreadyTakenException;
 import server.http.MessageResponse;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 
 public abstract class Handler {
     protected Gson gson = new Gson();
 
     public Object handleRequest(Request req, Response res) {
-        return defaultErrorHandler(req, res, this::route);
+        return defaultErrorHandler(req, res);
     }
 
     protected Object defaultErrorHandler(Request req, Response res, Route route) {
         try {
-            return route.handle(req, res);
+            return route(req, res);
         } catch (NoSuchItemException e) {
             return handleError(res, 400, e.getMessage());
         } catch (UnauthorizedAccessException e) {
@@ -38,10 +37,14 @@ public abstract class Handler {
         return parseToBody(res, response, status);
     }
 
-    protected String parseToBody(Response res, Object response, int status) {
-        String bodyStr = gson.toJson(response);
-        res.type("application/json");
+    public static String parseToBody(Response res, Object response, int status) {
         res.status(status);
+        return parseToBody(res, response);
+    }
+
+    public static String parseToBody(Response res, Object response) {
+        String bodyStr = (new Gson()).toJson(response);
+        res.type("application/json");
         res.body(bodyStr);
         return bodyStr;
     }
