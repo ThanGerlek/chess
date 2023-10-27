@@ -1,6 +1,7 @@
 package server.services;
 
 import chess.ChessGame;
+import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import server.AuthToken;
@@ -12,9 +13,11 @@ import server.http.MessageResponse;
  * request is idempotent.
  */
 public class JoinGameService {
+    private final AuthDAO authDAO;
     private final GameDAO gameDAO;
 
-    public JoinGameService(GameDAO gameDAO) {
+    public JoinGameService(AuthDAO authDAO, GameDAO gameDAO) {
+        this.authDAO = authDAO;
         this.gameDAO = gameDAO;
     }
 

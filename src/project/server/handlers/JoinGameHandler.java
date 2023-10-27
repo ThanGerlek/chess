@@ -1,5 +1,6 @@
 package server.handlers;
 
+import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import server.AuthToken;
@@ -12,8 +13,8 @@ import spark.Response;
 public class JoinGameHandler extends Handler {
     private final JoinGameService service;
 
-    public JoinGameHandler(GameDAO gameDAO) {
-        service = new JoinGameService(gameDAO);
+    public JoinGameHandler(AuthDAO authDAO, GameDAO gameDAO) {
+        service = new JoinGameService(authDAO, gameDAO);
     }
 
     @Override

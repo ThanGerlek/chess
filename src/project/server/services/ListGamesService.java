@@ -1,5 +1,6 @@
 package server.services;
 
+import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import server.AuthToken;
@@ -9,9 +10,11 @@ import server.http.ListGamesResponse;
  * Provides the List Games service, which returns data about all games currently in progress.
  */
 public class ListGamesService {
+    private final AuthDAO authDAO;
     private final GameDAO gameDAO;
 
-    public ListGamesService(GameDAO gameDAO) {
+    public ListGamesService(AuthDAO authDAO, GameDAO gameDAO) {
+        this.authDAO = authDAO;
         this.gameDAO = gameDAO;
     }
 

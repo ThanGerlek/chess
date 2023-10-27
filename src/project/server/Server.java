@@ -26,9 +26,9 @@ public class Server {
         GameDAO gameDAO = new MemoryGameDAO(userDAO);
 
         CLEAR_APPLICATION_HANDLER = new ClearApplicationHandler(authDAO, gameDAO, userDAO);
-        CREATE_GAME_HANDLER = new CreateGameHandler(gameDAO);
-        JOIN_GAME_HANDLER = new JoinGameHandler(gameDAO);
-        LIST_GAMES_HANDLER = new ListGamesHandler(gameDAO);
+        CREATE_GAME_HANDLER = new CreateGameHandler(authDAO, gameDAO);
+        JOIN_GAME_HANDLER = new JoinGameHandler(authDAO, gameDAO);
+        LIST_GAMES_HANDLER = new ListGamesHandler(authDAO, gameDAO);
         LOGIN_HANDLER = new LoginHandler(authDAO, userDAO);
         LOGOUT_HANDLER = new LogoutHandler(authDAO);
         REGISTER_HANDLER = new RegisterHandler(authDAO, userDAO);
