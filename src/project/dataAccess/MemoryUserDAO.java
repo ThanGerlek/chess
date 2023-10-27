@@ -23,6 +23,7 @@ public class MemoryUserDAO implements UserDAO {
         if (hasUser(user.username())) {
             throw new ValueAlreadyTakenException("Tried to insert a user with an already-taken username");
         }
+        userDatabase.add(user);
     }
 
     /**
