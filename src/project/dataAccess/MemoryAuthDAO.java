@@ -61,10 +61,16 @@ public class MemoryAuthDAO implements AuthDAO {
      * generate a new token by re-authenticating.
      *
      * @param token the token to invalidate
+     * @throws DataAccessException if the token is invalid
      */
     public void removeAuthToken(AuthToken token) throws DataAccessException {
-        // Failures: can't access database (if token not found, just return)
-        tokenDatabase.remove(token);
+        // Failures: can't access database, invalid token
+        // (no, it shouldn't be idempotent per the Phase 3 specs)
+        if (isValidAuthToken(token)) {
+            tokenDatabase.remove(token);
+        } else {
+            throw new DataAccessException("Couldn't invalidate token: the provided token is already invalid.");
+        }
     }
 
     /**
