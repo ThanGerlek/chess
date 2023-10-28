@@ -1,15 +1,13 @@
 package server.http;
 
-import server.AuthToken;
-
 /**
  * A record representing an HTTP response to an authorization request.
  *
- * @param authToken a new authorization token
+ * @param authToken a new authorization string
  * @param username  the username of the user the token represents
  * @param message   the response message
  */
-public record AuthResponse(AuthToken authToken, String username, String message) {
+public record AuthResponse(String authToken, String username, String message) {
 }
 
 // Login:
