@@ -3,9 +3,10 @@ package server.services;
 import chess.ChessGameImpl;
 import dataAccess.DataAccessException;
 import dataAccess.NoSuchItemException;
+import dataAccess.UnauthorizedAccessException;
+import dataAccess.ValueAlreadyTakenException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import server.AuthToken;
 import server.Game;
@@ -16,7 +17,8 @@ import server.http.MessageResponse;
 class JoinGameServiceTest extends ServiceTest {
     private static final int INVALID_GAME_ID = 42;
     private final User user = new User("user1", "pass1", "mail1");
-    private final AuthToken token = new AuthToken("1234", "user1");
+    private final AuthToken token1 = new AuthToken("1234", "user1");
+    private final AuthToken token2 = new AuthToken("5678", "user2");
     private final JoinGameRequest request = new JoinGameRequest("WHITE", 1);
     private JoinGameService service;
 
@@ -26,7 +28,7 @@ class JoinGameServiceTest extends ServiceTest {
     void setUp() throws DataAccessException {
         initDAOs();
         userDAO.insertNewUser(user);
-        authDAO.addAuthToken(token);
+        authDAO.addAuthToken(token1);
         gameDAO.insertNewGame(new Game(1, "game1", new ChessGameImpl()));
         service = new JoinGameService(authDAO, gameDAO);
     }
@@ -34,7 +36,7 @@ class JoinGameServiceTest extends ServiceTest {
     // Positive test
     @Test
     void join_Game_returns_okay() throws DataAccessException {
-        MessageResponse response = service.joinGame(request, token.authToken());
+        MessageResponse response = service.joinGame(request, token1.authToken());
 //        Assertions.assertEquals(200, response.status());
         // TODO Assert something
     }
@@ -43,21 +45,24 @@ class JoinGameServiceTest extends ServiceTest {
     @Test
     void join_nonexistent_Game_returns_bad_request_error() throws DataAccessException {
         Assertions.assertThrows(NoSuchItemException.class,
-                () -> service.joinGame(new JoinGameRequest("WHITE", INVALID_GAME_ID), token.authToken()));
+                () -> service.joinGame(new JoinGameRequest("WHITE", INVALID_GAME_ID), token1.authToken()));
     }
 
     @Test
-    @Disabled
-        // TODO test
     void join_Game_without_color_returns_okay() throws DataAccessException {
-        service.joinGame(new JoinGameRequest(null, 1), token.authToken());
+        service.joinGame(new JoinGameRequest(null, 1), token1.authToken());
     }
 
     @Test
-    @Disabled
-        // TODO test
+    void join_Game_with_already_taken_color_returns_taken() throws DataAccessException {
+        service.joinGame(request, token1.authToken());
+
+        Assertions.assertThrows(ValueAlreadyTakenException.class, () -> service.joinGame(request, token2.authToken()));
+    }
+
+    @Test
     void join_Game_with_invalid_token_errors() throws DataAccessException {
-        service.joinGame(request, new AuthToken("iAmIncorrect", "user1").authToken());
+        Assertions.assertThrows(UnauthorizedAccessException.class, () -> service.joinGame(request, "iAmIncorrect"));
     }
 
 }

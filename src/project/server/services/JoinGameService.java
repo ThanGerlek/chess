@@ -4,6 +4,7 @@ import chess.ChessGame;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
+import dataAccess.UnauthorizedAccessException;
 import server.http.JoinGameRequest;
 import server.http.MessageResponse;
 
@@ -31,18 +32,21 @@ public class JoinGameService {
      */
     public MessageResponse joinGame(JoinGameRequest request, String authToken) throws DataAccessException {
         if (authDAO.isValidAuthToken(authToken)) {
-            ChessGame.PlayerRole role = switch (request.playerColor()) {
-                case "WHITE" -> ChessGame.PlayerRole.WHITE_PLAYER;
-                case "BLACK" -> ChessGame.PlayerRole.BLACK_PLAYER;
-                default -> ChessGame.PlayerRole.SPECTATOR;
-            };
+            ChessGame.PlayerRole role;
+            if ("WHITE".equals(request.playerColor())) {
+                role = ChessGame.PlayerRole.WHITE_PLAYER;
+            } else if ("BLACK".equals(request.playerColor())) {
+                role = ChessGame.PlayerRole.BLACK_PLAYER;
+            } else {
+                role = ChessGame.PlayerRole.SPECTATOR;
+            }
             int gameID = request.gameID();
             String username = authDAO.getUsername(authToken);
             gameDAO.assignPlayerRole(gameID, username, role);
 
             return new MessageResponse("Okay!");
         } else {
-            throw new DataAccessException("Could not join game: provided token was invalid");
+            throw new UnauthorizedAccessException("Could not join game: provided token was invalid");
         }
 
     }
