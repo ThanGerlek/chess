@@ -16,7 +16,8 @@ import server.http.MessageResponse;
 
 class JoinGameServiceTest extends ServiceTest {
     private static final int INVALID_GAME_ID = 42;
-    private final User user = new User("user1", "pass1", "mail1");
+    private final User user1 = new User("user1", "pass1", "mail1");
+    private final User user2 = new User("user2", "pass2", "mail2");
     private final AuthToken token1 = new AuthToken("1234", "user1");
     private final AuthToken token2 = new AuthToken("5678", "user2");
     private final JoinGameRequest request = new JoinGameRequest("WHITE", 1);
@@ -27,8 +28,10 @@ class JoinGameServiceTest extends ServiceTest {
     @BeforeEach
     void setUp() throws DataAccessException {
         initDAOs();
-        userDAO.insertNewUser(user);
+        userDAO.insertNewUser(user1);
         authDAO.addAuthToken(token1);
+        userDAO.insertNewUser(user2);
+        authDAO.addAuthToken(token2);
         gameDAO.insertNewGame(new Game(1, "game1", new ChessGameImpl()));
         service = new JoinGameService(authDAO, gameDAO);
     }
