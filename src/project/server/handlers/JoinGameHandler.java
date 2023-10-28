@@ -19,7 +19,7 @@ public class JoinGameHandler extends Handler {
     @Override
     protected Object route(Request req, Response res) throws DataAccessException {
         JoinGameRequest joinGameRequest = gson.fromJson(req.body(), JoinGameRequest.class);
-        String authToken = gson.fromJson(req.headers("authorization"), String.class);
+        String authToken = req.headers("authorization");
         MessageResponse response = service.joinGame(joinGameRequest, authToken);
         return parseToBody(res, response, 200);
     }
