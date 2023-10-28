@@ -4,7 +4,6 @@ import dataAccess.DataAccessException;
 import dataAccess.ValueAlreadyTakenException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import server.User;
 import server.http.AuthResponse;
@@ -38,16 +37,17 @@ class RegisterServiceTest extends ServiceTest {
     }
 
     @Test
-    @Disabled
-        // TODO test
-    void register_with_empty_username_returns_bad_request_error() throws DataAccessException {
-        AuthResponse response = service.register(new RegisterRequest("user1", "pass1", "mail1"));
+    void register_with_null_username_returns_bad_request_error() throws DataAccessException {
+        AuthResponse response = service.register(new RegisterRequest(null, "pass1", "mail1"));
     }
 
     @Test
-    @Disabled
-        // TODO test
-    void register_with_empty_password_returns_bad_request_error() throws DataAccessException {
-        AuthResponse response = service.register(new RegisterRequest("user1", "pass1", "mail1"));
+    void register_with_null_password_returns_bad_request_error() throws DataAccessException {
+        AuthResponse response = service.register(new RegisterRequest("user1", null, "mail1"));
+    }
+
+    @Test
+    void register_with_null_email_returns_okay() throws DataAccessException {
+        AuthResponse response = service.register(new RegisterRequest("user1", "pass1", null));
     }
 }
