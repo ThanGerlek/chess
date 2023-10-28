@@ -58,8 +58,11 @@ public class MemoryGameDAO implements GameDAO {
         // Failures: can't access database
         Collection<GameListItem> gameList = new ArrayList<>();
         for (Game game : gameDatabase.values()) {
-            // TODO test: that usernames being null doesn't cause problems
-            gameList.add(new GameListItem(game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName()));
+            // TODO remove hack making empty strings nulls
+            // provided Service tests require null, not ""
+            String whiteUsername = (game.whiteUsername().isEmpty()) ? null : game.whiteUsername();
+            String blackUsername = (game.blackUsername().isEmpty()) ? null : game.blackUsername();
+            gameList.add(new GameListItem(game.gameID(), whiteUsername, blackUsername, game.gameName()));
         }
         return gameList.toArray(new GameListItem[0]);
     }
