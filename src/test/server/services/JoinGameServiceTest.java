@@ -21,7 +21,7 @@ class JoinGameServiceTest extends ServiceTest {
     private final AuthToken token1 = new AuthToken("1234", "user1");
     private final AuthToken token2 = new AuthToken("5678", "user2");
     private final JoinGameRequest requestW = new JoinGameRequest("WHITE", 1);
-    private final JoinGameRequest requestB = new JoinGameRequest("WHITE", 1);
+    private final JoinGameRequest requestB = new JoinGameRequest("BLACK", 1);
     private JoinGameService service;
 
     // TODO 401 forbidden, 403 taken, 500?
