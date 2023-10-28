@@ -1,5 +1,6 @@
 package server.services;
 
+import dataAccess.BadRequestException;
 import dataAccess.DataAccessException;
 import dataAccess.ValueAlreadyTakenException;
 import org.junit.jupiter.api.Assertions;
@@ -38,16 +39,18 @@ class RegisterServiceTest extends ServiceTest {
 
     @Test
     void register_with_null_username_returns_bad_request_error() throws DataAccessException {
-        AuthResponse response = service.register(new RegisterRequest(null, "pass1", "mail1"));
+        Assertions.assertThrows(BadRequestException.class,
+                () -> service.register(new RegisterRequest(null, "pass1", "mail1")));
     }
 
     @Test
     void register_with_null_password_returns_bad_request_error() throws DataAccessException {
-        AuthResponse response = service.register(new RegisterRequest("user1", null, "mail1"));
+        Assertions.assertThrows(BadRequestException.class,
+                () -> service.register(new RegisterRequest("user1", null, "mail1")));
     }
 
     @Test
     void register_with_null_email_returns_okay() throws DataAccessException {
-        AuthResponse response = service.register(new RegisterRequest("user1", "pass1", null));
+        service.register(new RegisterRequest("user1", "pass1", null));
     }
 }

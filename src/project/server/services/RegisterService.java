@@ -1,6 +1,7 @@
 package server.services;
 
 import dataAccess.AuthDAO;
+import dataAccess.BadRequestException;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
 import server.AuthToken;
@@ -29,6 +30,10 @@ public class RegisterService {
      * @return an AuthResponse representing the resulting HTTP response.
      */
     public AuthResponse register(RegisterRequest request) throws DataAccessException {
+        if (request.username() == null || request.password() == null || request.username().isEmpty() ||
+                request.password().isEmpty()) {
+            throw new BadRequestException("Please provide a username and password");
+        }
         User user = new User(request.username(), request.password(), request.email());
         userDAO.insertNewUser(user);
         AuthToken authToken = registerNewAuthToken(request.username());

@@ -1,10 +1,7 @@
 package server.handlers;
 
 import com.google.gson.Gson;
-import dataAccess.DataAccessException;
-import dataAccess.NoSuchItemException;
-import dataAccess.UnauthorizedAccessException;
-import dataAccess.ValueAlreadyTakenException;
+import dataAccess.*;
 import server.http.MessageResponse;
 import spark.Request;
 import spark.Response;
@@ -19,7 +16,7 @@ public abstract class Handler {
     protected Object defaultErrorHandler(Request req, Response res) {
         try {
             return route(req, res);
-        } catch (NoSuchItemException e) {
+        } catch (NoSuchItemException | BadRequestException e) {
             return handleError(res, 400, e.getMessage());
         } catch (UnauthorizedAccessException e) {
             return handleError(res, 401, e.getMessage());
