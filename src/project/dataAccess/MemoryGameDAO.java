@@ -4,10 +4,7 @@ import chess.ChessGame;
 import server.Game;
 import server.http.GameListItem;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A DAO (Data Access Object) for CRUD operations on Games currently being played.
@@ -83,10 +80,23 @@ public class MemoryGameDAO implements GameDAO {
             throw new UnauthorizedAccessException("Unrecognized username");
         }
 
+        // TODO style: neaten this up
         Game game = gameDatabase.get(gameID);
         switch (role) {
-            case WHITE_PLAYER -> game.setWhiteUsername(username);
-            case BLACK_PLAYER -> game.setBlackUsername(username);
+            case WHITE_PLAYER -> {
+                if (!Objects.equals(game.whiteUsername(), "")) {
+                    throw new ValueAlreadyTakenException("Role already taken.");
+                } else {
+                    game.setWhiteUsername(username);
+                }
+            }
+            case BLACK_PLAYER -> {
+                if (!Objects.equals(game.blackUsername(), "")) {
+                    throw new ValueAlreadyTakenException("Role already taken.");
+                } else {
+                    game.setBlackUsername(username);
+                }
+            }
             case SPECTATOR -> game.addSpectator(username);
         }
 
