@@ -86,8 +86,8 @@ class GameDAOTest {
         Game game2 = new Game(2, "game2", chessGame2);
         gameDAO.insertNewGame(game1);
         gameDAO.insertNewGame(game2);
-        GameListItem item1 = new GameListItem(1, "", "", "game1");
-        GameListItem item2 = new GameListItem(2, "", "", "game2");
+        GameListItem item1 = new GameListItem(1, null, null, "game1");
+        GameListItem item2 = new GameListItem(2, null, null, "game2");
 
         GameListItem[] actual = gameDAO.allGames();
         Assertions.assertEquals(2, actual.length);
