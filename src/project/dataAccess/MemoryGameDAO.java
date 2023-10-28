@@ -80,7 +80,7 @@ public class MemoryGameDAO implements GameDAO {
         assertIDExists(gameID);
 
         if (!userDAO.hasUser(username)) {
-            throw new NoSuchItemException("Unrecognized username");
+            throw new UnauthorizedAccessException("Unrecognized username");
         }
 
         Game game = gameDatabase.get(gameID);

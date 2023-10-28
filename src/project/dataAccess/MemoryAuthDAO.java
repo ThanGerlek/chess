@@ -28,7 +28,7 @@ public class MemoryAuthDAO implements AuthDAO {
     public void addAuthToken(AuthToken token) throws DataAccessException {
         // Failures: can't access database; token already exists; username doesn't exist
         if (!userDAO.hasUser(token.username())) {
-            throw new NoSuchItemException("User not found");
+            throw new UnauthorizedAccessException("User not found");
         }
 
         for (AuthToken existingToken : tokenDatabase) {

@@ -41,7 +41,7 @@ class UserDAOTest {
     @Test
     void getFakeUserErrors() {
         User user = new User("user1", "pass1", "mail1");
-        Assertions.assertThrows(NoSuchItemException.class, () -> userDAO.getUser("user1"));
+        Assertions.assertThrows(UnauthorizedAccessException.class, () -> userDAO.getUser("user1"));
     }
 
     @Test

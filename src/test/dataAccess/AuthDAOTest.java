@@ -36,7 +36,7 @@ class AuthDAOTest {
     @Test
     void addAuthTokenNonexistentUserErrors() throws DataAccessException {
         AuthToken token = new AuthToken("1234", "idontexist");
-        Assertions.assertThrows(NoSuchItemException.class, () -> authDAO.addAuthToken(token));
+        Assertions.assertThrows(UnauthorizedAccessException.class, () -> authDAO.addAuthToken(token));
     }
 
     @Test
