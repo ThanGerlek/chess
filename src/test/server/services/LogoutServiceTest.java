@@ -27,10 +27,9 @@ class LogoutServiceTest extends ServiceTest {
 
     // Positive test
     @Test
-    void logout_existing_user_returns_okay() throws DataAccessException {
+    void logout_existing_user_invalidates_token() throws DataAccessException {
         MessageResponse response = service.logout(token.authToken());
-//        Assertions.assertEquals(200, response.status());
-        // TODO Assert something
+        Assertions.assertFalse(authDAO.isValidAuthToken(token.authToken()));
     }
 
     // Negative test
@@ -41,9 +40,14 @@ class LogoutServiceTest extends ServiceTest {
     }
 
     @Test
+    void logout_existing_user_returns_okay() throws DataAccessException {
+        MessageResponse response = service.logout(token.authToken());
+        Assertions.assertEquals("Okay!", response.message());
+    }
+
+    @Test
     void logout_invalid_token_errors() throws DataAccessException {
-        Assertions.assertThrows(UnauthorizedAccessException.class,
-                () -> service.logout("iAmIncorrect"));
+        Assertions.assertThrows(UnauthorizedAccessException.class, () -> service.logout("iAmIncorrect"));
     }
 
 }

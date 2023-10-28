@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import server.AuthToken;
 import server.Game;
 import server.User;
+import server.http.GameListItem;
 import server.http.ListGamesResponse;
 
 class ListGamesServiceTest extends ServiceTest {
@@ -42,17 +43,27 @@ class ListGamesServiceTest extends ServiceTest {
 
     // Positive test
     @Test
-    void list_Games_returns_okay() throws DataAccessException {
+    void list_Games_returns_GameListItems() throws DataAccessException {
+        GameListItem[] expected = {new GameListItem(1, null, null, "game1"), new GameListItem(2, null, null, "game2")};
+
         ListGamesResponse response = service.listGames(token.authToken());
-//        Assertions.assertEquals(200, response.status());
-        // TODO Assert something
+
+        GameListItem[] actual = response.games();
+        Assertions.assertEquals(2, actual.length);
+        Assertions.assertEquals(expected[0], actual[0]);
+        Assertions.assertEquals(expected[1], actual[1]);
     }
 
     // Negative test
     @Test
     void list_Games_with_invalid_token_returns_forbidden() throws DataAccessException {
-        Assertions.assertThrows(UnauthorizedAccessException.class,
-                () -> service.listGames("iDoNotExist"));
+        Assertions.assertThrows(UnauthorizedAccessException.class, () -> service.listGames("iDoNotExist"));
+    }
+
+    @Test
+    void list_Games_returns_okay() throws DataAccessException {
+        ListGamesResponse response = service.listGames(token.authToken());
+        Assertions.assertEquals("Okay!", response.message());
     }
 
 }

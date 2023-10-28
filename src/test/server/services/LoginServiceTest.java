@@ -4,7 +4,6 @@ import dataAccess.DataAccessException;
 import dataAccess.UnauthorizedAccessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import server.User;
 import server.http.AuthResponse;
@@ -24,10 +23,9 @@ class LoginServiceTest extends ServiceTest {
 
     // Positive test
     @Test
-    void login_successfully_returns_okay() throws DataAccessException {
+    void login_successfully_returns_valid_authToken() throws DataAccessException {
         AuthResponse response = service.login(new LoginRequest("user1", "pass1"));
-//        Assertions.assertEquals(200, response.status());
-        // TODO Assert something
+        Assertions.assertTrue(authDAO.isValidAuthToken(response.authToken()));
     }
 
     // Negative test
@@ -38,12 +36,21 @@ class LoginServiceTest extends ServiceTest {
     }
 
     @Test
-    @Disabled
-        // TODO test
+    void login_successfully_returns_okay() throws DataAccessException {
+        AuthResponse response = service.login(new LoginRequest("user1", "pass1"));
+        Assertions.assertEquals("Okay!", response.message());
+    }
+
+    @Test
+    void login_successfully_returns_authToken() throws DataAccessException {
+        AuthResponse response = service.login(new LoginRequest("user1", "pass1"));
+        Assertions.assertNotNull(response.authToken());
+    }
+
+    @Test
     void login_incorrect_username_returns_forbidden() throws DataAccessException {
-        AuthResponse response = service.login(new LoginRequest("iAmIncorrect", "pass1"));
-//        Assertions.assertEquals(401, response.status());
-        // TODO Assert something
+        Assertions.assertThrows(UnauthorizedAccessException.class,
+                () -> service.login(new LoginRequest("iAmIncorrect", "pass1")));
     }
 
 }

@@ -21,10 +21,17 @@ class ClearApplicationServiceTest extends ServiceTest {
 
     // Positive test
     @Test
+    void has_cleared_Users_is_false() throws DataAccessException {
+        service.clearApplication();
+
+        Assertions.assertFalse(userDAO.hasUser("user1"));
+        Assertions.assertFalse(userDAO.hasUser("user2"));
+    }
+
+    @Test
     void clearing_returns_okay() throws DataAccessException {
         MessageResponse response = service.clearApplication();
-//        Assertions.assertEquals(200, response.status());
-        // TODO Assert something
+        Assertions.assertEquals("Okay!", response.message());
     }
 
     @Test
@@ -32,14 +39,6 @@ class ClearApplicationServiceTest extends ServiceTest {
         service.clearApplication();
         service.clearApplication();
         Assertions.assertTrue(true);
-    }
-
-    @Test
-    void has_cleared_Users_is_false() throws DataAccessException {
-        service.clearApplication();
-
-        Assertions.assertFalse(userDAO.hasUser("user1"));
-        Assertions.assertFalse(userDAO.hasUser("user2"));
     }
 
     @Test
