@@ -4,7 +4,6 @@ import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.UnauthorizedAccessException;
-import server.AuthToken;
 import server.http.ListGamesResponse;
 
 /**
@@ -24,7 +23,7 @@ public class ListGamesService {
      *
      * @return a ListGamesResponse representing the resulting HTTP response.
      */
-    public ListGamesResponse listGames(AuthToken authToken) throws DataAccessException {
+    public ListGamesResponse listGames(String authToken) throws DataAccessException {
         if (authDAO.isValidAuthToken(authToken)) {
             return new ListGamesResponse(gameDAO.allGames(), "Okay!");
         } else {

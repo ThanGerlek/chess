@@ -4,7 +4,6 @@ import chess.ChessGame;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
-import server.AuthToken;
 import server.http.JoinGameRequest;
 import server.http.MessageResponse;
 
@@ -30,7 +29,7 @@ public class JoinGameService {
      * @param authToken the AuthToken representing the user to assign.
      * @return a MessageResponse representing the resulting HTTP response.
      */
-    public MessageResponse joinGame(JoinGameRequest request, AuthToken authToken) throws DataAccessException {
+    public MessageResponse joinGame(JoinGameRequest request, String authToken) throws DataAccessException {
         if (authDAO.isValidAuthToken(authToken)) {
             ChessGame.PlayerRole role = switch (request.playerColor()) {
                 case "WHITE" -> ChessGame.PlayerRole.WHITE_PLAYER;
@@ -38,7 +37,8 @@ public class JoinGameService {
                 default -> ChessGame.PlayerRole.SPECTATOR;
             };
             int gameID = request.gameID();
-            gameDAO.assignPlayerRole(gameID, authToken.username(), role);
+            String username = authDAO.getUsername(authToken);
+            gameDAO.assignPlayerRole(gameID, username, role);
 
             return new MessageResponse("Okay!");
         } else {

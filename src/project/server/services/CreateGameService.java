@@ -5,7 +5,6 @@ import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.UnauthorizedAccessException;
-import server.AuthToken;
 import server.Game;
 import server.http.CreateGameRequest;
 import server.http.CreateGameResponse;
@@ -28,7 +27,7 @@ public class CreateGameService {
      * @param request a CreateGameRequest representing the HTTP request.
      * @return a CreateGameResponse representing the resulting HTTP response.
      */
-    public CreateGameResponse createGame(CreateGameRequest request, AuthToken authToken) throws DataAccessException {
+    public CreateGameResponse createGame(CreateGameRequest request, String authToken) throws DataAccessException {
         if (authDAO.isValidAuthToken(authToken)) {
             int gameID = registerNewGame(request.gameName());
             return new CreateGameResponse(gameID, "Okay!");

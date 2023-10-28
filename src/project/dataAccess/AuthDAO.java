@@ -26,7 +26,7 @@ public interface AuthDAO {
      * @param token the token to validate
      * @return true iff the given token is currently valid
      */
-    boolean isValidAuthToken(AuthToken token) throws DataAccessException;
+    boolean isValidAuthToken(String token) throws DataAccessException;
         /* Failures
         can't access database
         */
@@ -37,7 +37,7 @@ public interface AuthDAO {
      *
      * @param token the token to invalidate
      */
-    void removeAuthToken(AuthToken token) throws DataAccessException;
+    void removeAuthToken(String token) throws DataAccessException;
         /* Failures
         can't access database
         */
@@ -51,4 +51,6 @@ public interface AuthDAO {
         can't access database
         (if no tokens, just return)
         */
+
+    String getUsername(String authToken) throws DataAccessException;
 }

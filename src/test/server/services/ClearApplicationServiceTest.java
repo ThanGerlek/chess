@@ -57,7 +57,7 @@ class ClearApplicationServiceTest extends ServiceTest {
 
         service.clearApplication();
 
-        Assertions.assertFalse(authDAO.isValidAuthToken(token1));
-        Assertions.assertFalse(authDAO.isValidAuthToken(token2));
+        Assertions.assertFalse(authDAO.isValidAuthToken(token1.authToken()));
+        Assertions.assertFalse(authDAO.isValidAuthToken(token2.authToken()));
     }
 }

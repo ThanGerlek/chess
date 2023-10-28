@@ -29,7 +29,7 @@ class CreateGameServiceTest extends ServiceTest {
     // Positive test
     @Test
     void create_Game_returns_okay() throws DataAccessException {
-        CreateGameResponse response = service.createGame(request, token);
+        CreateGameResponse response = service.createGame(request, token.authToken());
 //        Assertions.assertEquals(200, response.status());
         // TODO Assert something
     }
@@ -38,7 +38,7 @@ class CreateGameServiceTest extends ServiceTest {
     @Test
     void create_Game_with_invalid_token_returns_forbidden() throws DataAccessException {
         Assertions.assertThrows(UnauthorizedAccessException.class,
-                () -> service.createGame(request, new AuthToken("1234", "iDoNotExist")));
+                () -> service.createGame(request, "iDoNotExist"));
     }
 
 }

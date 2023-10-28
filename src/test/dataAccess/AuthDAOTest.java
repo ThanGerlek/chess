@@ -2,6 +2,7 @@ package dataAccess;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import server.AuthToken;
 import server.User;
@@ -49,6 +50,8 @@ class AuthDAOTest {
     }
 
     @Test
+    @Disabled
+        // Only applies using AuthTokens, not when just using Strings
     void addSameTokenStringDifferentUsersDoesNotError() throws DataAccessException {
         AuthToken token1 = new AuthToken("1234", "user1");
         AuthToken token2 = new AuthToken("1234", "user2");
@@ -70,21 +73,21 @@ class AuthDAOTest {
     void addedTokenIsValid() throws DataAccessException {
         AuthToken token = new AuthToken("1234", "user1");
         authDAO.addAuthToken(token);
-        Assertions.assertTrue(authDAO.isValidAuthToken(token));
+        Assertions.assertTrue(authDAO.isValidAuthToken(token.authToken()));
     }
 
     @Test
     void removedTokenIsNotValid() throws DataAccessException {
         AuthToken token = new AuthToken("1234", "user1");
         authDAO.addAuthToken(token);
-        authDAO.removeAuthToken(token);
-        Assertions.assertFalse(authDAO.isValidAuthToken(token));
+        authDAO.removeAuthToken(token.authToken());
+        Assertions.assertFalse(authDAO.isValidAuthToken(token.authToken()));
     }
 
     @Test
     void removingNonexistentTokenIsOkay() throws DataAccessException {
         AuthToken token = new AuthToken("1234", "user1");
-        authDAO.removeAuthToken(token);
+        authDAO.removeAuthToken(token.authToken());
         Assertions.assertTrue(true);
     }
 
@@ -97,8 +100,8 @@ class AuthDAOTest {
 
         authDAO.clearAuthTokens();
 
-        Assertions.assertFalse(authDAO.isValidAuthToken(token1));
-        Assertions.assertFalse(authDAO.isValidAuthToken(token2));
+        Assertions.assertFalse(authDAO.isValidAuthToken(token1.authToken()));
+        Assertions.assertFalse(authDAO.isValidAuthToken(token2.authToken()));
     }
 }
 

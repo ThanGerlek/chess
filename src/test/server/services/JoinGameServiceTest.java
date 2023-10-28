@@ -34,7 +34,7 @@ class JoinGameServiceTest extends ServiceTest {
     // Positive test
     @Test
     void join_Game_returns_okay() throws DataAccessException {
-        MessageResponse response = service.joinGame(request, token);
+        MessageResponse response = service.joinGame(request, token.authToken());
 //        Assertions.assertEquals(200, response.status());
         // TODO Assert something
     }
@@ -43,21 +43,21 @@ class JoinGameServiceTest extends ServiceTest {
     @Test
     void join_nonexistent_Game_returns_bad_request_error() throws DataAccessException {
         Assertions.assertThrows(NoSuchItemException.class,
-                () -> service.joinGame(new JoinGameRequest("WHITE", INVALID_GAME_ID), token));
+                () -> service.joinGame(new JoinGameRequest("WHITE", INVALID_GAME_ID), token.authToken()));
     }
 
     @Test
     @Disabled
         // TODO test
     void join_Game_without_color_returns_okay() throws DataAccessException {
-        service.joinGame(new JoinGameRequest(null, 1), token);
+        service.joinGame(new JoinGameRequest(null, 1), token.authToken());
     }
 
     @Test
     @Disabled
         // TODO test
     void join_Game_with_invalid_token_errors() throws DataAccessException {
-        service.joinGame(request, new AuthToken("iAmIncorrect", "user1"));
+        service.joinGame(request, new AuthToken("iAmIncorrect", "user1").authToken());
     }
 
 }

@@ -2,7 +2,8 @@ package dataAccess;
 
 import server.AuthToken;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 // TODO Update Javadocs with DataAccessException subclasses
@@ -12,7 +13,7 @@ import java.util.Objects;
  */
 public class MemoryAuthDAO implements AuthDAO {
 
-    private final ArrayList<AuthToken> tokenDatabase = new ArrayList<>();
+    private final Map<String, String> tokenDatabase = new HashMap<>();
     private final UserDAO userDAO;
 
     public MemoryAuthDAO(UserDAO userDAO) {
@@ -31,13 +32,13 @@ public class MemoryAuthDAO implements AuthDAO {
             throw new UnauthorizedAccessException("User not found");
         }
 
-        for (AuthToken existingToken : tokenDatabase) {
-            if (Objects.equals(existingToken, token)) {
+        for (String existingToken : tokenDatabase.keySet()) {
+            if (Objects.equals(existingToken, token.authToken())) {
                 throw new ValueAlreadyTakenException("Tried to register an already existing token");
             }
         }
 
-        tokenDatabase.add(token);
+        tokenDatabase.put(token.authToken(), token.username());
     }
 
     /**
@@ -46,9 +47,9 @@ public class MemoryAuthDAO implements AuthDAO {
      * @param token the token to validate
      * @return true iff the given token is currently valid
      */
-    public boolean isValidAuthToken(AuthToken token) throws DataAccessException {
+    public boolean isValidAuthToken(String token) throws DataAccessException {
         // Failures: can't access database
-        for (AuthToken existingToken : tokenDatabase) {
+        for (String existingToken : tokenDatabase.keySet()) {
             if (existingToken.equals(token)) {
                 return true;
             }
@@ -62,7 +63,7 @@ public class MemoryAuthDAO implements AuthDAO {
      *
      * @param token the token to invalidate
      */
-    public void removeAuthToken(AuthToken token) throws DataAccessException {
+    public void removeAuthToken(String token) throws DataAccessException {
         // Failures: can't access database, invalid token
         tokenDatabase.remove(token);
     }
@@ -74,5 +75,13 @@ public class MemoryAuthDAO implements AuthDAO {
     public void clearAuthTokens() throws DataAccessException {
         // Failures: can't access database (if no tokens, just return)
         tokenDatabase.clear();
+    }
+
+    public String getUsername(String authToken) throws DataAccessException {
+        if (isValidAuthToken(authToken)) {
+            return tokenDatabase.get(authToken);
+        } else {
+            throw new UnauthorizedAccessException("Could not get username of invalid token");
+        }
     }
 }

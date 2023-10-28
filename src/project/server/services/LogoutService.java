@@ -3,7 +3,6 @@ package server.services;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.UnauthorizedAccessException;
-import server.AuthToken;
 import server.http.MessageResponse;
 
 /**
@@ -23,7 +22,7 @@ public class LogoutService {
      * @return a MessageResponse representing the resulting HTTP response.
      * @throws DataAccessException if the token was already invalid
      */
-    public MessageResponse logout(AuthToken authToken) throws DataAccessException {
+    public MessageResponse logout(String authToken) throws DataAccessException {
         if (authDAO.isValidAuthToken(authToken)) {
             authDAO.removeAuthToken(authToken);
             return new MessageResponse("Okay!");
