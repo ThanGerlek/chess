@@ -1,6 +1,5 @@
 package server.services;
 
-import chess.ChessGameImpl;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
@@ -38,7 +37,7 @@ public class CreateGameService {
 
     private int registerNewGame(String gameName) throws DataAccessException {
         int gameID = gameDAO.generateNewGameID();
-        Game game = new Game(gameID, gameName, new ChessGameImpl());
+        Game game = new Game(gameID, gameName);
         gameDAO.insertNewGame(game);
         return gameID;
     }

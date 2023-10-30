@@ -1,7 +1,6 @@
 package server.services;
 
 import chess.ChessGame;
-import chess.ChessGameImpl;
 import chess.ChessPositionImpl;
 import chess.pieces.King;
 import chess.pieces.Queen;
@@ -19,8 +18,8 @@ import server.http.ListGamesResponse;
 class ListGamesServiceTest extends ServiceTest {
     private final User user = new User("user1", "pass1", "mail1");
     private final AuthToken token = new AuthToken("1234", "user1");
-    private final Game game1 = new Game(1, "game1", new ChessGameImpl());
-    private final Game game2 = new Game(2, "game2", new ChessGameImpl());
+    private final Game game1 = new Game(1, "game1");
+    private final Game game2 = new Game(2, "game2");
     private ListGamesService service;
 
     // TODO 500?

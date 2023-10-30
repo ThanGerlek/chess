@@ -25,9 +25,13 @@ public class Game {
      * @param gameName a human-readable name for this game
      */
     public Game(int gameID, String gameName) {
+        this(gameID, gameName, new ChessGameImpl());
+    }
+
+    public Game(int gameID, String gameName, ChessGame chessGame) {
         this.gameID = gameID;
         this.gameName = gameName;
-        this.chessGame = new ChessGameImpl();
+        this.chessGame = chessGame;
         this.whiteUsername = "";
         this.blackUsername = "";
         this.spectators = new ArrayList<>();

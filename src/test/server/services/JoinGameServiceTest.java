@@ -1,6 +1,5 @@
 package server.services;
 
-import chess.ChessGameImpl;
 import dataAccess.DataAccessException;
 import dataAccess.NoSuchItemException;
 import dataAccess.UnauthorizedAccessException;
@@ -33,7 +32,7 @@ class JoinGameServiceTest extends ServiceTest {
         authDAO.addAuthToken(token1);
         userDAO.insertNewUser(user2);
         authDAO.addAuthToken(token2);
-        gameDAO.insertNewGame(new Game(1, "game1", new ChessGameImpl()));
+        gameDAO.insertNewGame(new Game(1, "game1"));
         service = new JoinGameService(authDAO, gameDAO);
     }
 
