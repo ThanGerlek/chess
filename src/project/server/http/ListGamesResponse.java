@@ -1,7 +1,7 @@
 package server.http;
 
 /**
- * A record representing an HTTP response to a {@link services.ListGamesService} request.
+ * A record representing an HTTP response to a {@link server.services.ListGamesService} request.
  *
  * @param games   a list of games currently in the database
  * @param message the response message

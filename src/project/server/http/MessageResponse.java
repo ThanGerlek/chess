@@ -2,7 +2,8 @@ package server.http;
 
 /**
  * A record representing a simple HTTP response with only a message header. Used by
- * {@link services.ClearApplicationService}, {@link services.JoinGameService}, and {@link services.LogoutService}.
+ * {@link server.services.ClearApplicationService}, {@link server.services.JoinGameService}, and
+ * {@link server.services.LogoutService}.
  *
  * @param message the response message
  */
