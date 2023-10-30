@@ -25,7 +25,7 @@ public interface UserDAO {
      * Gets the User with the given username from the database.
      *
      * @param username the username of the User to fetch
-     * @return the User
+     * @return the fetched User
      * @throws DataAccessException if the User was not found
      */
     User getUser(String username) throws DataAccessException;
@@ -46,9 +46,9 @@ public interface UserDAO {
         */
 
     /**
-     * Removes a single User from the database.
+     * Removes a single user from the database.
      *
-     * @param user the User to remove
+     * @param user the user to remove
      */
     void removeUser(User user) throws DataAccessException;
         /* Failures
@@ -57,7 +57,7 @@ public interface UserDAO {
         */
 
     /**
-     * Removes every User from the database.
+     * Removes every user from the database.
      */
     void clearUsers() throws DataAccessException;
         /* Failures

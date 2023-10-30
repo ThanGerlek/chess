@@ -25,6 +25,7 @@ public interface AuthDAO {
      *
      * @param token the token to validate
      * @return true iff the given token is currently valid
+     * @throws DataAccessException if there was a problem accessing the data store
      */
     boolean isValidAuthToken(String token) throws DataAccessException;
         /* Failures

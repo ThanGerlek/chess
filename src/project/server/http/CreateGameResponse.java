@@ -1,7 +1,7 @@
 package server.http;
 
 /**
- * A record representing an HTTP response to a Create Game service call.
+ * A record representing an HTTP response to a {@link services.CreateGameService} request.
  *
  * @param gameID  the unique ID of the newly created game
  * @param message the response message

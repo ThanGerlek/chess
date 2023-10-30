@@ -72,7 +72,8 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     * Sets the board to the default starting board (how the game of chess normally starts).
+     * Sets the board to the default starting board
+     * (how the game of chess normally starts).
      */
     @Override
     public void resetBoard() {

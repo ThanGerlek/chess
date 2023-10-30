@@ -24,9 +24,9 @@ public interface GameDAO {
     /**
      * Fetches the Game with the given ID from the database.
      *
-     * @param gameID the ID of the Game to return
-     * @return the Game with the given ID
-     * @throws DataAccessException if a Game with the given ID was not found
+     * @param gameID the ID of the {@code Game} to return
+     * @return the fetched {@code Game}
+     * @throws DataAccessException if a {@code Game} with the given ID was not found
      */
     Game findGame(int gameID) throws DataAccessException;
         /* Failures
