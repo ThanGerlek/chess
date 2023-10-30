@@ -40,8 +40,7 @@ public class ChessGameImpl implements ChessGame {
      * Gets all valid moves for a piece at the given location.
      *
      * @param startPosition the piece to get valid moves for.
-     * @return a Collection of valid moves for requested piece, or null if no piece at
-     * startPosition.
+     * @return a Collection of valid moves for requested piece, or null if no piece at startPosition.
      */
     @Override
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
@@ -96,7 +95,8 @@ public class ChessGameImpl implements ChessGame {
         changeTeamTurn();
     }
 
-    private void promoteIfValid(ChessPosition position, ChessPiece.PieceType promotionPiece) throws InvalidMoveException {
+    private void promoteIfValid(ChessPosition position, ChessPiece.PieceType promotionPiece)
+            throws InvalidMoveException {
         if (!board.hasPieceAt(position)) {
             throw new IllegalArgumentException("Tried to promote an empty space");
         }
@@ -109,7 +109,7 @@ public class ChessGameImpl implements ChessGame {
                 board.addPiece(position, newPiece);
             } else {
                 throw new InvalidMoveException("Tried to promote to an invalid type: "
-                        + promotionPiece.toString());
+                        + promotionPiece);
             }
         }
     }
@@ -165,8 +165,7 @@ public class ChessGameImpl implements ChessGame {
     }
 
     /**
-     * Determines if the given team is in stalemate, which here is defined as having
-     * no valid moves.
+     * Determines if the given team is in stalemate, which here is defined as having no valid moves.
      *
      * @param teamColor which team to check for stalemate.
      * @return true if the specified team is in stalemate.
