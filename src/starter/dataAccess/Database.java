@@ -33,6 +33,36 @@ public class Database {
 
     private final LinkedList<Connection> connections = new LinkedList<>();
 
+    public Database() throws DataAccessException {
+        createSqlDatabase();
+    }
+
+    private void createSqlDatabase() throws DataAccessException {
+        try {
+            Connection connection = connections.isEmpty()
+                    ? DriverManager.getConnection(CONNECTION_URL, DB_USERNAME, DB_PASSWORD)
+                    : connections.removeFirst();
+
+            String sqlString = String.format("CREATE DATABASE IF NOT EXISTS %s CHARACTER SET utf8mb4", DB_NAME);
+            try (var preparedStatement = connection.prepareStatement(sqlString)) {
+                preparedStatement.executeUpdate();
+            }
+
+            returnConnection(connection);
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
+    /**
+     * Return a previously acquired connection to the pool.
+     *
+     * @param connection previous obtained by calling {@link #getConnection() getConnection}.
+     */
+    synchronized public void returnConnection(Connection connection) {
+        connections.add(connection);
+    }
+
     /**
      * Get a connection to the database. This pulls a connection out of a simple pool implementation. The connection
      * must be returned to the pool after you are done with it by calling
@@ -53,14 +83,5 @@ public class Database {
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
-    }
-
-    /**
-     * Return a previously acquired connection to the pool.
-     *
-     * @param connection previous obtained by calling {@link #getConnection() getConnection}.
-     */
-    synchronized public void returnConnection(Connection connection) {
-        connections.add(connection);
     }
 }
