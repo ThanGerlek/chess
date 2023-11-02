@@ -10,6 +10,12 @@ public interface UserDAO {
     // TODO? change remove to take a username?
 
     /**
+     * Set up this UserDAO.
+     */
+    default void initialize() throws DataAccessException {
+    }
+
+    /**
      * Adds a new User to the database.
      *
      * @param user the User to insert

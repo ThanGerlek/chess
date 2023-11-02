@@ -8,6 +8,12 @@ import server.AuthToken;
 public interface AuthDAO {
 
     /**
+     * Set up this AuthDAO.
+     */
+    default void initialize() throws DataAccessException {
+    }
+
+    /**
      * Registers the given {@code AuthToken} as a valid token.
      *
      * @param token the AuthToken to register

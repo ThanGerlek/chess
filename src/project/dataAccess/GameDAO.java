@@ -10,6 +10,12 @@ import server.http.GameListItem;
 public interface GameDAO {
 
     /**
+     * Set up this GameDAO.
+     */
+    default void initialize() throws DataAccessException {
+    }
+
+    /**
      * Inserts a new Game into the database.
      *
      * @param game the Game to insert
