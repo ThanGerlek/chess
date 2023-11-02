@@ -5,20 +5,31 @@ import server.Game;
 import server.http.GameListItem;
 
 public class DatabaseGameDAO implements GameDAO {
-    // TODO Write CREATE_GAME_TABLE
-    private static final String CREATE_GAME_TABLE = """
+    private static final String CREATE_GAMES_TABLE = """
             CREATE TABLE IF NOT EXISTS games (
+                gameId INT NOT NULL AUTO_INCREMENT,
+                gameName VARCHAR(256),
+                game TEXT NOT NULL,
+                PRIMARY KEY (gameId)
+            )""";
+    private static final String CREATE_ROLES_TABLE = """
+            CREATE TABLE IF NOT EXISTS roles (
                 id INT NOT NULL AUTO_INCREMENT,
-                PRIMARY KEY (id)
+                gameId INT NOT NULL,
+                username VARCHAR(128) NOT NULL,
+                role INT NOT NULL,
+                PRIMARY KEY (id),
+                INDEX (gameId)
             )""";
     private final ChessDatabase database;
     private final UserDAO userDAO;
-    MemoryGameDAO memoryGameDAO;
+    MemoryGameDAO memoryGameDAO; // TODO Remove
 
     public DatabaseGameDAO(ChessDatabase database, UserDAO userDAO) throws DataAccessException {
         this.userDAO = userDAO;
         this.database = database;
-        database.executeSqlUpdate(CREATE_GAME_TABLE);
+        database.executeSqlUpdate(CREATE_GAMES_TABLE);
+        database.executeSqlUpdate(CREATE_ROLES_TABLE);
         memoryGameDAO = new MemoryGameDAO(userDAO);
     }
 

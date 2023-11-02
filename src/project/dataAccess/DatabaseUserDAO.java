@@ -3,14 +3,17 @@ package dataAccess;
 import server.User;
 
 public class DatabaseUserDAO implements UserDAO {
-    // TODO Write CREATE_USER_TABLE
     private static final String CREATE_USER_TABLE = """
             CREATE TABLE IF NOT EXISTS users (
                 id INT NOT NULL AUTO_INCREMENT,
-                PRIMARY KEY (id)
+                username VARCHAR(128) NOT NULL,
+                password VARCHAR(128) NOT NULL,
+                email VARCHAR(128),
+                PRIMARY KEY (id),
+                INDEX (username)
             )""";
     private final ChessDatabase database;
-    MemoryUserDAO memoryUserDAO;
+    MemoryUserDAO memoryUserDAO; // TODO Remove
 
     public DatabaseUserDAO(ChessDatabase database) throws DataAccessException {
         this.database = database;

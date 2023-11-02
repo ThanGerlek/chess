@@ -3,15 +3,17 @@ package dataAccess;
 import server.AuthToken;
 
 public class DatabaseAuthDAO implements AuthDAO {
-    // TODO Write CREATE_AUTH_TABLE
     private static final String CREATE_AUTH_TABLE = """
             CREATE TABLE IF NOT EXISTS auth (
                 id INT NOT NULL AUTO_INCREMENT,
-                PRIMARY KEY (id)
+                token VARCHAR(128) NOT NULL UNIQUE,
+                username VARCHAR(128) NOT NULL,
+                PRIMARY KEY (id),
+                UNIQUE INDEX (token)
             )""";
     private final ChessDatabase database;
     private final UserDAO userDAO;
-    private final MemoryAuthDAO memoryAuthDAO;
+    private final MemoryAuthDAO memoryAuthDAO; // TODO Remove
 
     public DatabaseAuthDAO(ChessDatabase database, UserDAO userDAO) throws DataAccessException {
         this.userDAO = userDAO;
