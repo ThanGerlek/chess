@@ -24,10 +24,10 @@ import java.util.LinkedList;
  */
 public class Database {
 
-    // FIXME: Change these fields, if necessary, to match your database configuration
+    // FIXME: Import from private config file
     public static final String DB_NAME = "chess";
     private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "admin";
+    private static final String DB_PASSWORD = "3Dqu3vnE3k29LnnncLmT2BrrL9ca2TQd";
 
     private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306";
 
