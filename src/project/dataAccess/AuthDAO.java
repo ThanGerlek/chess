@@ -53,5 +53,16 @@ public interface AuthDAO {
         (if no tokens, just return)
         */
 
+    /**
+     * Returns the username corresponding to the given token.
+     *
+     * @param authToken the token to look up
+     * @return the username corresponding to the token
+     * @throws DataAccessException if the token is invalid
+     */
     String getUsername(String authToken) throws DataAccessException;
+    /* Failures
+    can't access database
+    token is invalid
+     */
 }

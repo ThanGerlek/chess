@@ -77,6 +77,13 @@ public class MemoryAuthDAO implements AuthDAO {
         tokenDatabase.clear();
     }
 
+    /**
+     * Returns the username corresponding to the given token.
+     *
+     * @param authToken the token to look up
+     * @return the username corresponding to the token
+     * @throws DataAccessException if the token is invalid
+     */
     public String getUsername(String authToken) throws DataAccessException {
         if (isValidAuthToken(authToken)) {
             return tokenDatabase.get(authToken);
