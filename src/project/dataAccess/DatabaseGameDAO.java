@@ -13,11 +13,13 @@ public class DatabaseGameDAO implements GameDAO {
             )""";
     private final ChessDatabase database;
     private final UserDAO userDAO;
+    MemoryGameDAO memoryGameDAO;
 
     public DatabaseGameDAO(ChessDatabase database, UserDAO userDAO) throws DataAccessException {
         this.userDAO = userDAO;
         this.database = database;
         database.executeSqlUpdate(CREATE_GAME_TABLE);
+        memoryGameDAO = new MemoryGameDAO(userDAO);
     }
 
     /**
@@ -28,7 +30,8 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void insertNewGame(Game game) throws DataAccessException {
-
+        // TODO Implement with Database
+        memoryGameDAO.insertNewGame(game);
     }
 
     /**
@@ -40,7 +43,8 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public Game findGame(int gameID) throws DataAccessException {
-        return null;
+        // TODO Implement with Database
+        return memoryGameDAO.findGame(gameID);
     }
 
     /**
@@ -50,7 +54,8 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public GameListItem[] allGames() throws DataAccessException {
-        return new GameListItem[0];
+        // TODO Implement with Database
+        return memoryGameDAO.allGames();
     }
 
     /**
@@ -63,7 +68,8 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void assignPlayerRole(int gameID, String username, ChessGame.PlayerRole role) throws DataAccessException {
-
+        // TODO Implement with Database
+        memoryGameDAO.assignPlayerRole(gameID, username, role);
     }
 
     /**
@@ -74,6 +80,8 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void updateGameState(Game game) throws DataAccessException {
+        // TODO Implement with Database
+        memoryGameDAO.updateGameState(game);
 
     }
 
@@ -84,7 +92,8 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void removeGame(int gameID) throws DataAccessException {
-
+        // TODO Implement with Database
+        memoryGameDAO.removeGame(gameID);
     }
 
     /**
@@ -92,7 +101,8 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void clearGames() throws DataAccessException {
-
+        // TODO Implement with Database
+        memoryGameDAO.clearGames();
     }
 
     /**
@@ -102,6 +112,7 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public int generateNewGameID() {
-        return 0;
+        // TODO Implement with Database
+        return memoryGameDAO.generateNewGameID();
     }
 }

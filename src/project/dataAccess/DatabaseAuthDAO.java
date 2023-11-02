@@ -11,11 +11,13 @@ public class DatabaseAuthDAO implements AuthDAO {
             )""";
     private final ChessDatabase database;
     private final UserDAO userDAO;
+    private final MemoryAuthDAO memoryAuthDAO;
 
     public DatabaseAuthDAO(ChessDatabase database, UserDAO userDAO) throws DataAccessException {
         this.userDAO = userDAO;
         this.database = database;
         database.executeSqlUpdate(CREATE_AUTH_TABLE);
+        memoryAuthDAO = new MemoryAuthDAO(userDAO);
     }
 
     /**
@@ -26,7 +28,8 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public void addAuthToken(AuthToken token) throws DataAccessException {
-
+        // TODO Implement with Database
+        memoryAuthDAO.addAuthToken(token);
     }
 
     /**
@@ -38,7 +41,8 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public boolean isValidAuthToken(String token) throws DataAccessException {
-        return false;
+        // TODO Implement with Database
+        return memoryAuthDAO.isValidAuthToken(token);
     }
 
     /**
@@ -49,7 +53,8 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public void removeAuthToken(String token) throws DataAccessException {
-
+        // TODO Implement with Database
+        memoryAuthDAO.removeAuthToken(token);
     }
 
     /**
@@ -58,7 +63,8 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public void clearAuthTokens() throws DataAccessException {
-
+        // TODO Implement with Database
+        memoryAuthDAO.clearAuthTokens();
     }
 
     /**
@@ -70,7 +76,8 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public String getUsername(String authToken) throws DataAccessException {
-        return null;
+        // TODO Implement with Database
+        return memoryAuthDAO.getUsername(authToken);
     }
 }
 

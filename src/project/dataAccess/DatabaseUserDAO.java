@@ -10,10 +10,12 @@ public class DatabaseUserDAO implements UserDAO {
                 PRIMARY KEY (id)
             )""";
     private final ChessDatabase database;
+    MemoryUserDAO memoryUserDAO;
 
     public DatabaseUserDAO(ChessDatabase database) throws DataAccessException {
         this.database = database;
         database.executeSqlUpdate(CREATE_USER_TABLE);
+        memoryUserDAO = new MemoryUserDAO();
     }
 
     /**
@@ -24,7 +26,8 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public void insertNewUser(User user) throws DataAccessException {
-
+        // TODO Implement with Database
+        memoryUserDAO.insertNewUser(user);
     }
 
     /**
@@ -36,7 +39,8 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public User getUser(String username) throws DataAccessException {
-        return null;
+        // TODO Implement with Database
+        return memoryUserDAO.getUser(username);
     }
 
     /**
@@ -47,7 +51,8 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public boolean hasUser(String username) throws DataAccessException {
-        return false;
+        // TODO Implement with Database
+        return memoryUserDAO.hasUser(username);
     }
 
     /**
@@ -57,7 +62,8 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public void removeUser(User user) throws DataAccessException {
-
+        // TODO Implement with Database
+        memoryUserDAO.removeUser(user);
     }
 
     /**
@@ -65,6 +71,7 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public void clearUsers() throws DataAccessException {
-
+        // TODO Implement with Database
+        memoryUserDAO.clearUsers();
     }
 }
