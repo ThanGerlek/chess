@@ -3,6 +3,20 @@ package dataAccess;
 import server.AuthToken;
 
 public class DatabaseAuthDAO implements AuthDAO {
+    // TODO Write CREATE_AUTH_TABLE
+    private static final String CREATE_AUTH_TABLE = """
+            CREATE TABLE IF NOT EXISTS auth (
+                id INT NOT NULL AUTO_INCREMENT,
+                PRIMARY KEY (id)
+            )""";
+    private final ChessDatabase database;
+    private final UserDAO userDAO;
+
+    public DatabaseAuthDAO(ChessDatabase database, UserDAO userDAO) throws DataAccessException {
+        this.userDAO = userDAO;
+        this.database = database;
+        database.executeSqlUpdate(CREATE_AUTH_TABLE);
+    }
 
     /**
      * Registers the given {@code AuthToken} as a valid token.
@@ -59,3 +73,5 @@ public class DatabaseAuthDAO implements AuthDAO {
         return null;
     }
 }
+
+

@@ -5,6 +5,20 @@ import server.Game;
 import server.http.GameListItem;
 
 public class DatabaseGameDAO implements GameDAO {
+    // TODO Write CREATE_GAME_TABLE
+    private static final String CREATE_GAME_TABLE = """
+            CREATE TABLE IF NOT EXISTS games (
+                id INT NOT NULL AUTO_INCREMENT,
+                PRIMARY KEY (id)
+            )""";
+    private final ChessDatabase database;
+    private final UserDAO userDAO;
+
+    public DatabaseGameDAO(ChessDatabase database, UserDAO userDAO) throws DataAccessException {
+        this.userDAO = userDAO;
+        this.database = database;
+        database.executeSqlUpdate(CREATE_GAME_TABLE);
+    }
 
     /**
      * Inserts a new Game into the database.

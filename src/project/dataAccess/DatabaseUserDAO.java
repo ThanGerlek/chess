@@ -3,6 +3,18 @@ package dataAccess;
 import server.User;
 
 public class DatabaseUserDAO implements UserDAO {
+    // TODO Write CREATE_USER_TABLE
+    private static final String CREATE_USER_TABLE = """
+            CREATE TABLE IF NOT EXISTS users (
+                id INT NOT NULL AUTO_INCREMENT,
+                PRIMARY KEY (id)
+            )""";
+    private final ChessDatabase database;
+
+    public DatabaseUserDAO(ChessDatabase database) throws DataAccessException {
+        this.database = database;
+        database.executeSqlUpdate(CREATE_USER_TABLE);
+    }
 
     /**
      * Adds a new User to the database.
