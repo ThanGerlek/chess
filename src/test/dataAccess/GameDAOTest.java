@@ -11,16 +11,20 @@ import server.Game;
 import server.http.GameListItem;
 
 class GameDAOTest {
+    private final boolean USE_DATABASE_DAOS = true;
     private GameDAO gameDAO;
     private ChessGame chessGame1;
     private ChessGame chessGame2;
+
+    private ChessDatabase database;
 
     // TODO Test player roles in allGames()?
 
     @BeforeEach
     void setUp() {
-        UserDAO userDAO = new MemoryUserDAO();
-        gameDAO = new MemoryGameDAO(userDAO);
+        database = new ChessDatabase();
+        UserDAO userDAO = USE_DATABASE_DAOS ? new DatabaseUserDAO(database) : new MemoryUserDAO();
+        gameDAO = USE_DATABASE_DAOS ? new DatabaseGameDAO(database, userDAO) : new MemoryGameDAO(userDAO);
         setUpGames();
     }
 

@@ -6,11 +6,15 @@ import org.junit.jupiter.api.Test;
 import server.User;
 
 class UserDAOTest {
+    private final boolean USE_DATABASE_DAOS = true;
     private UserDAO userDAO;
+
+    private ChessDatabase database;
 
     @BeforeEach
     void setUp() {
-        userDAO = new MemoryUserDAO();
+        database = new ChessDatabase();
+        userDAO = USE_DATABASE_DAOS ? new DatabaseUserDAO(database) : new MemoryUserDAO();
     }
 
     @Test
