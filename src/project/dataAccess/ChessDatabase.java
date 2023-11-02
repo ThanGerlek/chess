@@ -4,19 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ChessDatabase extends Database {
-    private static final String CREATE_DATABASE_SQL_STRING =
-            "CREATE DATABASE IF NOT EXISTS chess CHARACTER SET utf8mb4";
 
     public ChessDatabase() throws DataAccessException {
-        initialize();
-    }
-
-    private void initialize() throws DataAccessException {
-        try {
-            executeSqlUpdate(CREATE_DATABASE_SQL_STRING);
-        } catch (DataAccessException e) {
-            throw new DataAccessException("Failed to initialize database with error: " + e.getMessage());
-        }
     }
 
     public void executeSqlUpdate(String sqlString) throws DataAccessException {
