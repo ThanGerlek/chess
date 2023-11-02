@@ -48,6 +48,7 @@ public class Database {
                 preparedStatement.executeUpdate();
             }
 
+            connection.setCatalog(DB_NAME);
             returnConnection(connection);
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
