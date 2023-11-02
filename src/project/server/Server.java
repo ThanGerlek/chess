@@ -18,10 +18,13 @@ public class Server {
     private final LogoutHandler LOGOUT_HANDLER;
     private final RegisterHandler REGISTER_HANDLER;
 
-    public Server() {
-        UserDAO userDAO = new MemoryUserDAO();
-        AuthDAO authDAO = new MemoryAuthDAO(userDAO);
-        GameDAO gameDAO = new MemoryGameDAO(userDAO);
+    public Server() throws DataAccessException {
+        // TODO Instead of packing everything into Server, write a database handler or something?
+        ChessDatabase database = new ChessDatabase();
+
+        UserDAO userDAO = new DatabaseUserDAO(database);
+        AuthDAO authDAO = new DatabaseAuthDAO(database, userDAO);
+        GameDAO gameDAO = new DatabaseGameDAO(database, userDAO);
 
         CLEAR_APPLICATION_HANDLER = new ClearApplicationHandler(authDAO, gameDAO, userDAO);
         CREATE_GAME_HANDLER = new CreateGameHandler(authDAO, gameDAO);
@@ -32,7 +35,7 @@ public class Server {
         REGISTER_HANDLER = new RegisterHandler(authDAO, userDAO);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DataAccessException {
         new Server().run();
     }
 
