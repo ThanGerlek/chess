@@ -15,12 +15,10 @@ public class DatabaseAuthDAO implements AuthDAO {
             )""";
     private final ChessDatabase database;
     private final UserDAO userDAO;
-    private final MemoryAuthDAO memoryAuthDAO; // TODO Remove
 
     public DatabaseAuthDAO(ChessDatabase database, UserDAO userDAO) {
         this.userDAO = userDAO;
         this.database = database;
-        memoryAuthDAO = new MemoryAuthDAO(userDAO);
     }
 
     /**
@@ -40,8 +38,6 @@ public class DatabaseAuthDAO implements AuthDAO {
     @Override
     public void addAuthToken(AuthToken token) throws DataAccessException {
         // Failures: token already exists (incl. for different user), username doesn't exist
-        // TODO Test with Database
-        memoryAuthDAO.addAuthToken(token);
 
         if (!userDAO.hasUser(token.username())) {
             throw new UnauthorizedAccessException("User not found");
@@ -66,10 +62,7 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public boolean isValidAuthToken(String token) throws DataAccessException {
-        // TODO Test
-
-        String sqlString = "SELECT id FROM auth WHERE token=?";
-        return database.booleanQueryWithParam(sqlString, token);
+        return database.booleanQueryWithParam("SELECT id FROM auth WHERE token=?", token);
     }
 
     /**
@@ -80,9 +73,6 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public void removeAuthToken(String token) throws DataAccessException {
-        // TODO Test with Database
-        memoryAuthDAO.removeAuthToken(token);
-
         database.updateWithParam("DELETE FROM auth WHERE token=?", token);
     }
 
@@ -92,9 +82,6 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public void clearAuthTokens() throws DataAccessException {
-        // TODO Implement with Database
-        memoryAuthDAO.clearAuthTokens();
-
         database.update("TRUNCATE auth");
     }
 
@@ -108,8 +95,6 @@ public class DatabaseAuthDAO implements AuthDAO {
     @Override
     public String getUsername(String authToken) throws DataAccessException {
         // Failures: token is invalid
-        // TODO Implement with Database
-
         String sqlString = "SELECT username FROM auth WHERE token=?";
         ArrayList<String> usernames = database.queryForString("username", sqlString, preparedStatement -> {
             preparedStatement.setString(1, authToken);
@@ -118,7 +103,6 @@ public class DatabaseAuthDAO implements AuthDAO {
         if (usernames.isEmpty()) {
             throw new UnauthorizedAccessException("Could not get username of invalid token");
         }
-
         return usernames.get(0);
     }
 }
