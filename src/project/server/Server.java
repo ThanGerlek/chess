@@ -18,13 +18,19 @@ public class Server {
     private final LogoutHandler LOGOUT_HANDLER;
     private final RegisterHandler REGISTER_HANDLER;
 
-    public Server() throws DataAccessException {
-        // TODO Instead of packing everything into Server, write a database handler or something?
-        ChessDatabase database = new ChessDatabase();
+    private final ChessDatabase database;
 
-        UserDAO userDAO = new DatabaseUserDAO(database);
-        AuthDAO authDAO = new DatabaseAuthDAO(database, userDAO);
-        GameDAO gameDAO = new DatabaseGameDAO(database, userDAO);
+    private final UserDAO userDAO;
+    private final AuthDAO authDAO;
+    private final GameDAO gameDAO;
+
+    public Server() {
+        // TODO Instead of packing everything into Server, write a database handler or something?
+        database = new ChessDatabase();
+
+        userDAO = new DatabaseUserDAO(database);
+        authDAO = new DatabaseAuthDAO(database, userDAO);
+        gameDAO = new DatabaseGameDAO(database, userDAO);
 
         CLEAR_APPLICATION_HANDLER = new ClearApplicationHandler(authDAO, gameDAO, userDAO);
         CREATE_GAME_HANDLER = new CreateGameHandler(authDAO, gameDAO);
@@ -39,14 +45,32 @@ public class Server {
         new Server().run();
     }
 
-    private void run() {
+    private void run() throws DataAccessException {
         System.out.println("Starting the server");
+        setupHttpRouting();
+        try {
+            setupDataAccess();
+        } catch (DataAccessException e) {
+            System.out.println("Failed to setup data access!");
+            Spark.stop();
+            throw e;
+        }
+    }
+
+    private void setupHttpRouting() {
         Spark.port(PORT);
         Spark.externalStaticFileLocation("web");
         createRoutes();
         addShutdownHook();
         Spark.awaitInitialization();
         System.out.println("Listening on port " + PORT);
+    }
+
+    private void setupDataAccess() throws DataAccessException {
+        database.initialize();
+        userDAO.initialize();
+        authDAO.initialize();
+        gameDAO.initialize();
     }
 
     private void createRoutes() {
