@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import server.Game;
 import server.http.GameListItem;
 
+import java.util.ArrayList;
+
 class GameDAOTest {
     private final boolean USE_DATABASE_DAOS = true;
     private final ChessDatabase database = new ChessDatabase();
@@ -83,7 +85,7 @@ class GameDAOTest {
 
     @Test
     void allGamesFromEmpty() throws DataAccessException {
-        Assertions.assertEquals(0, gameDAO.allGames().length);
+        Assertions.assertEquals(0, gameDAO.allGames().size());
     }
 
     @Test
@@ -95,10 +97,10 @@ class GameDAOTest {
         GameListItem item1 = new GameListItem(1, null, null, "game1");
         GameListItem item2 = new GameListItem(2, null, null, "game2");
 
-        GameListItem[] actual = gameDAO.allGames();
-        Assertions.assertEquals(2, actual.length);
-        Assertions.assertEquals(item1, actual[0]);
-        Assertions.assertEquals(item2, actual[1]);
+        ArrayList<GameListItem> actual = gameDAO.allGames();
+        Assertions.assertEquals(2, actual.size());
+        Assertions.assertEquals(item1, actual.get(0));
+        Assertions.assertEquals(item2, actual.get(1));
     }
 
     @Test

@@ -128,12 +128,12 @@ public class DatabaseGameDAO implements GameDAO {
     }
 
     /**
-     * Returns an array containing data about each Game in the database.
+     * Returns a list containing data about each Game in the database.
      *
-     * @return an array of data about each Game in the database
+     * @return a list of data about each Game in the database
      */
     @Override
-    public GameListItem[] allGames() throws DataAccessException {
+    public ArrayList<GameListItem> allGames() throws DataAccessException {
         // TODO Implement with Database
         return memoryGameDAO.allGames();
     }

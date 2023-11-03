@@ -4,6 +4,8 @@ import chess.ChessGame;
 import server.Game;
 import server.http.GameListItem;
 
+import java.util.ArrayList;
+
 /**
  * A DAO (Data Access Object) for CRUD operations on Games currently being played.
  */
@@ -41,11 +43,11 @@ public interface GameDAO {
         */
 
     /**
-     * Returns an array containing data about each Game in the database.
+     * Returns a list containing data about each Game in the database.
      *
-     * @return an array of data about each Game in the database
+     * @return a list of data about each Game in the database
      */
-    GameListItem[] allGames() throws DataAccessException;
+    ArrayList<GameListItem> allGames() throws DataAccessException;
         /* Failures
         can't access database
         */

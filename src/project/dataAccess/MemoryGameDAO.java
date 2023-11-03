@@ -4,7 +4,10 @@ import chess.ChessGame;
 import server.Game;
 import server.http.GameListItem;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A DAO (Data Access Object) for CRUD operations on Games currently being played.
@@ -50,13 +53,13 @@ public class MemoryGameDAO implements GameDAO {
     }
 
     /**
-     * Returns an array containing data about each Game in the database.
+     * Returns a list containing data about each Game in the database.
      *
-     * @return an array of data about each Game in the database
+     * @return a list of data about each Game in the database
      */
-    public GameListItem[] allGames() throws DataAccessException {
+    public ArrayList<GameListItem> allGames() throws DataAccessException {
         // Failures: can't access database
-        Collection<GameListItem> gameList = new ArrayList<>();
+        ArrayList<GameListItem> gameList = new ArrayList<>();
         for (Game game : gameDatabase.values()) {
             // TODO remove hack making empty strings nulls
             // provided Service tests require null, not ""
@@ -64,7 +67,7 @@ public class MemoryGameDAO implements GameDAO {
             String blackUsername = (game.blackUsername().isEmpty()) ? null : game.blackUsername();
             gameList.add(new GameListItem(game.gameID(), whiteUsername, blackUsername, game.gameName()));
         }
-        return gameList.toArray(new GameListItem[0]);
+        return gameList;
     }
 
     /**

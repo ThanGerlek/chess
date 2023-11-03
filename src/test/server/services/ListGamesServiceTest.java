@@ -15,6 +15,8 @@ import server.User;
 import server.http.GameListItem;
 import server.http.ListGamesResponse;
 
+import java.util.ArrayList;
+
 class ListGamesServiceTest extends ServiceTest {
     private final User user = new User("user1", "pass1", "mail1");
     private final AuthToken token = new AuthToken("1234", "user1");
@@ -47,10 +49,10 @@ class ListGamesServiceTest extends ServiceTest {
 
         ListGamesResponse response = service.listGames(token.authToken());
 
-        GameListItem[] actual = response.games();
-        Assertions.assertEquals(2, actual.length);
-        Assertions.assertEquals(expected[0], actual[0]);
-        Assertions.assertEquals(expected[1], actual[1]);
+        ArrayList<GameListItem> actual = response.games();
+        Assertions.assertEquals(2, actual.size());
+        Assertions.assertEquals(expected[0], actual.get(0));
+        Assertions.assertEquals(expected[1], actual.get(1));
     }
 
     // Negative test
