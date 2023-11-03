@@ -97,6 +97,7 @@ class AuthDAOTest {
 
     @Test
     void getUsernameReturnsUsername() throws DataAccessException {
+        authDAO.addAuthToken(new AuthToken("1234", "user1"));
         Assertions.assertEquals("user1", authDAO.getUsername("1234"));
     }
 
