@@ -5,6 +5,11 @@ import com.google.gson.Gson;
 import server.Game;
 import server.http.GameListItem;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 public class DatabaseGameDAO implements GameDAO {
     private static final String CREATE_GAMES_TABLE = """
             CREATE TABLE IF NOT EXISTS games (
@@ -135,7 +140,39 @@ public class DatabaseGameDAO implements GameDAO {
     @Override
     public ArrayList<GameListItem> allGames() throws DataAccessException {
         // TODO Implement with Database
-        return memoryGameDAO.allGames();
+
+        ArrayList<GameListItem> gameListItems = new ArrayList<>();
+
+
+        String sqlString = """
+                SELECT
+                    games.gameName,
+                    games.gameId,
+                    MAX(CASE WHEN roles.role='white' THEN roles.username END) AS whiteUsername,
+                    MAX(CASE WHEN roles.role='black' THEN roles.username END) AS blackUsername
+                FROM games LEFT JOIN roles ON games.gameId=roles.gameId
+                GROUP BY games.gameId
+                """;
+        Connection conn = database.getConnection();
+        try (var preparedStatement = conn.prepareStatement(sqlString)) {
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    String gameName = rs.getString("gameName");
+                    int gameID = rs.getInt("gameId");
+                    String whiteUsername = rs.getString("whiteUsername");
+                    String blackUsername = rs.getString("blackUsername");
+                    GameListItem item = new GameListItem(gameID, whiteUsername, blackUsername, gameName);
+                    gameListItems.add(item);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to run executeQuery() on SQL String: `" + sqlString + "`");
+            throw new DataAccessException(e.getMessage());
+        } finally {
+            database.returnConnection(conn);
+        }
+
+        return gameListItems;
     }
 
     /**
