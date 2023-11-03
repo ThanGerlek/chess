@@ -42,6 +42,12 @@ public class DatabaseUserDAO implements UserDAO {
         // TODO Test with Database
         memoryUserDAO.insertNewUser(user);
 
+        String sqlString = "SELECT id FROM users WHERE username=?";
+        boolean userAlreadyExists = database.booleanQueryWithParam(sqlString, user.username());
+        if (userAlreadyExists) {
+            throw new ValueAlreadyTakenException("Tried to insert a user with an already-taken username");
+        }
+
         database.update("INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
                 preparedStatement -> {
                     preparedStatement.setString(1, user.username());

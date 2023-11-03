@@ -41,6 +41,13 @@ public class DatabaseAuthDAO implements AuthDAO {
         // TODO Test with Database
         memoryAuthDAO.addAuthToken(token);
 
+        if (!userDAO.hasUser(token.username())) {
+            throw new UnauthorizedAccessException("User not found");
+        }
+        if (isValidAuthToken(token.authToken())) {
+            throw new ValueAlreadyTakenException("Tried to register an already existing token");
+        }
+
         String sqlString = "INSERT INTO auth (token, username) VALUES (?, ?)";
         database.update(sqlString, (preparedStatement -> {
             preparedStatement.setString(1, token.authToken());
@@ -98,6 +105,11 @@ public class DatabaseAuthDAO implements AuthDAO {
     public String getUsername(String authToken) throws DataAccessException {
         // Failures: token is invalid
         // TODO Implement with Database
+
+        if (!isValidAuthToken(authToken)) {
+            throw new UnauthorizedAccessException("Could not get username of invalid token");
+        }
+
         return memoryAuthDAO.getUsername(authToken);
     }
 }

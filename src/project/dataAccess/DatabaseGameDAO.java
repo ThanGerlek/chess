@@ -53,6 +53,13 @@ public class DatabaseGameDAO implements GameDAO {
         // TODO Test with Database
         memoryGameDAO.insertNewGame(game);
 
+        String sqlString = "SELECT gameId FROM games WHERE gameId=?";
+        boolean gameIdAlreadyExists = database.booleanQueryWithParam(sqlString, game.gameID());
+        if (gameIdAlreadyExists) {
+            throw new ValueAlreadyTakenException(
+                    "Tried to insert a new Game with a gameID that already exists in the database");
+        }
+
         String chessGameStr = new Gson().toJson(game.chessGame());
 
         database.update("INSERT INTO games (gameId, gameName, game) VALUES (?, ?, ?)", preparedStatement -> {
@@ -84,6 +91,7 @@ public class DatabaseGameDAO implements GameDAO {
     public Game findGame(int gameID) throws DataAccessException {
         // Failures: game not found
         // TODO Implement with Database
+        assertIDExists(gameID);
         return memoryGameDAO.findGame(gameID);
     }
 
@@ -112,6 +120,14 @@ public class DatabaseGameDAO implements GameDAO {
         // TODO Test with Database
         memoryGameDAO.assignPlayerRole(gameID, username, role);
 
+        assertIDExists(gameID);
+
+        String sqlString = "SELECT id FROM users WHERE username=?";
+        boolean userExists = database.booleanQueryWithParam(sqlString, username);
+        if (!userExists) {
+            throw new UnauthorizedAccessException("Unrecognized username");
+        }
+
         database.update("INSERT INTO roles (username, role) VALUES (?, ?)", preparedStatement -> {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, roleToString(role));
@@ -128,6 +144,7 @@ public class DatabaseGameDAO implements GameDAO {
     public void updateGameState(Game game) throws DataAccessException {
         // Failures: game not found
         // TODO Implement with Database
+        assertIDExists(game.gameID());
         memoryGameDAO.updateGameState(game);
 
     }
@@ -167,6 +184,18 @@ public class DatabaseGameDAO implements GameDAO {
     public int generateNewGameID() {
         // TODO Implement with Database
         return memoryGameDAO.generateNewGameID();
+    }
+
+    private void assertIDExists(int gameID) throws DataAccessException {
+        String sqlString = "SELECT gameId FROM games WHERE gameId=?";
+        boolean gameIdExists = database.booleanQuery(sqlString, preparedStatement -> {
+            preparedStatement.setInt(1, gameID);
+        });
+
+        if (!database.booleanQueryWithParam("SELECT gameId FROM games WHERE gameId=?", gameID)) {
+            String msg = String.format("Tried to access a Game with an unrecognized gameID: '%d'", gameID);
+            throw new NoSuchItemException(msg);
+        }
     }
 
     private String roleToString(ChessGame.PlayerRole role) {
