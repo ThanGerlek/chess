@@ -19,7 +19,7 @@ class AuthDAOTest {
 
     @BeforeEach
     void setUp() throws DataAccessException {
-        database.executeSqlUpdate("TRUNCATE auth");
+        database.update("TRUNCATE auth");
         userDAO = (USE_DATABASE_DAOS) ? new DatabaseUserDAO(database) : new MemoryUserDAO();
         authDAO = (USE_DATABASE_DAOS) ? new DatabaseAuthDAO(database, userDAO) : new MemoryAuthDAO(userDAO);
         User user1 = new User("user1", "pass1", "mail1");

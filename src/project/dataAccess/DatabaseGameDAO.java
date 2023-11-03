@@ -37,8 +37,8 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void initialize() throws DataAccessException {
-        database.executeSqlUpdate(CREATE_GAMES_TABLE);
-        database.executeSqlUpdate(CREATE_ROLES_TABLE);
+        database.update(CREATE_GAMES_TABLE);
+        database.update(CREATE_ROLES_TABLE);
     }
 
     /**
@@ -55,7 +55,7 @@ public class DatabaseGameDAO implements GameDAO {
 
         String chessGameStr = new Gson().toJson(game.chessGame());
 
-        database.executeSqlUpdate("INSERT INTO games (gameId, gameName, game) VALUES (?, ?, ?)", preparedStatement -> {
+        database.update("INSERT INTO games (gameId, gameName, game) VALUES (?, ?, ?)", preparedStatement -> {
             preparedStatement.setInt(1, game.gameID());
             preparedStatement.setString(2, game.gameName());
             preparedStatement.setString(3, chessGameStr);
@@ -112,7 +112,7 @@ public class DatabaseGameDAO implements GameDAO {
         // TODO Test with Database
         memoryGameDAO.assignPlayerRole(gameID, username, role);
 
-        database.executeSqlUpdate("INSERT INTO roles (username, role) VALUES (?, ?)", preparedStatement -> {
+        database.update("INSERT INTO roles (username, role) VALUES (?, ?)", preparedStatement -> {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, roleToString(role));
         });
@@ -142,12 +142,8 @@ public class DatabaseGameDAO implements GameDAO {
         // TODO Test with Database
         memoryGameDAO.removeGame(gameID);
 
-        database.executeSqlUpdate("DELETE FROM games WHERE gameId=?", preparedStatement -> {
-            preparedStatement.setInt(1, gameID);
-        });
-        database.executeSqlUpdate("DELETE FROM roles WHERE gameId=?", preparedStatement -> {
-            preparedStatement.setInt(1, gameID);
-        });
+        database.updateWithParam("DELETE FROM games WHERE gameId=?", gameID);
+        database.updateWithParam("DELETE FROM roles WHERE gameId=?", gameID);
     }
 
     /**
@@ -158,8 +154,8 @@ public class DatabaseGameDAO implements GameDAO {
         // TODO Implement with Database
         memoryGameDAO.clearGames();
 
-        database.executeSqlUpdate("TRUNCATE games");
-        database.executeSqlUpdate("TRUNCATE roles");
+        database.update("TRUNCATE games");
+        database.update("TRUNCATE roles");
     }
 
     /**

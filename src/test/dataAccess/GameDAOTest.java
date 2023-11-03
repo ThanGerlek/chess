@@ -22,8 +22,8 @@ class GameDAOTest {
 
     @BeforeEach
     void setUp() throws DataAccessException {
-        database.executeSqlUpdate("TRUNCATE games");
-        database.executeSqlUpdate("TRUNCATE roles");
+        database.update("TRUNCATE games");
+        database.update("TRUNCATE roles");
         UserDAO userDAO = USE_DATABASE_DAOS ? new DatabaseUserDAO(database) : new MemoryUserDAO();
         gameDAO = USE_DATABASE_DAOS ? new DatabaseGameDAO(database, userDAO) : new MemoryGameDAO(userDAO);
         setUpGames();

@@ -13,7 +13,7 @@ class UserDAOTest {
 
     @BeforeEach
     void setUp() throws DataAccessException {
-        database.executeSqlUpdate("TRUNCATE users");
+        database.update("TRUNCATE users");
         userDAO = USE_DATABASE_DAOS ? new DatabaseUserDAO(database) : new MemoryUserDAO();
     }
 

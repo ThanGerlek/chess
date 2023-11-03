@@ -27,7 +27,7 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public void initialize() throws DataAccessException {
-        database.executeSqlUpdate(CREATE_USER_TABLE);
+        database.update(CREATE_USER_TABLE);
     }
 
     /**
@@ -42,7 +42,7 @@ public class DatabaseUserDAO implements UserDAO {
         // TODO Test with Database
         memoryUserDAO.insertNewUser(user);
 
-        database.executeSqlUpdate("INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+        database.update("INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
                 preparedStatement -> {
                     preparedStatement.setString(1, user.username());
                     preparedStatement.setString(2, user.password());
@@ -90,9 +90,7 @@ public class DatabaseUserDAO implements UserDAO {
         // TODO Test with Database
         memoryUserDAO.removeUser(user);
 
-        database.executeSqlUpdate("DELETE FROM users WHERE username=?", preparedStatement -> {
-            preparedStatement.setString(1, user.username());
-        });
+        database.updateWithParam("DELETE FROM users WHERE username=?", user.username());
     }
 
     /**
@@ -103,6 +101,6 @@ public class DatabaseUserDAO implements UserDAO {
         // TODO Implement with Database
         memoryUserDAO.clearUsers();
 
-        database.executeSqlUpdate("TRUNCATE users");
+        database.update("TRUNCATE users");
     }
 }
