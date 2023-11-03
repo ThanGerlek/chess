@@ -68,7 +68,10 @@ public class DatabaseGameDAO implements GameDAO {
             preparedStatement.setString(3, chessGameStr);
         });
 
-        // TODO Is this redundant?
+        assignPlayerRolesFromGame(game); // TODO Is this redundant?
+    }
+
+    private void assignPlayerRolesFromGame(Game game) throws DataAccessException {
         if (!game.whiteUsername().isEmpty()) {
             assignPlayerRole(game.gameID(), game.whiteUsername(), ChessGame.PlayerRole.WHITE_PLAYER);
         }
