@@ -93,6 +93,18 @@ class AuthDAOTest {
         Assertions.assertFalse(authDAO.isValidAuthToken(token1.authToken()));
         Assertions.assertFalse(authDAO.isValidAuthToken(token2.authToken()));
     }
+
+    @Test
+    void getUsernameReturnsUsername() throws DataAccessException {
+        Assertions.assertEquals("user1", authDAO.getUsername("1234"));
+    }
+
+    @Test
+    void getUsernameOfInvalidTokenErrors() throws DataAccessException {
+        Assertions.assertThrows(UnauthorizedAccessException.class, () -> {
+            String username = authDAO.getUsername("iAmInvalid");
+        });
+    }
 }
 
 
