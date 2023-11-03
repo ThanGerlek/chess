@@ -150,6 +150,12 @@ public class DatabaseGameDAO implements GameDAO {
         assertIDExists(game.gameID());
         memoryGameDAO.updateGameState(game);
 
+        String gameString = new Gson().toJson(game); // TODO! Adapter
+
+        database.update("UPDATE games SET game=? WHERE gameId=?", preparedStatement -> {
+            preparedStatement.setString(1, gameString);
+            preparedStatement.setInt(2, game.gameID());
+        });
     }
 
     /**
