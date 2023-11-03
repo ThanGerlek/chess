@@ -61,11 +61,11 @@ public class DatabaseGameDAO implements GameDAO {
         String sqlString = "SELECT gameId FROM games WHERE gameId=?";
         boolean gameIdAlreadyExists = database.booleanQueryWithParam(sqlString, game.gameID());
         if (gameIdAlreadyExists) {
-            throw new ValueAlreadyTakenException(
-                    "Tried to insert a new Game with a gameID that already exists in the database");
+            String msg = "Tried to insert a new Game with a gameID that already exists in the database";
+            throw new ValueAlreadyTakenException(msg);
         }
 
-        String chessGameStr = new Gson().toJson(game.chessGame());
+        String chessGameStr = new Gson().toJson(game.chessGame()); // TODO Adapter!!!
 
         database.update("INSERT INTO games (gameId, gameName, game) VALUES (?, ?, ?)", preparedStatement -> {
             preparedStatement.setInt(1, game.gameID());
