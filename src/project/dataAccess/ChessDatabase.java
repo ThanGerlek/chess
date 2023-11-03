@@ -43,8 +43,7 @@ public class ChessDatabase extends Database {
     }
 
     public boolean booleanQuery(String sqlString, StatementPreparer sp) throws DataAccessException {
-        ResultSet rs = query(sqlString, sp);
-        try {
+        try (ResultSet rs = query(sqlString, sp)) {
             return rs.next();
         } catch (SQLException e) {
             System.out.println("Failed to read ResultSet on boolean SQL query: `" + sqlString + "`");
@@ -56,15 +55,19 @@ public class ChessDatabase extends Database {
         Connection conn = getConnection();
         try (var preparedStatement = conn.prepareStatement(sqlString)) {
             sp.prepare(preparedStatement);
-            try (var rs = preparedStatement.executeQuery()) {
-                return rs;
-            }
+            return preparedStatement.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to run executeQuery() on SQL String: `" + sqlString + "`");
             throw new DataAccessException(e.getMessage());
         } finally {
             returnConnection(conn);
         }
+    }
+
+    public ResultSet queryWithParam(String sqlString, String param) throws DataAccessException {
+        return query(sqlString, preparedStatement -> {
+            preparedStatement.setString(1, param);
+        });
     }
 
     public boolean booleanQueryWithParam(String sqlString, int param) throws DataAccessException {
