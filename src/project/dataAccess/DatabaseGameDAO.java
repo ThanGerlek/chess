@@ -18,7 +18,7 @@ public class DatabaseGameDAO implements GameDAO {
                 id INT NOT NULL AUTO_INCREMENT,
                 gameId INT NOT NULL,
                 username VARCHAR(128) NOT NULL,
-                role INT NOT NULL,
+                role VARCHAR(32) NOT NULL,
                 PRIMARY KEY (id),
                 INDEX (gameId)
             )""";
