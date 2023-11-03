@@ -49,6 +49,7 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void insertNewGame(Game game) throws DataAccessException {
+        // Failures: game already exists (same gameID)
         // TODO Test with Database
         memoryGameDAO.insertNewGame(game);
 
@@ -81,6 +82,7 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public Game findGame(int gameID) throws DataAccessException {
+        // Failures: game not found
         // TODO Implement with Database
         return memoryGameDAO.findGame(gameID);
     }
@@ -106,6 +108,7 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void assignPlayerRole(int gameID, String username, ChessGame.PlayerRole role) throws DataAccessException {
+        // Failures: game not found, user not found
         // TODO Test with Database
         memoryGameDAO.assignPlayerRole(gameID, username, role);
 
@@ -123,6 +126,7 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void updateGameState(Game game) throws DataAccessException {
+        // Failures: game not found
         // TODO Implement with Database
         memoryGameDAO.updateGameState(game);
 

@@ -38,6 +38,7 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public void insertNewUser(User user) throws DataAccessException {
+        // Failures: username already exists
         // TODO Test with Database
         memoryUserDAO.insertNewUser(user);
 
@@ -62,6 +63,7 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public User getUser(String username) throws DataAccessException {
+        // Failures: user not found
         // TODO Implement with Database
         return memoryUserDAO.getUser(username);
     }

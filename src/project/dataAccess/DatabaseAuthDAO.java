@@ -37,6 +37,7 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public void addAuthToken(AuthToken token) throws DataAccessException {
+        // Failures: token already exists (incl. for different user), username doesn't exist
         // TODO Test with Database
         memoryAuthDAO.addAuthToken(token);
 
@@ -97,6 +98,7 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public String getUsername(String authToken) throws DataAccessException {
+        // Failures: token is invalid
         // TODO Implement with Database
         return memoryAuthDAO.getUsername(authToken);
     }
