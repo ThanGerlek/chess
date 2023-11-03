@@ -2,7 +2,6 @@ package dataAccess;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import server.AuthToken;
 import server.User;
@@ -50,17 +49,6 @@ class AuthDAOTest {
         authDAO.addAuthToken(token1);
 
         Assertions.assertThrows(ValueAlreadyTakenException.class, () -> authDAO.addAuthToken(token2));
-    }
-
-    @Test
-    @Disabled
-        // Only applies using AuthTokens, not when just using Strings
-    void addSameTokenStringDifferentUsersDoesNotError() throws DataAccessException {
-        AuthToken token1 = new AuthToken("1234", "user1");
-        AuthToken token2 = new AuthToken("1234", "user2");
-        authDAO.addAuthToken(token1);
-        authDAO.addAuthToken(token2);
-        Assertions.assertTrue(true);
     }
 
     @Test
