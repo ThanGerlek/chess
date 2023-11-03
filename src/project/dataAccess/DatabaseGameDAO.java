@@ -83,6 +83,26 @@ public class DatabaseGameDAO implements GameDAO {
         }
     }
 
+    private void assertIDExists(int gameID) throws DataAccessException {
+        String sqlString = "SELECT gameId FROM games WHERE gameId=?";
+        boolean gameIdExists = database.booleanQuery(sqlString, preparedStatement -> {
+            preparedStatement.setInt(1, gameID);
+        });
+
+        if (!database.booleanQueryWithParam("SELECT gameId FROM games WHERE gameId=?", gameID)) {
+            String msg = String.format("Tried to access a Game with an unrecognized gameID: '%d'", gameID);
+            throw new NoSuchItemException(msg);
+        }
+    }
+
+    private String roleToString(ChessGame.PlayerRole role) {
+        return switch (role) {
+            case WHITE_PLAYER -> "white";
+            case BLACK_PLAYER -> "black";
+            case SPECTATOR -> "spectator";
+        };
+    }
+
     /**
      * Fetches the Game with the given ID from the database.
      *
@@ -202,26 +222,6 @@ public class DatabaseGameDAO implements GameDAO {
     public int generateNewGameID() {
         // TODO Implement with Database
         return memoryGameDAO.generateNewGameID();
-    }
-
-    private void assertIDExists(int gameID) throws DataAccessException {
-        String sqlString = "SELECT gameId FROM games WHERE gameId=?";
-        boolean gameIdExists = database.booleanQuery(sqlString, preparedStatement -> {
-            preparedStatement.setInt(1, gameID);
-        });
-
-        if (!database.booleanQueryWithParam("SELECT gameId FROM games WHERE gameId=?", gameID)) {
-            String msg = String.format("Tried to access a Game with an unrecognized gameID: '%d'", gameID);
-            throw new NoSuchItemException(msg);
-        }
-    }
-
-    private String roleToString(ChessGame.PlayerRole role) {
-        return switch (role) {
-            case WHITE_PLAYER -> "white";
-            case BLACK_PLAYER -> "black";
-            case SPECTATOR -> "spectator";
-        };
     }
 
     private ChessGame.PlayerRole stringToRole(String roleString) {
