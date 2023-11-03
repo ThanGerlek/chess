@@ -2,6 +2,8 @@ package dataAccess;
 
 import server.User;
 
+import java.sql.Types;
+
 public class DatabaseUserDAO implements UserDAO {
     private static final String CREATE_USER_TABLE = """
             CREATE TABLE IF NOT EXISTS users (
@@ -10,7 +12,7 @@ public class DatabaseUserDAO implements UserDAO {
                 password VARCHAR(128) NOT NULL,
                 email VARCHAR(128),
                 PRIMARY KEY (id),
-                INDEX (username)
+                UNIQUE INDEX (username)
             )""";
     private final ChessDatabase database;
     MemoryUserDAO memoryUserDAO; // TODO Remove
@@ -36,8 +38,19 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public void insertNewUser(User user) throws DataAccessException {
-        // TODO Implement with Database
+        // TODO Test with Database
         memoryUserDAO.insertNewUser(user);
+
+        database.executeSqlUpdate("INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+                preparedStatement -> {
+                    preparedStatement.setString(1, user.username());
+                    preparedStatement.setString(2, user.password());
+                    if (user.email() == null || user.email().isEmpty()) {
+                        preparedStatement.setNull(3, Types.VARCHAR);
+                    } else {
+                        preparedStatement.setString(3, user.email());
+                    }
+                });
     }
 
     /**
@@ -72,8 +85,12 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public void removeUser(User user) throws DataAccessException {
-        // TODO Implement with Database
+        // TODO Test with Database
         memoryUserDAO.removeUser(user);
+
+        database.executeSqlUpdate("DELETE FROM users WHERE username=?", preparedStatement -> {
+            preparedStatement.setString(1, user.username());
+        });
     }
 
     /**
@@ -83,5 +100,7 @@ public class DatabaseUserDAO implements UserDAO {
     public void clearUsers() throws DataAccessException {
         // TODO Implement with Database
         memoryUserDAO.clearUsers();
+
+        database.executeSqlUpdate("TRUNCATE users");
     }
 }

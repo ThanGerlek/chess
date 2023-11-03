@@ -37,8 +37,14 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public void addAuthToken(AuthToken token) throws DataAccessException {
-        // TODO Implement with Database
+        // TODO Test with Database
         memoryAuthDAO.addAuthToken(token);
+
+        String sqlString = "INSERT INTO auth (token, username) VALUES (?, ?)";
+        database.executeSqlUpdate(sqlString, (preparedStatement -> {
+            preparedStatement.setString(1, token.authToken());
+            preparedStatement.setString(2, token.username());
+        }));
     }
 
     /**
@@ -62,8 +68,12 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public void removeAuthToken(String token) throws DataAccessException {
-        // TODO Implement with Database
+        // TODO Test with Database
         memoryAuthDAO.removeAuthToken(token);
+
+        database.executeSqlUpdate("DELETE FROM auth WHERE token=?", preparedStatement -> {
+            preparedStatement.setString(1, token);
+        });
     }
 
     /**
@@ -74,6 +84,8 @@ public class DatabaseAuthDAO implements AuthDAO {
     public void clearAuthTokens() throws DataAccessException {
         // TODO Implement with Database
         memoryAuthDAO.clearAuthTokens();
+
+        database.executeSqlUpdate("TRUNCATE auth");
     }
 
     /**

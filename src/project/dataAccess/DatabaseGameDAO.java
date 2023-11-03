@@ -1,6 +1,7 @@
 package dataAccess;
 
 import chess.ChessGame;
+import com.google.gson.Gson;
 import server.Game;
 import server.http.GameListItem;
 
@@ -48,8 +49,27 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void insertNewGame(Game game) throws DataAccessException {
-        // TODO Implement with Database
+        // TODO Test with Database
         memoryGameDAO.insertNewGame(game);
+
+        String chessGameStr = new Gson().toJson(game.chessGame());
+
+        database.executeSqlUpdate("INSERT INTO games (gameId, gameName, game) VALUES (?, ?, ?)", preparedStatement -> {
+            preparedStatement.setInt(1, game.gameID());
+            preparedStatement.setString(2, game.gameName());
+            preparedStatement.setString(3, chessGameStr);
+        });
+
+        // TODO Is this redundant?
+        if (!game.whiteUsername().isEmpty()) {
+            assignPlayerRole(game.gameID(), game.whiteUsername(), ChessGame.PlayerRole.WHITE_PLAYER);
+        }
+        if (!game.blackUsername().isEmpty()) {
+            assignPlayerRole(game.gameID(), game.whiteUsername(), ChessGame.PlayerRole.BLACK_PLAYER);
+        }
+        for (String spectator : game.getSpectators()) {
+            assignPlayerRole(game.gameID(), spectator, ChessGame.PlayerRole.SPECTATOR);
+        }
     }
 
     /**
@@ -86,8 +106,13 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void assignPlayerRole(int gameID, String username, ChessGame.PlayerRole role) throws DataAccessException {
-        // TODO Implement with Database
+        // TODO Test with Database
         memoryGameDAO.assignPlayerRole(gameID, username, role);
+
+        database.executeSqlUpdate("INSERT INTO roles (username, role) VALUES (?, ?)", preparedStatement -> {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, roleToString(role));
+        });
     }
 
     /**
@@ -110,8 +135,15 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void removeGame(int gameID) throws DataAccessException {
-        // TODO Implement with Database
+        // TODO Test with Database
         memoryGameDAO.removeGame(gameID);
+
+        database.executeSqlUpdate("DELETE FROM games WHERE gameId=?", preparedStatement -> {
+            preparedStatement.setInt(1, gameID);
+        });
+        database.executeSqlUpdate("DELETE FROM roles WHERE gameId=?", preparedStatement -> {
+            preparedStatement.setInt(1, gameID);
+        });
     }
 
     /**
@@ -121,6 +153,9 @@ public class DatabaseGameDAO implements GameDAO {
     public void clearGames() throws DataAccessException {
         // TODO Implement with Database
         memoryGameDAO.clearGames();
+
+        database.executeSqlUpdate("TRUNCATE games");
+        database.executeSqlUpdate("TRUNCATE roles");
     }
 
     /**
@@ -132,5 +167,26 @@ public class DatabaseGameDAO implements GameDAO {
     public int generateNewGameID() {
         // TODO Implement with Database
         return memoryGameDAO.generateNewGameID();
+    }
+
+    private String roleToString(ChessGame.PlayerRole role) {
+        return switch (role) {
+            case WHITE_PLAYER -> "white";
+            case BLACK_PLAYER -> "black";
+            case SPECTATOR -> "spectator";
+        };
+    }
+
+    private ChessGame.PlayerRole stringToRole(String roleString) {
+        if ("white".equals(roleString)) {
+            return ChessGame.PlayerRole.WHITE_PLAYER;
+        } else if ("black".equals(roleString)) {
+            return ChessGame.PlayerRole.BLACK_PLAYER;
+        } else if ("spectator".equals(roleString)) {
+            return ChessGame.PlayerRole.SPECTATOR;
+        } else {
+            String msg = String.format("Called stringToRole() with an unrecognized role string: '%s'", roleString);
+            throw new IllegalArgumentException(msg);
+        }
     }
 }
