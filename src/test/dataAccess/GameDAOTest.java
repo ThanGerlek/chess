@@ -12,17 +12,18 @@ import server.http.GameListItem;
 
 class GameDAOTest {
     private final boolean USE_DATABASE_DAOS = true;
+    private final ChessDatabase database = new ChessDatabase();
     private GameDAO gameDAO;
     private ChessGame chessGame1;
     private ChessGame chessGame2;
 
-    private ChessDatabase database;
-
     // TODO Test player roles in allGames()?
+    // TODO Instead of clearing every time, simply rollback a transaction? See Unit Testing module video.
 
     @BeforeEach
-    void setUp() {
-        database = new ChessDatabase();
+    void setUp() throws DataAccessException {
+        database.executeSqlUpdate("TRUNCATE games");
+        database.executeSqlUpdate("TRUNCATE roles");
         UserDAO userDAO = USE_DATABASE_DAOS ? new DatabaseUserDAO(database) : new MemoryUserDAO();
         gameDAO = USE_DATABASE_DAOS ? new DatabaseGameDAO(database, userDAO) : new MemoryGameDAO(userDAO);
         setUpGames();

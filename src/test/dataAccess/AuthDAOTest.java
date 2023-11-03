@@ -10,17 +10,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AuthDAOTest {
     private final boolean USE_DATABASE_DAOS = true;
+    private final ChessDatabase database = new ChessDatabase();
     private AuthDAO authDAO;
     private UserDAO userDAO;
-
-    private ChessDatabase database = new ChessDatabase();
 
     // TODO Change to parameterized tests
     // TODO? Add null or empty string tests?
 
     @BeforeEach
     void setUp() throws DataAccessException {
-        database = new ChessDatabase();
+        database.executeSqlUpdate("TRUNCATE auth");
         userDAO = (USE_DATABASE_DAOS) ? new DatabaseUserDAO(database) : new MemoryUserDAO();
         authDAO = (USE_DATABASE_DAOS) ? new DatabaseAuthDAO(database, userDAO) : new MemoryAuthDAO(userDAO);
         User user1 = new User("user1", "pass1", "mail1");

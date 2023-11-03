@@ -9,11 +9,11 @@ class UserDAOTest {
     private final boolean USE_DATABASE_DAOS = true;
     private UserDAO userDAO;
 
-    private ChessDatabase database;
+    private ChessDatabase database = new ChessDatabase();
 
     @BeforeEach
-    void setUp() {
-        database = new ChessDatabase();
+    void setUp() throws DataAccessException {
+        database.executeSqlUpdate("TRUNCATE users");
         userDAO = USE_DATABASE_DAOS ? new DatabaseUserDAO(database) : new MemoryUserDAO();
     }
 
