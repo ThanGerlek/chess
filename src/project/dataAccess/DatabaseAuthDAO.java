@@ -2,6 +2,8 @@ package dataAccess;
 
 import server.AuthToken;
 
+import java.util.ArrayList;
+
 public class DatabaseAuthDAO implements AuthDAO {
     private static final String CREATE_AUTH_TABLE = """
             CREATE TABLE IF NOT EXISTS auth (
@@ -64,8 +66,10 @@ public class DatabaseAuthDAO implements AuthDAO {
      */
     @Override
     public boolean isValidAuthToken(String token) throws DataAccessException {
-        // TODO Implement with Database
-        return memoryAuthDAO.isValidAuthToken(token);
+        // TODO Test
+
+        String sqlString = "SELECT id FROM auth WHERE token=?";
+        return database.booleanQueryWithParam(sqlString, token);
     }
 
     /**
@@ -106,11 +110,16 @@ public class DatabaseAuthDAO implements AuthDAO {
         // Failures: token is invalid
         // TODO Implement with Database
 
-        if (!isValidAuthToken(authToken)) {
+        String sqlString = "SELECT username FROM auth WHERE token=?";
+        ArrayList<String> usernames = database.queryForString("username", sqlString, preparedStatement -> {
+            preparedStatement.setString(1, authToken);
+        });
+
+        if (usernames.isEmpty()) {
             throw new UnauthorizedAccessException("Could not get username of invalid token");
         }
 
-        return memoryAuthDAO.getUsername(authToken);
+        return usernames.get(0);
     }
 }
 
