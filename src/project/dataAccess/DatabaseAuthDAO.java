@@ -15,11 +15,18 @@ public class DatabaseAuthDAO implements AuthDAO {
     private final UserDAO userDAO;
     private final MemoryAuthDAO memoryAuthDAO; // TODO Remove
 
-    public DatabaseAuthDAO(ChessDatabase database, UserDAO userDAO) throws DataAccessException {
+    public DatabaseAuthDAO(ChessDatabase database, UserDAO userDAO) {
         this.userDAO = userDAO;
         this.database = database;
-        database.executeSqlUpdate(CREATE_AUTH_TABLE);
         memoryAuthDAO = new MemoryAuthDAO(userDAO);
+    }
+
+    /**
+     * Set up this AuthDAO.
+     */
+    @Override
+    public void initialize() throws DataAccessException {
+        database.executeSqlUpdate(CREATE_AUTH_TABLE);
     }
 
     /**

@@ -33,11 +33,7 @@ public class Database {
 
     private final LinkedList<Connection> connections = new LinkedList<>();
 
-    public Database() throws DataAccessException {
-        createSqlDatabase();
-    }
-
-    private void createSqlDatabase() throws DataAccessException {
+    public void initialize() throws DataAccessException {
         try {
             Connection connection = connections.isEmpty()
                     ? DriverManager.getConnection(CONNECTION_URL, DB_USERNAME, DB_PASSWORD)

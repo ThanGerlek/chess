@@ -15,10 +15,17 @@ public class DatabaseUserDAO implements UserDAO {
     private final ChessDatabase database;
     MemoryUserDAO memoryUserDAO; // TODO Remove
 
-    public DatabaseUserDAO(ChessDatabase database) throws DataAccessException {
+    public DatabaseUserDAO(ChessDatabase database) {
         this.database = database;
-        database.executeSqlUpdate(CREATE_USER_TABLE);
         memoryUserDAO = new MemoryUserDAO();
+    }
+
+    /**
+     * Set up this UserDAO.
+     */
+    @Override
+    public void initialize() throws DataAccessException {
+        database.executeSqlUpdate(CREATE_USER_TABLE);
     }
 
     /**

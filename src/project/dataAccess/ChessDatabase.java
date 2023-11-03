@@ -5,9 +5,6 @@ import java.sql.SQLException;
 
 public class ChessDatabase extends Database {
 
-    public ChessDatabase() throws DataAccessException {
-    }
-
     public void executeSqlUpdate(String sqlString) throws DataAccessException {
         executeSqlUpdate(sqlString, sp -> {
         });

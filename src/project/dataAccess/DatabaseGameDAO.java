@@ -25,12 +25,19 @@ public class DatabaseGameDAO implements GameDAO {
     private final UserDAO userDAO;
     MemoryGameDAO memoryGameDAO; // TODO Remove
 
-    public DatabaseGameDAO(ChessDatabase database, UserDAO userDAO) throws DataAccessException {
+    public DatabaseGameDAO(ChessDatabase database, UserDAO userDAO) {
         this.userDAO = userDAO;
         this.database = database;
+        memoryGameDAO = new MemoryGameDAO(userDAO);
+    }
+
+    /**
+     * Set up this GameDAO.
+     */
+    @Override
+    public void initialize() throws DataAccessException {
         database.executeSqlUpdate(CREATE_GAMES_TABLE);
         database.executeSqlUpdate(CREATE_ROLES_TABLE);
-        memoryGameDAO = new MemoryGameDAO(userDAO);
     }
 
     /**
