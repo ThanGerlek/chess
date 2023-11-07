@@ -28,12 +28,10 @@ public class DatabaseGameDAO implements GameDAO {
             )""";
     private final ChessDatabase database;
     private final UserDAO userDAO;
-    MemoryGameDAO memoryGameDAO; // TODO Remove
 
     public DatabaseGameDAO(ChessDatabase database, UserDAO userDAO) {
         this.userDAO = userDAO;
         this.database = database;
-        memoryGameDAO = new MemoryGameDAO(userDAO);
     }
 
     /**
@@ -54,9 +52,6 @@ public class DatabaseGameDAO implements GameDAO {
     @Override
     public void insertNewGame(Game game) throws DataAccessException {
         // Failures: game already exists (same gameID)
-        // TODO Test with Database
-        memoryGameDAO.insertNewGame(game);
-
         String sqlString = "SELECT gameId FROM games WHERE gameId=?";
         boolean gameIdAlreadyExists = database.booleanQueryWithParam(sqlString, game.gameID());
         if (gameIdAlreadyExists) {
@@ -158,13 +153,10 @@ public class DatabaseGameDAO implements GameDAO {
     @Override
     public void assignPlayerRole(int gameID, String username, PlayerRole role) throws DataAccessException {
         // Failures: game not found, user not found
-        // TODO Test with Database
 
         if (role == null) {
             role = PlayerRole.SPECTATOR;
         }
-
-        memoryGameDAO.assignPlayerRole(gameID, username, role);
 
         assertIDExists(gameID);
 
@@ -191,9 +183,7 @@ public class DatabaseGameDAO implements GameDAO {
     @Override
     public void updateGameState(Game game) throws DataAccessException {
         // Failures: game not found
-        // TODO Implement with Database
         assertIDExists(game.gameID());
-        memoryGameDAO.updateGameState(game);
 
         String gameString = ChessSerializer.gson().toJson(game);
 
@@ -210,9 +200,6 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void removeGame(int gameID) throws DataAccessException {
-        // TODO Test with Database
-        memoryGameDAO.removeGame(gameID);
-
         database.updateWithParam("DELETE FROM games WHERE gameId=?", gameID);
         database.updateWithParam("DELETE FROM roles WHERE gameId=?", gameID);
     }
@@ -222,9 +209,6 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public void clearGames() throws DataAccessException {
-        // TODO Implement with Database
-        memoryGameDAO.clearGames();
-
         database.update("TRUNCATE games");
         database.update("TRUNCATE roles");
     }
@@ -237,7 +221,7 @@ public class DatabaseGameDAO implements GameDAO {
     @Override
     public int generateNewGameID() {
         // TODO Implement with Database
-        return memoryGameDAO.generateNewGameID();
+        return 0;
     }
 
 }
