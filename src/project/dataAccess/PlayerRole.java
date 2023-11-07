@@ -1,8 +1,8 @@
 package dataAccess;
 
 public class PlayerRole {
-    public static final PlayerRole WHITE_PLAYER = new PlayerRole("WHITE_PLAYER");
-    public static final PlayerRole BLACK_PLAYER = new PlayerRole("BLACK_PLAYER");
+    public static final PlayerRole WHITE_PLAYER = new PlayerRole("WHITE");
+    public static final PlayerRole BLACK_PLAYER = new PlayerRole("BLACK");
     public static final PlayerRole SPECTATOR = new PlayerRole("SPECTATOR");
     private final String roleString;
 
