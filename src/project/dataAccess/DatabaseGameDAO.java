@@ -133,10 +133,7 @@ public class DatabaseGameDAO implements GameDAO {
     public void assignPlayerRole(int gameID, String username, PlayerRole role) throws DataAccessException {
         // Failures: game not found, user not found
         assertIDExists(gameID);
-
-        String sqlString = "SELECT id FROM users WHERE username=?";
-        boolean userExists = database.booleanQueryWithParam(sqlString, username);
-        if (!userExists) {
+        if (!userDAO.hasUser(username)) {
             throw new UnauthorizedAccessException("Unrecognized username");
         }
 
