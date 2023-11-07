@@ -48,16 +48,15 @@ public class DatabaseUserDAO implements UserDAO {
             throw new ValueAlreadyTakenException("Tried to insert a user with an already-taken username");
         }
 
-        database.update("INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
-                preparedStatement -> {
-                    preparedStatement.setString(1, user.username());
-                    preparedStatement.setString(2, user.password());
-                    if (user.email() == null || user.email().isEmpty()) {
-                        preparedStatement.setNull(3, Types.VARCHAR);
-                    } else {
-                        preparedStatement.setString(3, user.email());
-                    }
-                });
+        database.update("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", preparedStatement -> {
+            preparedStatement.setString(1, user.username());
+            preparedStatement.setString(2, user.password());
+            if (user.email() == null || user.email().isEmpty()) {
+                preparedStatement.setNull(3, Types.VARCHAR);
+            } else {
+                preparedStatement.setString(3, user.email());
+            }
+        });
     }
 
     /**

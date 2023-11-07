@@ -139,10 +139,7 @@ public class DatabaseGameDAO implements GameDAO {
      */
     @Override
     public ArrayList<GameListItem> allGames() throws DataAccessException {
-        // TODO Implement with Database
-
         ArrayList<GameListItem> gameListItems = new ArrayList<>();
-
 
         String sqlString = """
                 SELECT
