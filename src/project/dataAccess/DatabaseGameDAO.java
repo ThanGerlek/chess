@@ -66,27 +66,6 @@ public class DatabaseGameDAO implements GameDAO {
             preparedStatement.setString(2, game.gameName());
             preparedStatement.setString(3, chessGameStr);
         });
-
-        assignPlayerRolesFromGame(game); // TODO Is this redundant?
-    }
-
-    private void assignPlayerRolesFromGame(Game game) throws DataAccessException {
-        if (!game.whiteUsername().isEmpty()) {
-            assignPlayerRole(game.gameID(), game.whiteUsername(), PlayerRole.WHITE_PLAYER);
-        }
-        if (!game.blackUsername().isEmpty()) {
-            assignPlayerRole(game.gameID(), game.whiteUsername(), PlayerRole.BLACK_PLAYER);
-        }
-        for (String spectator : game.getSpectators()) {
-            assignPlayerRole(game.gameID(), spectator, PlayerRole.SPECTATOR);
-        }
-    }
-
-    private void assertIDExists(int gameID) throws DataAccessException {
-        if (!database.booleanQueryWithParam("SELECT gameId FROM games WHERE gameId=?", gameID)) {
-            String msg = String.format("Tried to access a Game with an unrecognized gameID: '%d'", gameID);
-            throw new NoSuchItemException(msg);
-        }
     }
 
     /**
@@ -153,11 +132,6 @@ public class DatabaseGameDAO implements GameDAO {
     @Override
     public void assignPlayerRole(int gameID, String username, PlayerRole role) throws DataAccessException {
         // Failures: game not found, user not found
-
-        if (role == null) {
-            role = PlayerRole.SPECTATOR;
-        }
-
         assertIDExists(gameID);
 
         String sqlString = "SELECT id FROM users WHERE username=?";
@@ -172,6 +146,13 @@ public class DatabaseGameDAO implements GameDAO {
             preparedStatement.setString(2, PlayerRole.roleToString(finalRole));
             preparedStatement.setInt(3, gameID);
         });
+    }
+
+    private void assertIDExists(int gameID) throws DataAccessException {
+        if (!database.booleanQueryWithParam("SELECT gameId FROM games WHERE gameId=?", gameID)) {
+            String msg = String.format("Tried to access a Game with an unrecognized gameID: '%d'", gameID);
+            throw new NoSuchItemException(msg);
+        }
     }
 
     /**
