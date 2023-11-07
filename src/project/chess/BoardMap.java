@@ -32,7 +32,7 @@ public class BoardMap {
     }
 
     public ChessPiece get(ChessPosition pos) {
-        if (pos.getColumn() < 8 && pos.getRow() < 8) {
+        if (pos.getColumn() > 0 && pos.getRow() > 0 && pos.getColumn() <= 8 && pos.getRow() <= 8) {
             return board[index(pos)];
         } else {
             return null;
