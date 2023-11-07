@@ -71,12 +71,30 @@ class GameDAOTest {
     }
 
     @Test
-    void findInsertedGameReturnsGameWithEqualBoard() throws DataAccessException {
+    void findReturnsGameWithEqualBoard() throws DataAccessException {
         gameDAO.insertNewGame(game1);
 
         Game fetchedGame = gameDAO.findGame(1);
 
         Assertions.assertEquals(game1.chessGame().getBoard().toString(), fetchedGame.chessGame().getBoard().toString());
+    }
+
+    @Test
+    void findReturnsGameWithSameGameID() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+
+        Game fetchedGame = gameDAO.findGame(1);
+
+        Assertions.assertEquals(1, fetchedGame.gameID());
+    }
+
+    @Test
+    void findReturnsGameWithSameGameName() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+
+        Game fetchedGame = gameDAO.findGame(1);
+
+        Assertions.assertEquals("game1", fetchedGame.gameName());
     }
 
     @Test
