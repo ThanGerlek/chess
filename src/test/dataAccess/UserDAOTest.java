@@ -24,6 +24,7 @@ class UserDAOTest {
         Assertions.assertTrue(true);
     }
 
+    // insertNewUser negative test
     @Test
     void insertUsersWithSameUsernameErrors() throws DataAccessException {
         User user1 = new User("user", "pass1", "mail1");
@@ -33,8 +34,18 @@ class UserDAOTest {
         Assertions.assertThrows(ValueAlreadyTakenException.class, () -> userDAO.insertNewUser(user2));
     }
 
+    // insertNewUser positive test
     @Test
-    void getInsertedUserReturnsUser() throws DataAccessException {
+    void getInsertedUserReturnsNonnull() throws DataAccessException {
+        User user = new User("user1", "pass1", "mail1");
+        userDAO.insertNewUser(user);
+
+        Assertions.assertNotNull(userDAO.getUser("user1"));
+    }
+
+    // getUser positive test
+    @Test
+    void getInsertedUser_Returns_EqualUser() throws DataAccessException {
         User user = new User("user1", "pass1", "mail1");
         userDAO.insertNewUser(user);
 
@@ -42,11 +53,13 @@ class UserDAOTest {
         Assertions.assertEquals(user, fetchedUser);
     }
 
+    // getUser negative test
     @Test
     void getInvalidUser_throws_not_found_error() {
         Assertions.assertThrows(NoSuchItemException.class, () -> userDAO.getUser("iDoNotExist"));
     }
 
+    // hasUser positive test
     @Test
     void hasInsertedUserReturnsTrue() throws DataAccessException {
         User user = new User("user1", "pass1", "mail1");
@@ -54,11 +67,13 @@ class UserDAOTest {
         Assertions.assertTrue(userDAO.hasUser("user1"));
     }
 
+    // hasUser "negative" test
     @Test
     void hasNonexistentUserReturnsFalse() throws DataAccessException {
         Assertions.assertFalse(userDAO.hasUser("iDoNotExist"));
     }
 
+    // removeUser positive test
     @Test
     void hasRemovedUserReturnsFalse() throws DataAccessException {
         User user = new User("user1", "pass1", "mail1");
@@ -67,6 +82,15 @@ class UserDAOTest {
         Assertions.assertFalse(userDAO.hasUser("user1"));
     }
 
+    // removeUser "negative" test
+    @Test
+    void removeNonexistentUserIsOkay() throws DataAccessException {
+        User user = new User("iDoNotExist", "pass1", "mail1");
+        userDAO.removeUser(user);
+        Assertions.assertTrue(true);
+    }
+
+    // clearUsers positive test
     @Test
     void hasClearedUsersReturnsFalse() throws DataAccessException {
         User user1 = new User("user1", "pass1", "mail1");

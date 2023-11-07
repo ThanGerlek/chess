@@ -42,6 +42,7 @@ class AuthDAOTest {
         Assertions.assertThrows(UnauthorizedAccessException.class, () -> authDAO.addAuthToken(token));
     }
 
+    // addAuthToken negative test
     @Test
     void addSameTokenTwiceErrors() throws DataAccessException {
         AuthToken token1 = new AuthToken("1234", "user1");
@@ -60,6 +61,8 @@ class AuthDAOTest {
         Assertions.assertTrue(true);
     }
 
+    // addAuthToken positive test
+    // isValidToken positive test
     @Test
     void addedTokenIsValid() throws DataAccessException {
         AuthToken token = new AuthToken("1234", "user1");
@@ -67,6 +70,15 @@ class AuthDAOTest {
         Assertions.assertTrue(authDAO.isValidAuthToken(token.authToken()));
     }
 
+    // isValidToken negative test
+    @Test
+    void nonexistentTokenIsNotValid() throws DataAccessException {
+        AuthToken token = new AuthToken("1234", "user1");
+        authDAO.addAuthToken(token);
+        Assertions.assertTrue(authDAO.isValidAuthToken(token.authToken()));
+    }
+
+    // removeAuthToken positive test
     @Test
     void removedTokenIsNotValid() throws DataAccessException {
         AuthToken token = new AuthToken("1234", "user1");
@@ -75,6 +87,7 @@ class AuthDAOTest {
         Assertions.assertFalse(authDAO.isValidAuthToken(token.authToken()));
     }
 
+    // removeAuthToken "negative" test
     @Test
     void removingNonexistentTokenIsOkay() throws DataAccessException {
         AuthToken token = new AuthToken("1234", "user1");
@@ -82,6 +95,7 @@ class AuthDAOTest {
         Assertions.assertTrue(true);
     }
 
+    // clearAuthTokens positive test
     @Test
     void clearedAuthTokensAreInvalid() throws DataAccessException {
         AuthToken token1 = new AuthToken("1234", "user1");
@@ -95,12 +109,14 @@ class AuthDAOTest {
         Assertions.assertFalse(authDAO.isValidAuthToken(token2.authToken()));
     }
 
+    // getUsername positive test
     @Test
     void getUsernameReturnsUsername() throws DataAccessException {
         authDAO.addAuthToken(new AuthToken("1234", "user1"));
         Assertions.assertEquals("user1", authDAO.getUsername("1234"));
     }
 
+    // getUsername negative test
     @Test
     void getUsernameOfInvalidTokenErrors() throws DataAccessException {
         Assertions.assertThrows(UnauthorizedAccessException.class, () -> {

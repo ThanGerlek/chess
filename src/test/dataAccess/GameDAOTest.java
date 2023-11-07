@@ -5,7 +5,6 @@ import chess.pieces.King;
 import chess.pieces.Queen;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import server.Game;
 import server.User;
@@ -24,6 +23,7 @@ class GameDAOTest {
     private Game game2;
 
     // TODO Test player roles in allGames()?
+    // TODO Test "unauthorized" negative cases
     // TODO Instead of clearing every time, simply rollback a transaction? See Unit Testing module video.
 
     @BeforeEach
@@ -70,6 +70,23 @@ class GameDAOTest {
         Assertions.assertTrue(true);
     }
 
+    // findGame positive test
+    @Test
+    void find_inserted_game_returns_nonnull() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+        Assertions.assertNotNull(gameDAO.findGame(1));
+    }
+
+    // insertNewGame negative test
+    @Test
+    void insert_game_twice_with_same_gameID_throws_error() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+        Assertions.assertThrows(ValueAlreadyTakenException.class, () -> {
+            gameDAO.insertNewGame(game1);
+        });
+    }
+
+    // insertNewGame positive test
     @Test
     void findReturnsGameWithEqualBoard() throws DataAccessException {
         gameDAO.insertNewGame(game1);
@@ -120,11 +137,13 @@ class GameDAOTest {
         Assertions.assertEquals(2, fetchedGame.getSpectators().size());
     }
 
+    // findGame negative test
     @Test
-    void findNonexistentGameErrors() throws DataAccessException {
+    void findNonexistentGameErrors() {
         Assertions.assertThrows(NoSuchItemException.class, () -> gameDAO.findGame(42));
     }
 
+    // removeGame positive test
     @Test
     void findRemovedGameErrors() throws DataAccessException {
         gameDAO.insertNewGame(game1);
@@ -134,17 +153,20 @@ class GameDAOTest {
         Assertions.assertThrows(NoSuchItemException.class, () -> gameDAO.findGame(1));
     }
 
+    // removeGame "negative" test
     @Test
     void removeNonexistentGameDoesNotError() throws DataAccessException {
         gameDAO.removeGame(42);
         Assertions.assertTrue(true);
     }
 
+    // allGames "negative" test
     @Test
     void allGamesFromEmpty() throws DataAccessException {
         Assertions.assertEquals(0, gameDAO.allGames().size());
     }
 
+    // allGames positive test
     @Test
     void allGamesWithTwoGames() throws DataAccessException {
         gameDAO.insertNewGame(game1);
@@ -170,6 +192,7 @@ class GameDAOTest {
         Assertions.assertEquals("", gameDAO.findGame(1).blackUsername());
     }
 
+    // assignPlayerRole positive test
     @Test
     void assignPlayerRoleWhite_then_get_white_username_matches() throws DataAccessException {
         gameDAO.insertNewGame(game1);
@@ -205,6 +228,18 @@ class GameDAOTest {
     }
 
     @Test
+    void assigning_two_spectators_adds_both_to_spectators_list() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.SPECTATOR);
+        gameDAO.assignPlayerRole(1, "user2", PlayerRole.SPECTATOR);
+
+        ArrayList<String> spectators = gameDAO.findGame(1).getSpectators();
+
+        Assertions.assertTrue(spectators.contains("user1"));
+        Assertions.assertTrue(spectators.contains("user2"));
+    }
+
+    @Test
     void assignPlayerRole_with_null_role_adds_player_to_spectators_list() throws DataAccessException {
         gameDAO.insertNewGame(game1);
         gameDAO.assignPlayerRole(1, "user1", null);
@@ -212,12 +247,48 @@ class GameDAOTest {
         Assertions.assertTrue(gameDAO.findGame(1).getSpectators().contains("user1"));
     }
 
+    // assignPlayerRole negative test
     @Test
-    @Disabled
-        // TODO test: updateGameState
-    void updateGameState() throws DataAccessException {
+    void assignPlayerRoleWhite_when_already_taken_errors() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.WHITE_PLAYER);
+
+        Assertions.assertThrows(ValueAlreadyTakenException.class, () -> {
+            gameDAO.assignPlayerRole(1, "user2", PlayerRole.WHITE_PLAYER);
+        });
     }
 
+    @Test
+    void assignPlayerRoleBlack_when_already_taken_errors() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.BLACK_PLAYER);
+
+        Assertions.assertThrows(ValueAlreadyTakenException.class, () -> {
+            gameDAO.assignPlayerRole(1, "user2", PlayerRole.BLACK_PLAYER);
+        });
+    }
+
+    // updateGameState positive test
+    @Test
+    void updateGameState_changes_board_state() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+        Game updatedGame = new Game(1, "game1", chessGame2);
+
+        gameDAO.updateGameState(updatedGame);
+
+        ChessGame fetchedGame = gameDAO.findGame(1).chessGame();
+        Assertions.assertEquals(chessGame2.getBoard().toString(), fetchedGame.getBoard().toString());
+    }
+
+    // updateGameState negative test
+    @Test
+    void updateGameState_of_nonexistent_game_throws_error() throws DataAccessException {
+        Assertions.assertThrows(NoSuchItemException.class, () -> {
+            gameDAO.updateGameState(game1);
+        });
+    }
+
+    // clearGames positive test
     @Test
     void findClearedGamesErrors() throws DataAccessException {
         gameDAO.insertNewGame(game1);
@@ -229,12 +300,14 @@ class GameDAOTest {
         Assertions.assertThrows(NoSuchItemException.class, () -> gameDAO.findGame(2));
     }
 
+    // clearGames "negative" test
     @Test
     void clearEmptyIsOkay() throws DataAccessException {
         gameDAO.clearGames();
         Assertions.assertTrue(true);
     }
 
+    // generateNewGameID positive test
     @Test
     void generateTwoGameIDsReturnsDifferentValues() throws DataAccessException {
         int id1 = gameDAO.generateNewGameID();
