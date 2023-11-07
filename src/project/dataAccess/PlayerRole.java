@@ -11,15 +11,11 @@ public class PlayerRole {
     }
 
     public static String roleToString(PlayerRole role) {
-        if (role == null) {
-            return SPECTATOR.roleString;
-        } else {
-            return role.roleString;
-        }
+        return role.roleString;
     }
 
     public static PlayerRole stringToRole(String roleString) {
-        if (roleString == null || roleString.isEmpty() || SPECTATOR.roleString.equals(roleString)) {
+        if (roleString.isEmpty() || SPECTATOR.roleString.equals(roleString)) {
             return SPECTATOR;
         } else if (WHITE_PLAYER.roleString.equals(roleString)) {
             return WHITE_PLAYER;

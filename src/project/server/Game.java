@@ -97,8 +97,10 @@ public class Game {
             return whiteUsername != null && whiteUsername.isEmpty();
         } else if (PlayerRole.BLACK_PLAYER.equals(role)) {
             return blackUsername != null && blackUsername.isEmpty();
-        } else {
+        } else if (PlayerRole.SPECTATOR.equals(role)) {
             return !getSpectators().isEmpty();
+        } else {
+            throw new IllegalArgumentException("Called hasRole() with an unrecognized role type");
         }
     }
 
