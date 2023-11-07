@@ -90,11 +90,6 @@ public class DatabaseGameDAO implements GameDAO {
     }
 
     private void assertIDExists(int gameID) throws DataAccessException {
-        String sqlString = "SELECT gameId FROM games WHERE gameId=?";
-        boolean gameIdExists = database.booleanQuery(sqlString, preparedStatement -> {
-            preparedStatement.setInt(1, gameID);
-        });
-
         if (!database.booleanQueryWithParam("SELECT gameId FROM games WHERE gameId=?", gameID)) {
             String msg = String.format("Tried to access a Game with an unrecognized gameID: '%d'", gameID);
             throw new NoSuchItemException(msg);
