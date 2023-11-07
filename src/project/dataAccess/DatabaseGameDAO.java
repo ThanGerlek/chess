@@ -1,7 +1,8 @@
 package dataAccess;
 
 import chess.ChessGame;
-import com.google.gson.Gson;
+import chess.ChessGameImpl;
+import server.ChessSerializer;
 import server.Game;
 import server.http.GameListItem;
 
@@ -65,7 +66,7 @@ public class DatabaseGameDAO implements GameDAO {
             throw new ValueAlreadyTakenException(msg);
         }
 
-        String chessGameStr = new Gson().toJson(game.chessGame()); // TODO Adapter!!!
+        String chessGameStr = ChessSerializer.gson().toJson(game.chessGame());
 
         database.update("INSERT INTO games (gameId, gameName, game) VALUES (?, ?, ?)", preparedStatement -> {
             preparedStatement.setInt(1, game.gameID());
@@ -128,8 +129,12 @@ public class DatabaseGameDAO implements GameDAO {
             throw new NoSuchItemException(msg);
         }
 
-        // TODO! Adapter!!!
-        return memoryGameDAO.findGame(gameID);
+        //        return memoryGameDAO.findGame(gameID);
+        ChessGame chessGame = ChessSerializer.gson().fromJson(gameStrings.get(0), ChessGameImpl.class);
+
+        // TODO! Query roles table!
+
+        return new Game(gameID, "placeholderName", chessGame);
     }
 
     /**
@@ -220,7 +225,7 @@ public class DatabaseGameDAO implements GameDAO {
         assertIDExists(game.gameID());
         memoryGameDAO.updateGameState(game);
 
-        String gameString = new Gson().toJson(game); // TODO! Adapter
+        String gameString = ChessSerializer.gson().toJson(game);
 
         database.update("UPDATE games SET game=? WHERE gameId=?", preparedStatement -> {
             preparedStatement.setString(1, gameString);
