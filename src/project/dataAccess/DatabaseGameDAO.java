@@ -1,7 +1,5 @@
 package dataAccess;
 
-import chess.ChessGame;
-import chess.ChessGameImpl;
 import server.ChessSerializer;
 import server.Game;
 import server.http.GameListItem;
@@ -106,22 +104,7 @@ public class DatabaseGameDAO implements GameDAO {
     @Override
     public Game findGame(int gameID) throws DataAccessException {
         // Failures: game not found
-        String sqlString = "SELECT game FROM games WHERE gameId=?";
-        ArrayList<String> gameStrings = database.queryForString("game", sqlString, preparedStatement -> {
-            preparedStatement.setInt(1, gameID);
-        });
-
-        if (gameStrings.isEmpty()) {
-            String msg = String.format("Tried to access a Game with an unrecognized gameID: '%d'", gameID);
-            throw new NoSuchItemException(msg);
-        }
-
-        //        return memoryGameDAO.findGame(gameID);
-        ChessGame chessGame = ChessSerializer.gson().fromJson(gameStrings.get(0), ChessGameImpl.class);
-
-        // TODO! Query roles table!
-
-        return new Game(gameID, "placeholderName", chessGame);
+        return new DatabaseGameFinder(database).find(gameID);
     }
 
     /**
