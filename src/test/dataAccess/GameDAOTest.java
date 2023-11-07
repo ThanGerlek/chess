@@ -80,6 +80,29 @@ class GameDAOTest {
     }
 
     @Test
+    void findReturnsGameWithSamePlayers() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+        gameDAO.assignPlayerRole(1, "user1", ChessGame.PlayerRole.WHITE_PLAYER);
+        gameDAO.assignPlayerRole(1, "user2", ChessGame.PlayerRole.BLACK_PLAYER);
+
+        Game fetchedGame = gameDAO.findGame(1);
+
+        Assertions.assertEquals("user1", fetchedGame.whiteUsername());
+        Assertions.assertEquals("user2", fetchedGame.blackUsername());
+    }
+
+    @Test
+    void findReturnsGameWithSameNumberOfSpectators() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+        gameDAO.assignPlayerRole(1, "user1", ChessGame.PlayerRole.SPECTATOR);
+        gameDAO.assignPlayerRole(1, "user2", ChessGame.PlayerRole.SPECTATOR);
+
+        Game fetchedGame = gameDAO.findGame(1);
+
+        Assertions.assertEquals(2, fetchedGame.getSpectators().size());
+    }
+
+    @Test
     void findNonexistentGameErrors() throws DataAccessException {
         Assertions.assertThrows(NoSuchItemException.class, () -> gameDAO.findGame(42));
     }
