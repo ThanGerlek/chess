@@ -33,4 +33,8 @@ public class PlayerRole {
             throw new IllegalArgumentException(msg);
         }
     }
+
+    public String toString() {
+        return "PlayerRole." + this.roleString;
+    }
 }
