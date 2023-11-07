@@ -23,6 +23,7 @@ public abstract class Handler {
         } catch (ValueAlreadyTakenException e) {
             return handleError(res, 403, e.getMessage());
         } catch (Exception e) {
+            System.out.println("[ERROR] Threw an unknown error: " + e.getMessage());
             return handleError(res, 500, e.getMessage());
         }
     }

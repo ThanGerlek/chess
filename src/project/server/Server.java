@@ -122,7 +122,9 @@ public class Server {
     }
 
     private Object errorHandler(Exception e, Request req, Response res) {
-        MessageResponse response = new MessageResponse(String.format("Error: %s", e.getMessage()));
+        String msg = String.format("[ERROR] Unknown server error: %s", e.getMessage());
+        System.out.println(msg);
+        MessageResponse response = new MessageResponse(msg);
         return Handler.parseToBody(res, response, 500);
     }
 

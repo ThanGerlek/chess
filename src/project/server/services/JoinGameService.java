@@ -29,9 +29,12 @@ public class JoinGameService {
     public MessageResponse joinGame(JoinGameRequest request, String authToken) throws DataAccessException {
         if (authDAO.isValidAuthToken(authToken)) {
 
+            PlayerRole role = request.playerColor() == null
+                    ? PlayerRole.SPECTATOR
+                    : PlayerRole.stringToRole(request.playerColor());
+
             int gameID = request.gameID();
             String username = authDAO.getUsername(authToken);
-            PlayerRole role = request.playerColor();
             gameDAO.assignPlayerRole(gameID, username, role);
 
             return new MessageResponse("Okay!");

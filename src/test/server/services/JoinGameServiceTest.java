@@ -1,6 +1,9 @@
 package server.services;
 
-import dataAccess.*;
+import dataAccess.DataAccessException;
+import dataAccess.NoSuchItemException;
+import dataAccess.UnauthorizedAccessException;
+import dataAccess.ValueAlreadyTakenException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +19,8 @@ class JoinGameServiceTest extends ServiceTest {
     private final User user2 = new User("user2", "pass2", "mail2");
     private final AuthToken token1 = new AuthToken("1234", "user1");
     private final AuthToken token2 = new AuthToken("5678", "user2");
-    private final JoinGameRequest requestW = new JoinGameRequest(PlayerRole.WHITE_PLAYER, 1);
-    private final JoinGameRequest requestB = new JoinGameRequest(PlayerRole.BLACK_PLAYER, 1);
+    private final JoinGameRequest requestW = new JoinGameRequest("WHITE", 1);
+    private final JoinGameRequest requestB = new JoinGameRequest("BLACK", 1);
     private JoinGameService service;
 
     // TODO 401 forbidden, 403 taken, 500?
@@ -50,8 +53,7 @@ class JoinGameServiceTest extends ServiceTest {
     @Test
     void join_nonexistent_Game_returns_bad_request_error() throws DataAccessException {
         Assertions.assertThrows(NoSuchItemException.class,
-                () -> service.joinGame(new JoinGameRequest(PlayerRole.WHITE_PLAYER, INVALID_GAME_ID),
-                        token1.authToken()));
+                () -> service.joinGame(new JoinGameRequest("WHITE", INVALID_GAME_ID), token1.authToken()));
     }
 
     @Test
