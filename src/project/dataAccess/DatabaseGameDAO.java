@@ -7,6 +7,7 @@ import server.http.GameListItem;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DatabaseGameDAO implements GameDAO {
@@ -197,9 +198,38 @@ public class DatabaseGameDAO implements GameDAO {
      * @return a new gameID
      */
     @Override
-    public int generateNewGameID() {
-        // TODO Implement with Database
-        return 0;
+    public int generateNewGameID() throws DataAccessException {
+        int newID = addEmptyGameAndReturnGeneratedID();
+        clearEmptyGames();
+        return newID;
+    }
+
+    private int addEmptyGameAndReturnGeneratedID() throws DataAccessException {
+        String sqlString = "INSERT INTO games (gameName, game) VALUES ('', '')";
+        Connection conn = database.getConnection();
+        try (var preparedStatement = conn.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.executeUpdate();
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+
+            if (!rs.next()) {
+                throw new SQLException(
+                        "Failed to generateNewGameID: inserted with no errors but no generated keys were returned.");
+            } else {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(
+                    "Failed to run executeUpdate() (with generated keys) on SQL String: `" + sqlString + "`");
+            throw new DataAccessException(e.getMessage());
+        } finally {
+            database.returnConnection(conn);
+        }
+    }
+
+    private void clearEmptyGames() throws DataAccessException {
+        String sqlString = "DELETE FROM games WHERE game=''";
+        database.update(sqlString);
     }
 
 }

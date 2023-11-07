@@ -113,5 +113,5 @@ public interface GameDAO {
      *
      * @return a new gameID
      */
-    int generateNewGameID();
+    int generateNewGameID() throws DataAccessException;
 }

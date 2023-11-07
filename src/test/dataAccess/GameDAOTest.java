@@ -236,7 +236,7 @@ class GameDAOTest {
     }
 
     @Test
-    void generateTwoGameIDsReturnsDifferentValues() {
+    void generateTwoGameIDsReturnsDifferentValues() throws DataAccessException {
         int id1 = gameDAO.generateNewGameID();
         int id2 = gameDAO.generateNewGameID();
         Assertions.assertNotEquals(id1, id2);
