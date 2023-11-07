@@ -4,15 +4,13 @@ import chess.pieces.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChessBoardImpl implements ChessBoard {
 
-    private Map<ChessPosition, ChessPiece> pieces;
+    private BoardMap pieces;
 
     public ChessBoardImpl() {
-        this.pieces = new HashMap<>();
+        this.pieces = new BoardMap();
     }
 
     @Override
@@ -85,7 +83,7 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     public void clearBoard() {
-        pieces = new HashMap<>();
+        pieces = new BoardMap();
     }
 
     public ChessPosition getKingPosition(ChessGame.TeamColor color) {
