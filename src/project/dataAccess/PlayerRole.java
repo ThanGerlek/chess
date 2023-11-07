@@ -18,11 +18,11 @@ public class PlayerRole {
     }
 
     public static PlayerRole stringToRole(String roleString) {
-        if (roleString == null || roleString.isEmpty()) {
+        if (roleString == null || roleString.isEmpty() || SPECTATOR_STRING.equals(roleString)) {
             return SPECTATOR;
-        } else if ("white".equals(roleString)) {
+        } else if (WHITE_STRING.equals(roleString)) {
             return WHITE_PLAYER;
-        } else if ("black".equals(roleString)) {
+        } else if (BLACK_STRING.equals(roleString)) {
             return BLACK_PLAYER;
         } else {
             String msg = String.format("Called stringToRole() with an unrecognized role string: '%s'", roleString);
