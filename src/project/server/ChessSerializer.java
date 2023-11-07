@@ -13,6 +13,7 @@ public class ChessSerializer {
     public static Gson gson() {
         LinkedList<RuntimeTypeAdapterFactory> factories = new LinkedList<>();
 
+        factories.push(RuntimeTypeAdapterFactory.of(ChessGame.class, "type").registerSubtype(ChessGameImpl.class));
         factories.push(RuntimeTypeAdapterFactory.of(ChessBoard.class, "type").registerSubtype(ChessBoardImpl.class));
         factories.push(RuntimeTypeAdapterFactory.of(ChessMove.class, "type").registerSubtype(ChessMoveImpl.class));
         factories.push(
