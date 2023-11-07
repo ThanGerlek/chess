@@ -43,9 +43,8 @@ class UserDAOTest {
     }
 
     @Test
-    void getFakeUserErrors() {
-        User user = new User("user1", "pass1", "mail1");
-        Assertions.assertThrows(UnauthorizedAccessException.class, () -> userDAO.getUser("user1"));
+    void getInvalidUser_throws_not_found_error() {
+        Assertions.assertThrows(NoSuchItemException.class, () -> userDAO.getUser("iDoNotExist"));
     }
 
     @Test
@@ -57,7 +56,7 @@ class UserDAOTest {
 
     @Test
     void hasNonexistentUserReturnsFalse() throws DataAccessException {
-        Assertions.assertFalse(userDAO.hasUser("idontexist"));
+        Assertions.assertFalse(userDAO.hasUser("iDoNotExist"));
     }
 
     @Test
