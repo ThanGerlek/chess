@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import server.Game;
+import server.User;
 import server.http.GameListItem;
 
 import java.util.ArrayList;
@@ -15,9 +16,12 @@ import java.util.ArrayList;
 class GameDAOTest {
     private final boolean USE_DATABASE_DAOS = true;
     private final ChessDatabase database = new ChessDatabase();
+    private UserDAO userDAO;
     private GameDAO gameDAO;
     private ChessGame chessGame1;
     private ChessGame chessGame2;
+    private Game game1;
+    private Game game2;
 
     // TODO Test player roles in allGames()?
     // TODO Instead of clearing every time, simply rollback a transaction? See Unit Testing module video.
@@ -27,9 +31,14 @@ class GameDAOTest {
         database.update("TRUNCATE games");
         database.update("TRUNCATE roles");
         database.update("TRUNCATE users");
-        UserDAO userDAO = USE_DATABASE_DAOS ? new DatabaseUserDAO(database) : new MemoryUserDAO();
+
+        userDAO = USE_DATABASE_DAOS ? new DatabaseUserDAO(database) : new MemoryUserDAO();
         gameDAO = USE_DATABASE_DAOS ? new DatabaseGameDAO(database, userDAO) : new MemoryGameDAO(userDAO);
+        userDAO.initialize();
+        gameDAO.initialize();
+
         setUpGames();
+        setUpUsers();
     }
 
     void setUpGames() {
@@ -43,18 +52,26 @@ class GameDAOTest {
         chessGame1.setBoard(board1);
         chessGame2 = new ChessGameImpl();
         chessGame2.setBoard(board2);
+
+        game1 = new Game(1, "game1", chessGame1);
+        game2 = new Game(2, "game2", chessGame2);
+    }
+
+    void setUpUsers() throws DataAccessException {
+        User user1 = new User("user1", "pass1", "email1");
+        User user2 = new User("user2", "pass2", "email2");
+        userDAO.insertNewUser(user1);
+        userDAO.insertNewUser(user2);
     }
 
     @Test
     void insertNewGameDoesNotError() throws DataAccessException {
-        Game game1 = new Game(1, "game1", chessGame1);
         gameDAO.insertNewGame(game1);
         Assertions.assertTrue(true);
     }
 
     @Test
     void findInsertedGameReturnsGameWithEqualBoard() throws DataAccessException {
-        Game game1 = new Game(1, "game1", chessGame1);
         gameDAO.insertNewGame(game1);
 
         Game fetchedGame = gameDAO.findGame(1);
@@ -69,7 +86,6 @@ class GameDAOTest {
 
     @Test
     void findRemovedGameErrors() throws DataAccessException {
-        Game game1 = new Game(1, "game1", chessGame1);
         gameDAO.insertNewGame(game1);
 
         gameDAO.removeGame(1);
@@ -90,8 +106,6 @@ class GameDAOTest {
 
     @Test
     void allGamesWithTwoGames() throws DataAccessException {
-        Game game1 = new Game(1, "game1", chessGame1);
-        Game game2 = new Game(2, "game2", chessGame2);
         gameDAO.insertNewGame(game1);
         gameDAO.insertNewGame(game2);
         GameListItem item1 = new GameListItem(1, null, null, "game1");
@@ -135,8 +149,6 @@ class GameDAOTest {
 
     @Test
     void findClearedGamesErrors() throws DataAccessException {
-        Game game1 = new Game(1, "game1", chessGame1);
-        Game game2 = new Game(2, "game2", chessGame2);
         gameDAO.insertNewGame(game1);
         gameDAO.insertNewGame(game2);
 
