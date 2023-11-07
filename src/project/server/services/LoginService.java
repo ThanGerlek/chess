@@ -1,9 +1,6 @@
 package server.services;
 
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
-import dataAccess.UnauthorizedAccessException;
-import dataAccess.UserDAO;
+import dataAccess.*;
 import server.AuthToken;
 import server.User;
 import server.http.AuthResponse;
@@ -30,7 +27,12 @@ public class LoginService {
      * @return an AuthResponse representing the resulting HTTP response.
      */
     public AuthResponse login(LoginRequest request) throws DataAccessException {
-        User user = userDAO.getUser(request.username());
+        User user;
+        try {
+            user = userDAO.getUser(request.username());
+        } catch (NoSuchItemException e) {
+            throw new UnauthorizedAccessException("Unrecognized username.");
+        }
         AuthToken token = authenticate(user, request.password());
         return new AuthResponse(token.authToken(), request.username(), "Okay!");
     }
