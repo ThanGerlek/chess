@@ -92,15 +92,15 @@ public class Game {
                 Objects.equals(gameName, game.gameName);
     }
 
-    public boolean hasRole(PlayerRole role) {
+    public boolean isRoleTaken(PlayerRole role) {
         if (PlayerRole.WHITE_PLAYER.equals(role)) {
-            return whiteUsername != null && whiteUsername.isEmpty();
+            return whiteUsername != null && !whiteUsername.isEmpty();
         } else if (PlayerRole.BLACK_PLAYER.equals(role)) {
-            return blackUsername != null && blackUsername.isEmpty();
+            return blackUsername != null && !blackUsername.isEmpty();
         } else if (PlayerRole.SPECTATOR.equals(role)) {
-            return !getSpectators().isEmpty();
+            return false;
         } else {
-            throw new IllegalArgumentException("Called hasRole() with an unrecognized role type");
+            throw new IllegalArgumentException("Called isRoleTaken() with an unrecognized role type");
         }
     }
 

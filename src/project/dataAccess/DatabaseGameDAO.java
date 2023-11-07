@@ -141,7 +141,7 @@ public class DatabaseGameDAO implements GameDAO {
         if (role == null) role = PlayerRole.SPECTATOR;
 
         Game game = findGame(gameID);
-        if (game.hasRole(role)) {
+        if (game.isRoleTaken(role)) {
             String msg = String.format("Failed to assign player role %s, that role is already taken", role);
             throw new ValueAlreadyTakenException(msg);
         }
