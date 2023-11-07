@@ -2,6 +2,9 @@ package dataAccess;
 
 import server.User;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 
 public class DatabaseUserDAO implements UserDAO {
@@ -69,8 +72,31 @@ public class DatabaseUserDAO implements UserDAO {
     @Override
     public User getUser(String username) throws DataAccessException {
         // Failures: user not found
-        // TODO Implement with Database
-        return memoryUserDAO.getUser(username);
+        String sqlString = "SELECT password, email FROM users WHERE username=?";
+        User user;
+
+        Connection conn = database.getConnection();
+        try (var preparedStatement = conn.prepareStatement(sqlString)) {
+            preparedStatement.setString(1, username);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (!rs.next()) {
+                    String msg = String.format("Unrecognized username: '%s'", username);
+                    throw new NoSuchItemException(msg);
+                }
+                String password = rs.getString(1);
+                String email = rs.getString(2);
+                user = new User(username, password, email);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Failed to run executeQuery() on SQL String: `" + sqlString + "`");
+            throw new DataAccessException(e.getMessage());
+        } finally {
+            database.returnConnection(conn);
+        }
+
+        return user;
     }
 
     /**
@@ -81,8 +107,8 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public boolean hasUser(String username) throws DataAccessException {
-        // TODO Implement with Database
-        return memoryUserDAO.hasUser(username);
+        String sqlString = "SELECT username FROM users WHERE username=?";
+        return database.booleanQueryWithParam(sqlString, username);
     }
 
     /**
