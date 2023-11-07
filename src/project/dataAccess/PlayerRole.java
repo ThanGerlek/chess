@@ -14,7 +14,11 @@ public class PlayerRole {
     }
 
     public static String roleToString(PlayerRole role) {
-        return role.roleString;
+        if (role == null) {
+            return SPECTATOR_STRING;
+        } else {
+            return role.roleString;
+        }
     }
 
     public static PlayerRole stringToRole(String roleString) {
