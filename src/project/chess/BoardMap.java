@@ -18,17 +18,24 @@ public class BoardMap {
         board[index(pos)] = piece;
     }
 
-    public ChessPiece get(ChessPosition pos) {
-        return board[index(pos)];
-    }
-
     public Set<ChessPosition> keySet() {
         Set<ChessPosition> positions = new HashSet<>();
         for (int row = 1; row <= 8; row++) {
             for (int col = 1; col <= 8; col++) {
-                positions.add(new ChessPositionImpl(row, col));
+                ChessPosition pos = new ChessPositionImpl(row, col);
+                if (get(pos) != null) {
+                    positions.add(pos);
+                }
             }
         }
         return positions;
+    }
+
+    public ChessPiece get(ChessPosition pos) {
+        if (pos.getColumn() < 8 && pos.getRow() < 8) {
+            return board[index(pos)];
+        } else {
+            return null;
+        }
     }
 }
