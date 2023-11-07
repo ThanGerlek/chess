@@ -86,6 +86,10 @@ public class MemoryGameDAO implements GameDAO {
             throw new UnauthorizedAccessException("Unrecognized username");
         }
 
+        if (role == null) {
+            role = ChessGame.PlayerRole.SPECTATOR;
+        }
+
         // TODO style: neaten this up
         Game game = gameDatabase.get(gameID);
         switch (role) {

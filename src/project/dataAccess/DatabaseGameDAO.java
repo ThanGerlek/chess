@@ -187,6 +187,11 @@ public class DatabaseGameDAO implements GameDAO {
     public void assignPlayerRole(int gameID, String username, ChessGame.PlayerRole role) throws DataAccessException {
         // Failures: game not found, user not found
         // TODO Test with Database
+
+        if (role == null) {
+            role = ChessGame.PlayerRole.SPECTATOR;
+        }
+
         memoryGameDAO.assignPlayerRole(gameID, username, role);
 
         assertIDExists(gameID);
@@ -197,9 +202,10 @@ public class DatabaseGameDAO implements GameDAO {
             throw new UnauthorizedAccessException("Unrecognized username");
         }
 
+        final ChessGame.PlayerRole finalRole = role;
         database.update("INSERT INTO roles (username, role) VALUES (?, ?)", preparedStatement -> {
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, roleToString(role));
+            preparedStatement.setString(2, roleToString(finalRole));
         });
     }
 
