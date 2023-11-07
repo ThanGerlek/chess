@@ -1,10 +1,6 @@
 package server.services;
 
-import chess.ChessGame;
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
-import dataAccess.UnauthorizedAccessException;
+import dataAccess.*;
 import server.http.JoinGameRequest;
 import server.http.MessageResponse;
 
@@ -32,13 +28,13 @@ public class JoinGameService {
      */
     public MessageResponse joinGame(JoinGameRequest request, String authToken) throws DataAccessException {
         if (authDAO.isValidAuthToken(authToken)) {
-            ChessGame.PlayerRole role;
+            PlayerRole role;
             if ("WHITE".equals(request.playerColor())) {
-                role = ChessGame.PlayerRole.WHITE_PLAYER;
+                role = PlayerRole.WHITE_PLAYER;
             } else if ("BLACK".equals(request.playerColor())) {
-                role = ChessGame.PlayerRole.BLACK_PLAYER;
+                role = PlayerRole.BLACK_PLAYER;
             } else {
-                role = ChessGame.PlayerRole.SPECTATOR;
+                role = PlayerRole.SPECTATOR;
             }
             int gameID = request.gameID();
             String username = authDAO.getUsername(authToken);

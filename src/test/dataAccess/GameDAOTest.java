@@ -82,8 +82,8 @@ class GameDAOTest {
     @Test
     void findReturnsGameWithSamePlayers() throws DataAccessException {
         gameDAO.insertNewGame(game1);
-        gameDAO.assignPlayerRole(1, "user1", ChessGame.PlayerRole.WHITE_PLAYER);
-        gameDAO.assignPlayerRole(1, "user2", ChessGame.PlayerRole.BLACK_PLAYER);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.WHITE_PLAYER);
+        gameDAO.assignPlayerRole(1, "user2", PlayerRole.BLACK_PLAYER);
 
         Game fetchedGame = gameDAO.findGame(1);
 
@@ -94,8 +94,8 @@ class GameDAOTest {
     @Test
     void findReturnsGameWithSameNumberOfSpectators() throws DataAccessException {
         gameDAO.insertNewGame(game1);
-        gameDAO.assignPlayerRole(1, "user1", ChessGame.PlayerRole.SPECTATOR);
-        gameDAO.assignPlayerRole(1, "user2", ChessGame.PlayerRole.SPECTATOR);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.SPECTATOR);
+        gameDAO.assignPlayerRole(1, "user2", PlayerRole.SPECTATOR);
 
         Game fetchedGame = gameDAO.findGame(1);
 
@@ -155,7 +155,7 @@ class GameDAOTest {
     @Test
     void assignPlayerRoleWhite_then_get_white_username_matches() throws DataAccessException {
         gameDAO.insertNewGame(game1);
-        gameDAO.assignPlayerRole(1, "user1", ChessGame.PlayerRole.WHITE_PLAYER);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.WHITE_PLAYER);
 
         Assertions.assertEquals("user1", gameDAO.findGame(1).whiteUsername());
     }
@@ -163,7 +163,7 @@ class GameDAOTest {
     @Test
     void assignPlayerRoleBlack_then_get_black_username_matches() throws DataAccessException {
         gameDAO.insertNewGame(game1);
-        gameDAO.assignPlayerRole(1, "user1", ChessGame.PlayerRole.BLACK_PLAYER);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.BLACK_PLAYER);
 
         Assertions.assertEquals("user1", gameDAO.findGame(1).blackUsername());
     }
@@ -171,8 +171,8 @@ class GameDAOTest {
     @Test
     void assign_both_players_then_get_usernames_both_match() throws DataAccessException {
         gameDAO.insertNewGame(game1);
-        gameDAO.assignPlayerRole(1, "user1", ChessGame.PlayerRole.WHITE_PLAYER);
-        gameDAO.assignPlayerRole(1, "user2", ChessGame.PlayerRole.BLACK_PLAYER);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.WHITE_PLAYER);
+        gameDAO.assignPlayerRole(1, "user2", PlayerRole.BLACK_PLAYER);
 
         Assertions.assertEquals("user1", gameDAO.findGame(1).whiteUsername());
         Assertions.assertEquals("user2", gameDAO.findGame(1).blackUsername());
@@ -181,7 +181,7 @@ class GameDAOTest {
     @Test
     void assignPlayerRoleSpectator_adds_player_to_spectators_list() throws DataAccessException {
         gameDAO.insertNewGame(game1);
-        gameDAO.assignPlayerRole(1, "user1", ChessGame.PlayerRole.SPECTATOR);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.SPECTATOR);
 
         Assertions.assertTrue(gameDAO.findGame(1).getSpectators().contains("user1"));
     }

@@ -1,6 +1,5 @@
 package dataAccess;
 
-import chess.ChessGame;
 import server.Game;
 import server.http.GameListItem;
 
@@ -60,7 +59,7 @@ public interface GameDAO {
      * @param role     the role to assign to the user
      * @throws DataAccessException if the game or the user was not found
      */
-    void assignPlayerRole(int gameID, String username, ChessGame.PlayerRole role) throws DataAccessException;
+    void assignPlayerRole(int gameID, String username, PlayerRole role) throws DataAccessException;
         /* Failures
         can't access database
         game not found

@@ -1,6 +1,5 @@
 package dataAccess;
 
-import chess.ChessGame;
 import server.Game;
 import server.http.GameListItem;
 
@@ -78,7 +77,7 @@ public class MemoryGameDAO implements GameDAO {
      * @param role     the role to assign to the user
      * @throws DataAccessException if the game or the user was not found
      */
-    public void assignPlayerRole(int gameID, String username, ChessGame.PlayerRole role) throws DataAccessException {
+    public void assignPlayerRole(int gameID, String username, PlayerRole role) throws DataAccessException {
         // Failures: can't access database; game not found; user not found
         assertIDExists(gameID);
 
@@ -87,27 +86,25 @@ public class MemoryGameDAO implements GameDAO {
         }
 
         if (role == null) {
-            role = ChessGame.PlayerRole.SPECTATOR;
+            role = PlayerRole.SPECTATOR;
         }
 
         // TODO style: neaten this up
         Game game = gameDatabase.get(gameID);
-        switch (role) {
-            case WHITE_PLAYER -> {
-                if (!Objects.equals(game.whiteUsername(), "")) {
-                    throw new ValueAlreadyTakenException("Role already taken.");
-                } else {
-                    game.setWhiteUsername(username);
-                }
+        if (PlayerRole.WHITE_PLAYER.equals(role)) {
+            if (!Objects.equals(game.whiteUsername(), "")) {
+                throw new ValueAlreadyTakenException("Role already taken.");
+            } else {
+                game.setWhiteUsername(username);
             }
-            case BLACK_PLAYER -> {
-                if (!Objects.equals(game.blackUsername(), "")) {
-                    throw new ValueAlreadyTakenException("Role already taken.");
-                } else {
-                    game.setBlackUsername(username);
-                }
+        } else if (PlayerRole.BLACK_PLAYER.equals(role)) {
+            if (!Objects.equals(game.blackUsername(), "")) {
+                throw new ValueAlreadyTakenException("Role already taken.");
+            } else {
+                game.setBlackUsername(username);
             }
-            case SPECTATOR -> game.addSpectator(username);
+        } else if (PlayerRole.SPECTATOR.equals(role)) {
+            game.addSpectator(username);
         }
 
         /* TODO Not handled:

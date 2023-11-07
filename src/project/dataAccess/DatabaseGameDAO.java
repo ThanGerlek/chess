@@ -79,13 +79,13 @@ public class DatabaseGameDAO implements GameDAO {
 
     private void assignPlayerRolesFromGame(Game game) throws DataAccessException {
         if (!game.whiteUsername().isEmpty()) {
-            assignPlayerRole(game.gameID(), game.whiteUsername(), ChessGame.PlayerRole.WHITE_PLAYER);
+            assignPlayerRole(game.gameID(), game.whiteUsername(), PlayerRole.WHITE_PLAYER);
         }
         if (!game.blackUsername().isEmpty()) {
-            assignPlayerRole(game.gameID(), game.whiteUsername(), ChessGame.PlayerRole.BLACK_PLAYER);
+            assignPlayerRole(game.gameID(), game.whiteUsername(), PlayerRole.BLACK_PLAYER);
         }
         for (String spectator : game.getSpectators()) {
-            assignPlayerRole(game.gameID(), spectator, ChessGame.PlayerRole.SPECTATOR);
+            assignPlayerRole(game.gameID(), spectator, PlayerRole.SPECTATOR);
         }
     }
 
@@ -94,14 +94,6 @@ public class DatabaseGameDAO implements GameDAO {
             String msg = String.format("Tried to access a Game with an unrecognized gameID: '%d'", gameID);
             throw new NoSuchItemException(msg);
         }
-    }
-
-    private String roleToString(ChessGame.PlayerRole role) {
-        return switch (role) {
-            case WHITE_PLAYER -> "white";
-            case BLACK_PLAYER -> "black";
-            case SPECTATOR -> "spectator";
-        };
     }
 
     /**
@@ -181,12 +173,12 @@ public class DatabaseGameDAO implements GameDAO {
      * @throws DataAccessException if the game or the user was not found
      */
     @Override
-    public void assignPlayerRole(int gameID, String username, ChessGame.PlayerRole role) throws DataAccessException {
+    public void assignPlayerRole(int gameID, String username, PlayerRole role) throws DataAccessException {
         // Failures: game not found, user not found
         // TODO Test with Database
 
         if (role == null) {
-            role = ChessGame.PlayerRole.SPECTATOR;
+            role = PlayerRole.SPECTATOR;
         }
 
         memoryGameDAO.assignPlayerRole(gameID, username, role);
@@ -199,10 +191,10 @@ public class DatabaseGameDAO implements GameDAO {
             throw new UnauthorizedAccessException("Unrecognized username");
         }
 
-        final ChessGame.PlayerRole finalRole = role;
+        final PlayerRole finalRole = role;
         database.update("INSERT INTO roles (username, role, gameId) VALUES (?, ?, ?)", preparedStatement -> {
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, roleToString(finalRole));
+            preparedStatement.setString(2, PlayerRole.roleToString(finalRole));
             preparedStatement.setInt(3, gameID);
         });
     }
@@ -265,16 +257,4 @@ public class DatabaseGameDAO implements GameDAO {
         return memoryGameDAO.generateNewGameID();
     }
 
-    private ChessGame.PlayerRole stringToRole(String roleString) {
-        if ("white".equals(roleString)) {
-            return ChessGame.PlayerRole.WHITE_PLAYER;
-        } else if ("black".equals(roleString)) {
-            return ChessGame.PlayerRole.BLACK_PLAYER;
-        } else if ("spectator".equals(roleString)) {
-            return ChessGame.PlayerRole.SPECTATOR;
-        } else {
-            String msg = String.format("Called stringToRole() with an unrecognized role string: '%s'", roleString);
-            throw new IllegalArgumentException(msg);
-        }
-    }
 }
