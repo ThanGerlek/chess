@@ -203,9 +203,10 @@ public class DatabaseGameDAO implements GameDAO {
         }
 
         final ChessGame.PlayerRole finalRole = role;
-        database.update("INSERT INTO roles (username, role) VALUES (?, ?)", preparedStatement -> {
+        database.update("INSERT INTO roles (username, role, gameId) VALUES (?, ?, ?)", preparedStatement -> {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, roleToString(finalRole));
+            preparedStatement.setInt(3, gameID);
         });
     }
 
