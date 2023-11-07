@@ -138,10 +138,18 @@ public class DatabaseGameDAO implements GameDAO {
             throw new UnauthorizedAccessException("Unrecognized username");
         }
 
-        final PlayerRole finalRole = role;
+        if (role == null) role = PlayerRole.SPECTATOR;
+
+        Game game = findGame(gameID);
+        if (game.hasRole(role)) {
+            String msg = String.format("Failed to assign player role %s, that role is already taken", role);
+            throw new ValueAlreadyTakenException(msg);
+        }
+
+        String roleString = PlayerRole.roleToString(role);
         database.update("INSERT INTO roles (username, role, gameId) VALUES (?, ?, ?)", preparedStatement -> {
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, PlayerRole.roleToString(finalRole));
+            preparedStatement.setString(2, roleString);
             preparedStatement.setInt(3, gameID);
         });
     }
