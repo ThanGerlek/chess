@@ -2,6 +2,7 @@ package server;
 
 import chess.ChessGame;
 import chess.ChessGameImpl;
+import dataAccess.PlayerRole;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -77,10 +78,6 @@ public class Game {
         this.spectators.add(username);
     }
 
-    public ArrayList<String> getSpectators() {
-        return new ArrayList<>(spectators);
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(gameID, chessGame, gameName);
@@ -93,5 +90,19 @@ public class Game {
         Game game = (Game) o;
         return gameID == game.gameID && Objects.equals(chessGame, game.chessGame) &&
                 Objects.equals(gameName, game.gameName);
+    }
+
+    public boolean hasRole(PlayerRole role) {
+        if (PlayerRole.WHITE_PLAYER.equals(role)) {
+            return whiteUsername != null && whiteUsername.isEmpty();
+        } else if (PlayerRole.BLACK_PLAYER.equals(role)) {
+            return blackUsername != null && blackUsername.isEmpty();
+        } else {
+            return !getSpectators().isEmpty();
+        }
+    }
+
+    public ArrayList<String> getSpectators() {
+        return new ArrayList<>(spectators);
     }
 }
