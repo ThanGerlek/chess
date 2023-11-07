@@ -18,11 +18,9 @@ public class DatabaseUserDAO implements UserDAO {
                 UNIQUE INDEX (username)
             )""";
     private final ChessDatabase database;
-    MemoryUserDAO memoryUserDAO; // TODO Remove
 
     public DatabaseUserDAO(ChessDatabase database) {
         this.database = database;
-        memoryUserDAO = new MemoryUserDAO();
     }
 
     /**
@@ -42,9 +40,6 @@ public class DatabaseUserDAO implements UserDAO {
     @Override
     public void insertNewUser(User user) throws DataAccessException {
         // Failures: username already exists
-        // TODO Test with Database
-        memoryUserDAO.insertNewUser(user);
-
         String sqlString = "SELECT id FROM users WHERE username=?";
         boolean userAlreadyExists = database.booleanQueryWithParam(sqlString, user.username());
         if (userAlreadyExists) {
@@ -118,9 +113,6 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public void removeUser(User user) throws DataAccessException {
-        // TODO Test with Database
-        memoryUserDAO.removeUser(user);
-
         database.updateWithParam("DELETE FROM users WHERE username=?", user.username());
     }
 
@@ -129,9 +121,6 @@ public class DatabaseUserDAO implements UserDAO {
      */
     @Override
     public void clearUsers() throws DataAccessException {
-        // TODO Implement with Database
-        memoryUserDAO.clearUsers();
-
         database.update("TRUNCATE users");
     }
 }
