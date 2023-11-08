@@ -172,10 +172,10 @@ public class DatabaseGameDAO implements GameDAO {
         // Failures: game not found
         assertIDExists(game.gameID());
 
-        String gameString = ChessSerializer.gson().toJson(game);
+        String chessGameString = ChessSerializer.gson().toJson(game.chessGame());
 
         database.update("UPDATE games SET game=? WHERE gameId=?", preparedStatement -> {
-            preparedStatement.setString(1, gameString);
+            preparedStatement.setString(1, chessGameString);
             preparedStatement.setInt(2, game.gameID());
         });
     }
@@ -212,6 +212,7 @@ public class DatabaseGameDAO implements GameDAO {
         return newID;
     }
 
+    // TODO Extract these into a helper class
     private int addEmptyGameAndReturnGeneratedID() throws DataAccessException {
         String sqlString = "INSERT INTO games (gameName, game) VALUES ('', '')";
         Connection conn = database.getConnection();
