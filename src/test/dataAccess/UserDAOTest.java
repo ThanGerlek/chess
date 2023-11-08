@@ -20,8 +20,9 @@ class UserDAOTest {
     @Test
     void insertUserDoesNotError() throws DataAccessException {
         User user = new User("user1", "pass1", "mail1");
-        userDAO.insertNewUser(user);
-        Assertions.assertTrue(true);
+        Assertions.assertDoesNotThrow(() -> {
+            userDAO.insertNewUser(user);
+        });
     }
 
     // insertNewUser negative test
@@ -84,10 +85,11 @@ class UserDAOTest {
 
     // removeUser "negative" test
     @Test
-    void removeNonexistentUserIsOkay() throws DataAccessException {
+    void removeNonexistentUserDoesNotThrow() throws DataAccessException {
         User user = new User("iDoNotExist", "pass1", "mail1");
-        userDAO.removeUser(user);
-        Assertions.assertTrue(true);
+        Assertions.assertDoesNotThrow(() -> {
+            userDAO.removeUser(user);
+        });
     }
 
     // clearUsers positive test
@@ -103,8 +105,9 @@ class UserDAOTest {
     }
 
     @Test
-    void clearEmptyIsOkay() throws DataAccessException {
-        userDAO.clearUsers();
-        Assertions.assertTrue(true);
+    void clearEmptyDoesNotThrow() throws DataAccessException {
+        Assertions.assertDoesNotThrow(() -> {
+            userDAO.clearUsers();
+        });
     }
 }

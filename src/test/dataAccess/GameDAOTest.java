@@ -66,8 +66,9 @@ class GameDAOTest {
 
     @Test
     void insertNewGameDoesNotError() throws DataAccessException {
-        gameDAO.insertNewGame(game1);
-        Assertions.assertTrue(true);
+        Assertions.assertDoesNotThrow(() -> {
+            gameDAO.insertNewGame(game1);
+        });
     }
 
     // findGame positive test
@@ -155,9 +156,10 @@ class GameDAOTest {
 
     // removeGame "negative" test
     @Test
-    void removeNonexistentGameDoesNotError() throws DataAccessException {
-        gameDAO.removeGame(42);
-        Assertions.assertTrue(true);
+    void removeNonexistentGameDoesNotThrow() throws DataAccessException {
+        Assertions.assertDoesNotThrow(() -> {
+            gameDAO.removeGame(42);
+        });
     }
 
     // allGames "negative" test
@@ -302,9 +304,10 @@ class GameDAOTest {
 
     // clearGames "negative" test
     @Test
-    void clearEmptyIsOkay() throws DataAccessException {
-        gameDAO.clearGames();
-        Assertions.assertTrue(true);
+    void clearEmptyDoesNotThrow() throws DataAccessException {
+        Assertions.assertDoesNotThrow(() -> {
+            gameDAO.clearGames();
+        });
     }
 
     // generateNewGameID positive test

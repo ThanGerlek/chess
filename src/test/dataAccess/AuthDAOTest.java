@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import server.AuthToken;
 import server.User;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 class AuthDAOTest {
     private final boolean USE_DATABASE_DAOS = true;
     private final ChessDatabase database = new ChessDatabase();
@@ -32,8 +30,9 @@ class AuthDAOTest {
     @Test
     void addAuthTokenDoesNotError() throws DataAccessException {
         AuthToken token = new AuthToken("1234", "user1");
-        authDAO.addAuthToken(token);
-        assertTrue(true);
+        Assertions.assertDoesNotThrow(() -> {
+            authDAO.addAuthToken(token);
+        });
     }
 
     @Test
@@ -57,8 +56,10 @@ class AuthDAOTest {
         AuthToken token1 = new AuthToken("12345678", "user1");
         AuthToken token2 = new AuthToken("1234", "user1");
         authDAO.addAuthToken(token1);
-        authDAO.addAuthToken(token2);
-        Assertions.assertTrue(true);
+
+        Assertions.assertDoesNotThrow(() -> {
+            authDAO.addAuthToken(token2);
+        });
     }
 
     // addAuthToken positive test
@@ -89,10 +90,11 @@ class AuthDAOTest {
 
     // removeAuthToken "negative" test
     @Test
-    void removingNonexistentTokenIsOkay() throws DataAccessException {
+    void removingNonexistentTokenDoesNotThrow() throws DataAccessException {
         AuthToken token = new AuthToken("1234", "user1");
-        authDAO.removeAuthToken(token.authToken());
-        Assertions.assertTrue(true);
+        Assertions.assertDoesNotThrow(() -> {
+            authDAO.removeAuthToken(token.authToken());
+        });
     }
 
     // clearAuthTokens positive test
