@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.AuthToken;
+import server.Game;
+import server.User;
 import server.http.MessageResponse;
 
 class ClearApplicationServiceTest extends ServiceTest {
@@ -22,6 +24,9 @@ class ClearApplicationServiceTest extends ServiceTest {
     // Positive test
     @Test
     void has_cleared_Users_is_false() throws DataAccessException {
+        userDAO.insertNewUser(new User("user1", "pass1", "main1"));
+        userDAO.insertNewUser(new User("user2", "pass2", "main2"));
+
         service.clearApplication();
 
         Assertions.assertFalse(userDAO.hasUser("user1"));
@@ -43,6 +48,9 @@ class ClearApplicationServiceTest extends ServiceTest {
 
     @Test
     void finding_cleared_Games_errors() throws DataAccessException {
+        gameDAO.insertNewGame(new Game(1, "game1"));
+        gameDAO.insertNewGame(new Game(2, "game2"));
+
         service.clearApplication();
 
         Assertions.assertThrows(NoSuchItemException.class, () -> gameDAO.findGame(1));
@@ -53,6 +61,8 @@ class ClearApplicationServiceTest extends ServiceTest {
     void cleared_AuthTokens_are_invalid() throws DataAccessException {
         AuthToken token1 = new AuthToken("1234", "user1");
         AuthToken token2 = new AuthToken("2468", "user2");
+        authDAO.addAuthToken(token1);
+        authDAO.addAuthToken(token2);
 
         service.clearApplication();
 
