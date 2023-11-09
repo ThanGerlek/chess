@@ -24,8 +24,8 @@ class ClearApplicationServiceTest extends ServiceTest {
     // Positive test
     @Test
     void has_cleared_Users_is_false() throws DataAccessException {
-        userDAO.insertNewUser(new User("user1", "pass1", "main1"));
-        userDAO.insertNewUser(new User("user2", "pass2", "main2"));
+        userDAO.insertNewUser(new User("user1", "pass1", "mail1"));
+        userDAO.insertNewUser(new User("user2", "pass2", "mail2"));
 
         service.clearApplication();
 
