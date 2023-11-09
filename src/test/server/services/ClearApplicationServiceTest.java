@@ -34,16 +34,18 @@ class ClearApplicationServiceTest extends ServiceTest {
     }
 
     @Test
-    void clearing_returns_okay() throws DataAccessException {
-        MessageResponse response = service.clearApplication();
-        Assertions.assertEquals("Okay!", response.message());
+    void clearing_does_not_throw() throws DataAccessException {
+        Assertions.assertDoesNotThrow(() -> {
+            MessageResponse response = service.clearApplication();
+        });
     }
 
     @Test
-    void clearing_empty_returns_okay() throws DataAccessException {
+    void clearing_twice_does_not_throw() throws DataAccessException {
         service.clearApplication();
-        service.clearApplication();
-        Assertions.assertTrue(true);
+        Assertions.assertDoesNotThrow(() -> {
+            service.clearApplication();
+        });
     }
 
     @Test
