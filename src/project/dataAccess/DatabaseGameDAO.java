@@ -1,8 +1,8 @@
 package dataAccess;
 
-import server.ChessSerializer;
 import Game;
 import http.GameListItem;
+import server.ChessSerializer;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -141,7 +141,7 @@ public class DatabaseGameDAO implements GameDAO {
         if (role == null) role = PlayerRole.SPECTATOR;
 
         Game game = findGame(gameID);
-        if (game.isRoleTaken(role)) {
+        if (isRoleTaken(game, role)) {
             String msg = String.format("Failed to assign player role %s, that role is already taken", role);
             throw new ValueAlreadyTakenException(msg);
         }
@@ -158,6 +158,18 @@ public class DatabaseGameDAO implements GameDAO {
         if (!database.booleanQueryWithParam("SELECT gameId FROM games WHERE gameId=?", gameID)) {
             String msg = String.format("Tried to access a Game with an unrecognized gameID: '%d'", gameID);
             throw new NoSuchItemException(msg);
+        }
+    }
+
+    private boolean isRoleTaken(Game game, PlayerRole role) {
+        if (PlayerRole.WHITE_PLAYER.equals(role)) {
+            return game.whiteUsername() != null && !game.whiteUsername().isEmpty();
+        } else if (PlayerRole.BLACK_PLAYER.equals(role)) {
+            return game.blackUsername() != null && !game.blackUsername().isEmpty();
+        } else if (PlayerRole.SPECTATOR.equals(role)) {
+            return false;
+        } else {
+            throw new IllegalArgumentException("Called isRoleTaken() with an unrecognized role type");
         }
     }
 

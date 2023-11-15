@@ -1,6 +1,5 @@
 import chess.ChessGame;
 import chess.ChessGameImpl;
-import dataAccess.PlayerRole;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -88,18 +87,6 @@ public class Game {
         Game game = (Game) o;
         return gameID == game.gameID && Objects.equals(chessGame, game.chessGame) &&
                 Objects.equals(gameName, game.gameName);
-    }
-
-    public boolean isRoleTaken(PlayerRole role) {
-        if (PlayerRole.WHITE_PLAYER.equals(role)) {
-            return whiteUsername != null && !whiteUsername.isEmpty();
-        } else if (PlayerRole.BLACK_PLAYER.equals(role)) {
-            return blackUsername != null && !blackUsername.isEmpty();
-        } else if (PlayerRole.SPECTATOR.equals(role)) {
-            return false;
-        } else {
-            throw new IllegalArgumentException("Called isRoleTaken() with an unrecognized role type");
-        }
     }
 
     public ArrayList<String> getSpectators() {
