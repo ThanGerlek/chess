@@ -4,10 +4,10 @@ import dataAccess.AuthDAO;
 import dataAccess.BadRequestException;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
-import server.AuthToken;
-import server.User;
-import server.http.AuthResponse;
-import server.http.RegisterRequest;
+import AuthToken;
+import User;
+import http.AuthResponse;
+import http.RegisterRequest;
 
 import java.util.UUID;
 

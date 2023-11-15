@@ -4,9 +4,9 @@ import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.UnauthorizedAccessException;
-import server.Game;
-import server.http.CreateGameRequest;
-import server.http.CreateGameResponse;
+import Game;
+import http.CreateGameRequest;
+import http.CreateGameResponse;
 
 /**
  * Provides the Create New Game service, which registers and initializes a new empty game.

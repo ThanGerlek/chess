@@ -3,7 +3,7 @@ package server.services;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.UnauthorizedAccessException;
-import server.http.MessageResponse;
+import http.MessageResponse;
 
 /**
  * Provides the Logout service, which logs out an existing user.

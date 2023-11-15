@@ -3,8 +3,8 @@ package dataAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.AuthToken;
-import server.User;
+import AuthToken;
+import User;
 
 class AuthDAOTest {
     private final boolean USE_DATABASE_DAOS = true;

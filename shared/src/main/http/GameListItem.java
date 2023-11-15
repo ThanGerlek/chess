@@ -1,4 +1,4 @@
-package server.http;
+package http;
 
 /**
  * A serializable representation of the basic data about a single game. Designed for use in ListGamesService HTTP

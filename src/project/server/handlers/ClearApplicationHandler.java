@@ -4,7 +4,7 @@ import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
-import server.http.MessageResponse;
+import http.MessageResponse;
 import server.services.ClearApplicationService;
 import spark.Request;
 import spark.Response;

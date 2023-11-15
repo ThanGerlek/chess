@@ -2,7 +2,7 @@ package server.handlers;
 
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
-import server.http.MessageResponse;
+import http.MessageResponse;
 import server.services.LogoutService;
 import spark.Request;
 import spark.Response;

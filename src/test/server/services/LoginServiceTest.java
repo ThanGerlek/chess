@@ -5,9 +5,9 @@ import dataAccess.UnauthorizedAccessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.User;
-import server.http.AuthResponse;
-import server.http.LoginRequest;
+import User;
+import http.AuthResponse;
+import http.LoginRequest;
 
 class LoginServiceTest extends ServiceTest {
     private LoginService service;

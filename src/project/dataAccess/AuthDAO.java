@@ -1,6 +1,6 @@
 package dataAccess;
 
-import server.AuthToken;
+import AuthToken;
 
 /**
  * A DAO (Data Access Object) for {@code AuthToken} objects and authentication data.

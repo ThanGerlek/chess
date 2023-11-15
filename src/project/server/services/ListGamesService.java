@@ -4,7 +4,7 @@ import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.UnauthorizedAccessException;
-import server.http.ListGamesResponse;
+import http.ListGamesResponse;
 
 /**
  * Provides the List Games service, which returns data about all games currently in progress.

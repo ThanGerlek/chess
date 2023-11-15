@@ -1,6 +1,6 @@
 package dataAccess;
 
-import server.User;
+import User;
 
 import java.util.ArrayList;
 import java.util.Objects;

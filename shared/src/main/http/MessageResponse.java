@@ -1,4 +1,4 @@
-package server.http;
+package http;
 
 /**
  * A record representing a simple HTTP response with only a message header. Used by

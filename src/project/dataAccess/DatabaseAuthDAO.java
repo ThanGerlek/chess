@@ -1,6 +1,6 @@
 package dataAccess;
 
-import server.AuthToken;
+import AuthToken;
 
 import java.util.ArrayList;
 

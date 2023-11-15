@@ -9,11 +9,11 @@ import dataAccess.UnauthorizedAccessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.AuthToken;
-import server.Game;
-import server.User;
-import server.http.GameListItem;
-import server.http.ListGamesResponse;
+import AuthToken;
+import Game;
+import User;
+import http.GameListItem;
+import http.ListGamesResponse;
 
 import java.util.ArrayList;
 

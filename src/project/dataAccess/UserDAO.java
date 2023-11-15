@@ -1,6 +1,6 @@
 package dataAccess;
 
-import server.User;
+import User;
 
 /**
  * A DAO (Data Access Object) for CRUD operations on the list of registered Users.

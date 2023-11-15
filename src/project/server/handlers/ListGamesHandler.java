@@ -3,7 +3,7 @@ package server.handlers;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
-import server.http.ListGamesResponse;
+import http.ListGamesResponse;
 import server.services.ListGamesService;
 import spark.Request;
 import spark.Response;

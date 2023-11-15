@@ -3,7 +3,7 @@ package dataAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.User;
+import User;
 
 class UserDAOTest {
     private final boolean USE_DATABASE_DAOS = true;

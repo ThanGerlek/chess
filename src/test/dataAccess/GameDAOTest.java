@@ -6,9 +6,9 @@ import chess.pieces.Queen;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.Game;
-import server.User;
-import server.http.GameListItem;
+import Game;
+import User;
+import http.GameListItem;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package server.http;
+package http;
 
 /**
  * A record representing an HTTP request to the {@link server.services.LoginService}.

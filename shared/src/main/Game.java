@@ -1,5 +1,3 @@
-package server;
-
 import chess.ChessGame;
 import chess.ChessGameImpl;
 import dataAccess.PlayerRole;

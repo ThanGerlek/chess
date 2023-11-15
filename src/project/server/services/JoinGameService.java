@@ -1,8 +1,8 @@
 package server.services;
 
 import dataAccess.*;
-import server.http.JoinGameRequest;
-import server.http.MessageResponse;
+import http.JoinGameRequest;
+import http.MessageResponse;
 
 /**
  * Provides the Join Game service, which connects a user to an existing game as either a player or spectator. This

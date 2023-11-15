@@ -4,7 +4,7 @@ import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
-import server.http.MessageResponse;
+import http.MessageResponse;
 
 /**
  * Provides the Clear Application service, which performs a hard reset of the database, erasing all users, games, and

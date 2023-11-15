@@ -1,7 +1,7 @@
 package dataAccess;
 
-import server.Game;
-import server.http.GameListItem;
+import Game;
+import http.GameListItem;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
 package dataAccess;
 
-import server.User;
+import User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

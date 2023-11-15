@@ -1,4 +1,4 @@
-package server.http;
+package http;
 
 /**
  * A record representing an HTTP response to a {@link server.services.CreateGameService} request.

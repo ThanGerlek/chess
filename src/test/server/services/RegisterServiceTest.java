@@ -6,9 +6,9 @@ import dataAccess.ValueAlreadyTakenException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.User;
-import server.http.AuthResponse;
-import server.http.RegisterRequest;
+import User;
+import http.AuthResponse;
+import http.RegisterRequest;
 
 class RegisterServiceTest extends ServiceTest {
     private RegisterService service;

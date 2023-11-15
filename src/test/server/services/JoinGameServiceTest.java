@@ -4,11 +4,11 @@ import dataAccess.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.AuthToken;
-import server.Game;
-import server.User;
-import server.http.JoinGameRequest;
-import server.http.MessageResponse;
+import AuthToken;
+import Game;
+import User;
+import http.JoinGameRequest;
+import http.MessageResponse;
 
 class JoinGameServiceTest extends ServiceTest {
     private static final int INVALID_GAME_ID = 42;
