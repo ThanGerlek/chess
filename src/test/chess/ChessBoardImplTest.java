@@ -23,6 +23,29 @@ class ChessBoardImplTest {
     }
 
     @Test
+    void hasPiece_returns_true_after_adding_piece_there() {
+        ChessBoardImpl board = givenAnEmptyBoard();
+
+        ChessPosition position = new ChessPositionImpl(2, 2);
+        ChessPiece piece = new Rook(ChessGame.TeamColor.WHITE);
+        board.addPiece(position, piece);
+
+        Assertions.assertTrue(board.hasPieceAt(position));
+    }
+
+    @Test
+    void hasPiece_returns_false_after_adding_piece_in_a_different_location() {
+        ChessBoardImpl board = givenAnEmptyBoard();
+
+        ChessPosition position1 = new ChessPositionImpl(2, 2);
+        ChessPiece piece = new Rook(ChessGame.TeamColor.WHITE);
+        board.addPiece(position1, piece);
+
+        ChessPosition position2 = new ChessPositionImpl(3, 2);
+        Assertions.assertFalse(board.hasPieceAt(position2));
+    }
+
+    @Test
     void adding_two_pieces_to_an_empty_board_then_getting_each_returns_each() {
         ChessBoardImpl board = givenAnEmptyBoard();
 
