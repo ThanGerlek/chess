@@ -50,4 +50,10 @@ class LogoutServiceTest extends ServiceTest {
         Assertions.assertThrows(UnauthorizedAccessException.class, () -> service.logout("iAmIncorrect"));
     }
 
+    @Test
+    void logout_token_twice_errors() throws DataAccessException {
+        service.logout(token.authToken());
+        Assertions.assertThrows(UnauthorizedAccessException.class, () -> service.logout(token.authToken()));
+    }
+
 }
