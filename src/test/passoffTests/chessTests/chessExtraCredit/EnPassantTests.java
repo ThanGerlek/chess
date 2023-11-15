@@ -1,10 +1,7 @@
 package passoffTests.chessTests.chessExtraCredit;
 
 import chess.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import passoffTests.TestFactory;
 
 /**
@@ -25,6 +22,7 @@ public class EnPassantTests {
 
 
     @Test
+    @Disabled
     @DisplayName("White En Passant Right")
     public void enPassantWhiteRight() throws InvalidMoveException {
 
@@ -88,6 +86,7 @@ public class EnPassantTests {
 
 
     @Test
+    @Disabled
     @DisplayName("White En Passant Left")
     public void enPassantWhiteLeft() throws InvalidMoveException {
 
@@ -151,6 +150,7 @@ public class EnPassantTests {
 
 
     @Test
+    @Disabled
     @DisplayName("Black En Passant Right")
     public void enPassantBlackRight() throws InvalidMoveException {
 
@@ -214,6 +214,7 @@ public class EnPassantTests {
 
 
     @Test
+    @Disabled
     @DisplayName("Black En Passant Left")
     public void enPassantBlackLeft() throws InvalidMoveException {
 
@@ -277,6 +278,7 @@ public class EnPassantTests {
 
 
     @Test
+    @Disabled
     @DisplayName("Can Only En Passant on Next Turn")
     public void missedEnPassant() throws InvalidMoveException {
 

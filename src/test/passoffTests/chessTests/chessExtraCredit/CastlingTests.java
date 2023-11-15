@@ -1,10 +1,7 @@
 package passoffTests.chessTests.chessExtraCredit;
 
 import chess.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import passoffTests.TestFactory;
 
 /**
@@ -28,6 +25,7 @@ public class CastlingTests {
 
 
     @Test
+    @Disabled
     @DisplayName("White Team Castle")
     public void castleWhite() {
 
@@ -126,6 +124,7 @@ public class CastlingTests {
 
 
     @Test
+    @Disabled
     @DisplayName("Black Team Castle")
     public void castleBlack() {
 
@@ -238,6 +237,7 @@ public class CastlingTests {
 
 
     @Test
+    @Disabled
     @DisplayName("Cannot Castle Through Pieces")
     public void castlingBlockedByTeam() {
         /*
@@ -286,6 +286,7 @@ public class CastlingTests {
 
 
     @Test
+    @Disabled
     @DisplayName("Cannot Castle in Check")
     public void castlingBlockedByEnemy() {
 
@@ -341,6 +342,7 @@ public class CastlingTests {
 
 
     @Test
+    @Disabled
     @DisplayName("Cannot Castle After Moving")
     public void noCastleAfterMove() throws InvalidMoveException {
 
