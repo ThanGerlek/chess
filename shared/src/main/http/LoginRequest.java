@@ -1,7 +1,7 @@
 package http;
 
 /**
- * A record representing an HTTP request to the {@link server.services.LoginService}.
+ * A record representing an HTTP request to the LoginService.
  *
  * @param username the username to log in with
  * @param password the password to log in with

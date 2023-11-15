@@ -1,8 +1,7 @@
 package http;
 
 /**
- * A record representing an HTTP response to an authorization request. Used by {@link server.services.LoginService} and
- * {@link server.services.RegisterService}.
+ * A record representing an HTTP response to an authorization request. Used by LoginService and RegisterService.
  *
  * @param authToken a new authorization string
  * @param username  the username of the user the token represents

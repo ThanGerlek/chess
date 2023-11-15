@@ -1,9 +1,8 @@
 package http;
 
 /**
- * A record representing a simple HTTP response with only a message header. Used by
- * {@link server.services.ClearApplicationService}, {@link server.services.JoinGameService}, and
- * {@link server.services.LogoutService}.
+ * A record representing a simple HTTP response with only a message header. Used by ClearApplicationService,
+ * JoinGameService, and LogoutService.
  *
  * @param message the response message
  */

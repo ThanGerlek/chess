@@ -3,7 +3,7 @@ package http;
 import java.util.ArrayList;
 
 /**
- * A record representing an HTTP response to a {@link server.services.ListGamesService} request.
+ * A record representing an HTTP response to a ListGamesService request.
  *
  * @param games   a list of games currently in the database
  * @param message the response message
