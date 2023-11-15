@@ -1,3 +1,5 @@
+package model;
+
 /**
  * An authorization token for the given user.
  *

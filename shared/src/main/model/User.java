@@ -1,3 +1,5 @@
+package model;
+
 /**
  * A model object representing the core data of a user.
  *

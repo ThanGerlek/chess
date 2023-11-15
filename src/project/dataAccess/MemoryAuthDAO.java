@@ -1,6 +1,6 @@
 package dataAccess;
 
-import AuthToken;
+import model.AuthToken;
 
 import java.util.HashMap;
 import java.util.Map;

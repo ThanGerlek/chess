@@ -1,3 +1,5 @@
+package model;
+
 import chess.ChessGame;
 import chess.ChessGameImpl;
 

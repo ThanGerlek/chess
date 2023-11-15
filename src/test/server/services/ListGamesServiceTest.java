@@ -6,14 +6,14 @@ import chess.pieces.King;
 import chess.pieces.Queen;
 import dataAccess.DataAccessException;
 import dataAccess.UnauthorizedAccessException;
+import http.GameListItem;
+import http.ListGamesResponse;
+import model.AuthToken;
+import model.Game;
+import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import AuthToken;
-import Game;
-import User;
-import http.GameListItem;
-import http.ListGamesResponse;
 
 import java.util.ArrayList;
 

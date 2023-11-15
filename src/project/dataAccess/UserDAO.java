@@ -1,6 +1,6 @@
 package dataAccess;
 
-import User;
+import model.User;
 
 /**
  * A DAO (Data Access Object) for CRUD operations on the list of registered Users.

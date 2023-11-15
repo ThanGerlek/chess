@@ -1,7 +1,7 @@
 package dataAccess;
 
-import Game;
 import http.GameListItem;
+import model.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;

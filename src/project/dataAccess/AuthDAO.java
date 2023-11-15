@@ -1,6 +1,6 @@
 package dataAccess;
 
-import AuthToken;
+import model.AuthToken;
 
 /**
  * A DAO (Data Access Object) for {@code AuthToken} objects and authentication data.

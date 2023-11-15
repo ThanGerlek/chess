@@ -2,13 +2,13 @@ package server.services;
 
 import dataAccess.DataAccessException;
 import dataAccess.NoSuchItemException;
+import http.MessageResponse;
+import model.AuthToken;
+import model.Game;
+import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import AuthToken;
-import Game;
-import User;
-import http.MessageResponse;
 
 class ClearApplicationServiceTest extends ServiceTest {
     private ClearApplicationService service;

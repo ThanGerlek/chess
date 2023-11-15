@@ -1,14 +1,14 @@
 package server.services;
 
 import dataAccess.*;
+import http.JoinGameRequest;
+import http.MessageResponse;
+import model.AuthToken;
+import model.Game;
+import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import AuthToken;
-import Game;
-import User;
-import http.JoinGameRequest;
-import http.MessageResponse;
 
 class JoinGameServiceTest extends ServiceTest {
     private static final int INVALID_GAME_ID = 42;

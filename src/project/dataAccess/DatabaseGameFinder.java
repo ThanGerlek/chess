@@ -2,8 +2,8 @@ package dataAccess;
 
 import chess.ChessGame;
 import chess.ChessGameImpl;
+import model.Game;
 import server.ChessSerializer;
-import Game;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

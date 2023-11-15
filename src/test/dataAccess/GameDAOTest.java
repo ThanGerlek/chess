@@ -3,12 +3,12 @@ package dataAccess;
 import chess.*;
 import chess.pieces.King;
 import chess.pieces.Queen;
+import http.GameListItem;
+import model.Game;
+import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import Game;
-import User;
-import http.GameListItem;
 
 import java.util.ArrayList;
 

@@ -2,13 +2,13 @@ package server.services;
 
 import dataAccess.DataAccessException;
 import dataAccess.UnauthorizedAccessException;
+import http.CreateGameRequest;
+import http.CreateGameResponse;
+import model.AuthToken;
+import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import AuthToken;
-import User;
-import http.CreateGameRequest;
-import http.CreateGameResponse;
 
 class CreateGameServiceTest extends ServiceTest {
     private final User user = new User("user1", "pass1", "mail1");

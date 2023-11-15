@@ -1,10 +1,10 @@
 package server.services;
 
 import dataAccess.*;
-import AuthToken;
-import User;
 import http.AuthResponse;
 import http.LoginRequest;
+import model.AuthToken;
+import model.User;
 
 import java.util.UUID;
 

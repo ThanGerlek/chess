@@ -3,12 +3,12 @@ package server.services;
 import dataAccess.BadRequestException;
 import dataAccess.DataAccessException;
 import dataAccess.ValueAlreadyTakenException;
+import http.AuthResponse;
+import http.RegisterRequest;
+import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import User;
-import http.AuthResponse;
-import http.RegisterRequest;
 
 class RegisterServiceTest extends ServiceTest {
     private RegisterService service;
