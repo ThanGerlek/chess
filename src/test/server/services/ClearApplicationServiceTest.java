@@ -63,6 +63,8 @@ class ClearApplicationServiceTest extends ServiceTest {
     void cleared_AuthTokens_are_invalid() throws DataAccessException {
         AuthToken token1 = new AuthToken("1234", "user1");
         AuthToken token2 = new AuthToken("2468", "user2");
+        userDAO.insertNewUser(new User("user1", "pass1", "mail1"));
+        userDAO.insertNewUser(new User("user2", "pass2", "mail2"));
         authDAO.addAuthToken(token1);
         authDAO.addAuthToken(token2);
 
