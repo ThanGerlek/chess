@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 class ChessBoardImplTest {
 
+    // TODO add more chess tests
+
     @Test
     void adding_one_piece_to_an_empty_board_then_getting_it_returns_that_piece() {
         ChessBoardImpl board = givenAnEmptyBoard();
