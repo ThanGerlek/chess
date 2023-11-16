@@ -1,8 +1,8 @@
 package server;
 
 import dataAccess.*;
-import server.handlers.*;
 import http.MessageResponse;
+import server.handlers.*;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
