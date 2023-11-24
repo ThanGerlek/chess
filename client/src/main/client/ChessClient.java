@@ -1,5 +1,7 @@
 package client;
 
+import client.ui.Command;
+
 import java.io.PrintStream;
 
 public class ChessClient {
@@ -11,6 +13,28 @@ public class ChessClient {
         this.serverURL = serverURL;
         this.printStream = printStream;
         this.state = LoginState.LOGGED_OUT;
+    }
+
+    public void runCommand(Command cmd) {
+        switch (cmd) {
+            case NO_INPUT -> askForInput();
+            case INVALID -> rejectInput();
+
+            case HELP -> printHelpMenu();
+            case QUIT -> quit();
+            case REGISTER -> register();
+            case LOGIN -> login();
+            case LOGOUT -> logout();
+            case CREATE_GAME -> createGame();
+            case LIST_GAMES -> listGames();
+            case JOIN_GAME -> joinGame();
+            case OBSERVE_GAME -> observeGame();
+
+            case IDENTITY -> {
+                return;
+            }
+
+        }
     }
 
     private void askForInput() {

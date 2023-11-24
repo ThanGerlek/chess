@@ -1,5 +1,8 @@
 package client;
 
+import client.ui.Command;
+import client.ui.Commands;
+
 import java.io.PrintStream;
 import java.util.Scanner;
 
@@ -16,7 +19,17 @@ public class REPL {
 
     public void run() {
         printStream.println("Welcome! Please enter a command, or 'help' for a list of available commands.");
-        // TODO
+        Command cmd = getCommand();
+        while (cmd != Command.QUIT) {
+            cmd = getCommand();
+            client.runCommand(cmd);
+        }
+    }
+
+    private Command getCommand() {
+        printPrompt();
+        String input = scanner.nextLine();
+        return Commands.parse(input);
     }
 
     private void printPrompt() {
