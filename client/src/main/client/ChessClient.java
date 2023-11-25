@@ -1,5 +1,6 @@
 package client;
 
+import client.ui.ConsoleUI;
 import client.ui.command.Command;
 import client.ui.command.Commands;
 import client.ui.command.UserCommand;
@@ -8,12 +9,11 @@ import static client.ui.EscapeSequences.*;
 
 public class ChessClient {
     private final String serverURL;
-    private final PrintStream printStream;
+    private final ConsoleUI ui;
     private LoginState state;
 
-    public ChessClient(String serverURL, PrintStream printStream) {
-        this.serverURL = serverURL;
-        this.printStream = printStream;
+    public ChessClient(String serverURL, ConsoleUI ui) {
+        this.ui = ui;
         this.state = LoginState.LOGGED_OUT;
     }
 
