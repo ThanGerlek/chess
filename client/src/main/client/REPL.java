@@ -20,6 +20,7 @@ public class REPL {
     public void run() {
         printStream.println("Welcome! Please enter a command, or 'help' for a list of available commands.");
         Command cmd = getCommand();
+        client.runCommand(cmd);
         while (cmd != Commands.QUIT) {
             cmd = getCommand();
             client.runCommand(cmd);
