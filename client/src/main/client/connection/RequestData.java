@@ -9,7 +9,7 @@ public record RequestData(String method, String path, Object request, String aut
         this(method, path, null, null);
     }
 
-    public RequestData setToken(String authTokenString) {
+    public RequestData includeToken(String authTokenString) {
         return new RequestData(this.method, this.path, this.request, authTokenString);
     }
 }

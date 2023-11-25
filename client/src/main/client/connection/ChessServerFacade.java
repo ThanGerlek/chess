@@ -31,28 +31,30 @@ public class ChessServerFacade {
         return serverFacade.makeRequest(rd, AuthResponse.class);
     }
 
-    public void logout() throws FailedConnectionException, FailedResponseException {
-        serverFacade.makeRequest(new RequestData("DELETE", "/session"));
+    public void logout(String authTokenString) throws FailedConnectionException, FailedResponseException {
+        serverFacade.makeRequest(new RequestData("DELETE", "/session").includeToken(authTokenString));
     }
 
-    public int createGame(String gameName) throws FailedConnectionException, FailedResponseException {
+    public int createGame(String gameName, String authTokenString)
+            throws FailedConnectionException, FailedResponseException {
         CreateGameRequest request = new CreateGameRequest(gameName);
-        RequestData rd = new RequestData("POST", "/game", request);
+        RequestData rd = new RequestData("POST", "/game", request).includeToken(authTokenString);
         CreateGameResponse response = serverFacade.makeRequest(rd, CreateGameResponse.class);
         return response.gameID();
     }
 
-    public ArrayList<GameListItem> listGames() throws FailedConnectionException, FailedResponseException {
-        RequestData rd = new RequestData("GET", "/game");
+    public ArrayList<GameListItem> listGames(String authTokenString)
+            throws FailedConnectionException, FailedResponseException {
+        RequestData rd = new RequestData("GET", "/game").includeToken(authTokenString);
         ListGamesResponse response = serverFacade.makeRequest(rd, ListGamesResponse.class);
         return response.games();
     }
 
-    public void joinGame(ChessGame.TeamColor playerColor, int gameID)
+    public void joinGame(ChessGame.TeamColor playerColor, int gameID, String authTokenString)
             throws FailedConnectionException, FailedResponseException {
         String colorString = playerColor == null ? null : playerColor.name();
         JoinGameRequest request = new JoinGameRequest(colorString, gameID);
-        RequestData rd = new RequestData("PUT", "/game", request);
+        RequestData rd = new RequestData("PUT", "/game", request).includeToken(authTokenString);
         serverFacade.makeRequest(rd);
     }
 }
