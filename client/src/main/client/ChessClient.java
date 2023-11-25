@@ -1,6 +1,7 @@
 package client;
 
-import client.ui.Command;
+import client.ui.command.Command;
+import client.ui.command.Commands;
 
 import java.io.PrintStream;
 
@@ -16,33 +17,31 @@ public class ChessClient {
     }
 
     public void runCommand(Command cmd) {
-        switch (cmd) {
-            case NO_INPUT -> askForInput();
-            case INVALID -> rejectInput();
-
-            case HELP -> printHelpMenu();
-            case QUIT -> quit();
-            case REGISTER -> register();
-            case LOGIN -> login();
-            case LOGOUT -> logout();
-            case CREATE_GAME -> createGame();
-            case LIST_GAMES -> listGames();
-            case JOIN_GAME -> joinGame();
-            case OBSERVE_GAME -> observeGame();
-
-            case IDENTITY -> {
-                return;
-            }
-
+        if (Commands.HELP.equals(cmd)) {
+            printHelpMenu();
+        } else if (Commands.QUIT.equals(cmd)) {
+            quit();
+        } else if (Commands.REGISTER.equals(cmd)) {
+            register();
+        } else if (Commands.LOGIN.equals(cmd)) {
+            login();
+        } else if (Commands.LOGOUT.equals(cmd)) {
+            logout();
+        } else if (Commands.CREATE_GAME.equals(cmd)) {
+            createGame();
+        } else if (Commands.LIST_GAMES.equals(cmd)) {
+            listGames();
+        } else if (Commands.JOIN_GAME.equals(cmd)) {
+            joinGame();
+        } else if (Commands.OBSERVE_GAME.equals(cmd)) {
+            observeGame();
+        } else if (Commands.IDENTITY.equals(cmd)) {
+            return;
+        } else if (Commands.NO_INPUT.equals(cmd)) {
+            askForInput();
+        } else {
+            rejectInput();
         }
-    }
-
-    private void askForInput() {
-        printStream.println("Please enter a command. Type 'help' to see available commands.");
-    }
-
-    private void rejectInput() {
-        printStream.println("Unrecognized command. Type 'help' to see available commands.");
     }
 
     private void printHelpMenu() {
@@ -79,6 +78,14 @@ public class ChessClient {
 
     private void observeGame() {
         // TODO
+    }
+
+    private void askForInput() {
+        printStream.println("Please enter a command. Type 'help' to see available commands.");
+    }
+
+    private void rejectInput() {
+        printStream.println("Unrecognized command. Type 'help' to see available commands.");
     }
 
     public String getStatus() {
