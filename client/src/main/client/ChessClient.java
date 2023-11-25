@@ -59,30 +59,37 @@ public class ChessClient {
     }
 
     private void register() {
+        printStream.println("register()");
         // TODO
     }
 
     private void login() {
+        printStream.println("login()");
         // TODO
     }
 
     private void logout() {
+        printStream.println("logout()");
         // TODO
     }
 
     private void createGame() {
+        printStream.println("createGame()");
         // TODO
     }
 
     private void listGames() {
+        printStream.println("listGames()");
         // TODO
     }
 
     private void joinGame() {
+        printStream.println("joinGame()");
         // TODO
     }
 
     private void observeGame() {
+        printStream.println("observeGame()");
         // TODO
     }
 
