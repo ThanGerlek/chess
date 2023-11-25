@@ -1,5 +1,7 @@
 package client;
 
+import client.connection.FailedConnectionException;
+import client.connection.FailedResponseException;
 import com.google.gson.Gson;
 import http.CreateGameRequest;
 
@@ -55,50 +57,69 @@ public class ServerFacade {
         // TODO
     }
 
-    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws Exception {
+    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass)
+            throws FailedResponseException, FailedConnectionException {
+        HttpURLConnection http = setUpConnection(method, path);
+        writeRequestBody(request, http);
+        connect(http);
+        throwIfFailureResponseCode(http);
+        return readResponseBody(http, responseClass);
+    }
+
+    private HttpURLConnection setUpConnection(String method, String path) throws FailedConnectionException {
         try {
-            HttpURLConnection http = setUpConnection(method, path);
-            writeRequestBody(request, http);
+            URL url = (new URI(serverURL + path)).toURL();
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod(method);
+//            http.setDoOutput(true); // TODO Unneeded?
+            return http;
+        } catch (IOException | URISyntaxException e) {
+            throw new FailedConnectionException("Failed to set up HTTP connection: " + e.getMessage());
+        }
+    }
+
+    private static void writeRequestBody(Object request, HttpURLConnection http) throws FailedConnectionException {
+        try {
+            http.addRequestProperty("Content-type", "application/json");
+            String requestData = new Gson().toJson(request);
+            try (OutputStream reqBody = http.getOutputStream()) {
+                reqBody.write(requestData.getBytes());
+            }
+        } catch (IOException e) {
+            throw new FailedConnectionException("Could not write request body: " + e.getMessage());
+        }
+    }
+
+    private static void connect(HttpURLConnection http) throws FailedConnectionException {
+        try {
             http.connect();
-            throwIfUnsuccessful(http);
-            return readResponseBody(http, responseClass);
-        } catch (Exception e) {
-            // TODO!
-            System.out.println("Problem! Failed to make a request!");
-            throw e;
+        } catch (IOException e) {
+            throw new FailedConnectionException("Failed to connect to server: " + e.getMessage());
         }
     }
 
-    private HttpURLConnection setUpConnection(String method, String path) throws URISyntaxException, IOException {
-        URL url = (new URI(serverURL + path)).toURL();
-        HttpURLConnection http = (HttpURLConnection) url.openConnection();
-        http.setRequestMethod(method);
-        http.setDoOutput(true); // TODO What is this?
-        return http;
-    }
-
-    private static void writeRequestBody(Object request, HttpURLConnection http) throws IOException {
-        http.addRequestProperty("Content-type", "application/json");
-        String requestData = new Gson().toJson(request);
-        try (OutputStream reqBody = http.getOutputStream()) {
-            reqBody.write(requestData.getBytes());
+    private static void throwIfFailureResponseCode(HttpURLConnection http) throws FailedResponseException {
+        int responseCode;
+        try {
+            responseCode = http.getResponseCode() / 100;
+        } catch (IOException e) {
+            throw new FailedResponseException("Could not get response code: " + e.getMessage());
+        }
+        if (responseCode / 100 != 2) {
+            String msg = String.format("Received a failure response code: %d", responseCode);
+            throw new FailedResponseException(msg);
         }
     }
 
-    private static void throwIfUnsuccessful(HttpURLConnection http) throws Exception {
-        boolean successful = http.getResponseCode() / 100 == 2;
-        if (!successful) {
-            // TODO!
-            throw new Exception("Problem! Got a failure response code!");
-        }
-    }
-
-    private static <T> T readResponseBody(HttpURLConnection http, Class<T> responseClass) throws IOException {
+    private static <T> T readResponseBody(HttpURLConnection http, Class<T> responseClass)
+            throws FailedResponseException {
         T response = null;
         if (http.getContentLength() < 0) {
             try (InputStream responseBody = http.getInputStream()) {
                 InputStreamReader reader = new InputStreamReader(responseBody);
                 response = new Gson().fromJson(reader, responseClass);
+            } catch (IOException e) {
+                throw new FailedResponseException("Failed to read response body: " + e.getMessage());
             }
         }
         return response;
