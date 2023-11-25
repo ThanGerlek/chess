@@ -1,24 +1,22 @@
 package client;
 
+import client.ui.ConsoleUI;
 import client.ui.command.Command;
 import client.ui.command.Commands;
 
-import java.io.PrintStream;
 import java.util.Scanner;
 
 public class REPL {
-    private final Scanner scanner;
-    private final PrintStream printStream;
+    private final ConsoleUI ui;
     private final ChessClient client;
 
     public REPL(String serverURL) {
-        this.scanner = new Scanner(System.in);
-        this.printStream = System.out;
-        this.client = new ChessClient(serverURL, printStream);
+        this.ui = new ConsoleUI(new Scanner(System.in), System.out);
+        this.client = new ChessClient(serverURL, ui);
     }
 
     public void run() {
-        printStream.println("Welcome! Please enter a command, or 'help' for a list of available commands.");
+        ui.println("Welcome! Please enter a command, or 'help' for a list of available commands.");
         Command cmd = getCommand();
         client.runCommand(cmd);
         while (cmd != Commands.QUIT) {
@@ -28,19 +26,13 @@ public class REPL {
     }
 
     private Command getCommand() {
-        printPrompt();
-        String input = scanner.nextLine();
-        input = sanitize(input);
+        String input = ui.promptInput(getCommandPrompt());
         return Commands.parse(input);
     }
 
-    private void printPrompt() {
+    private String getCommandPrompt() {
         // TODO pretty-ify
-        System.out.printf("[%s] >>> ", client.getStatus());
-    }
-
-    private String sanitize(String input) {
-        return input.strip().split(" ")[0].strip().toLowerCase();
+        return String.format("[%s] >>> ", client.getStatus());
     }
 
 }

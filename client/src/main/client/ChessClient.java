@@ -4,8 +4,6 @@ import client.ui.command.Command;
 import client.ui.command.Commands;
 import client.ui.command.UserCommand;
 
-import java.io.PrintStream;
-
 import static client.ui.EscapeSequences.*;
 
 public class ChessClient {
@@ -41,70 +39,72 @@ public class ChessClient {
         } else if (Commands.IDENTITY.equals(cmd)) {
             return;
         } else if (Commands.NO_INPUT.equals(cmd)) {
-            askForInput();
+            askForCommandInput();
         } else {
             rejectInput();
         }
     }
 
     private void printHelpMenu() {
-        printStream.println("Available commands:");
+        ui.println("Available commands:");
         for (UserCommand userCommand : Commands.USER_COMMANDS) {
-            printCommandHelp(userCommand);
+            printHelpForCommand(userCommand);
         }
     }
 
     private void quit() {
-        printStream.println("Goodbye!");
+        ui.println("Goodbye!");
     }
 
     private void register() {
-        printStream.println("register()");
+        ui.println("register()");
         // TODO
+
     }
 
     private void login() {
-        printStream.println("login()");
+        ui.println("login()");
         // TODO
     }
 
     private void logout() {
-        printStream.println("logout()");
+        ui.println("logout()");
         // TODO
     }
 
     private void createGame() {
-        printStream.println("createGame()");
+        ui.println("createGame()");
         // TODO
     }
 
     private void listGames() {
-        printStream.println("listGames()");
+        ui.println("listGames()");
         // TODO
     }
 
     private void joinGame() {
-        printStream.println("joinGame()");
+        ui.println("joinGame()");
         // TODO
     }
 
     private void observeGame() {
-        printStream.println("observeGame()");
+        ui.println("observeGame()");
         // TODO
     }
 
-    private void askForInput() {
-        printStream.println("Please enter a command. Type 'help' to see available commands.");
+    private void askForCommandInput() {
+        ui.println("Please enter a command. Type 'help' to see available commands.");
     }
 
     private void rejectInput() {
-        printStream.println("Unrecognized command. Type 'help' to see available commands.");
+        ui.println("Unrecognized command. Type 'help' to see available commands.");
     }
 
-    private void printCommandHelp(UserCommand cmd) {
+    private void printHelpForCommand(UserCommand cmd) {
         // TODO. pretty-ify
-        printStream.printf("\t%s - %s\n", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
+        String output = String.format("\t%s - %s\n", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
                 SET_TEXT_ITALIC + cmd.getDescription() + RESET_TEXT_ITALIC);
+        ui.println(output);
     }
 
     public String getStatus() {

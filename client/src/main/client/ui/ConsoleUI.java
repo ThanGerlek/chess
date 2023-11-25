@@ -1,0 +1,31 @@
+package client.ui;
+
+import java.io.PrintStream;
+import java.util.Scanner;
+
+public class ConsoleUI {
+    private final Scanner scanner;
+    private final PrintStream printStream;
+
+    public ConsoleUI(Scanner scanner, PrintStream printStream) {
+        this.scanner = scanner;
+        this.printStream = printStream;
+    }
+
+    public void println(String string) {
+        printStream.println(string);
+    }
+
+    public String promptInput(String prompt) {
+        print(prompt);
+        return sanitize(scanner.nextLine());
+    }
+
+    public void print(String string) {
+        printStream.print(string);
+    }
+
+    private String sanitize(String input) {
+        return input.strip().split(" ")[0].strip().toLowerCase();
+    }
+}
