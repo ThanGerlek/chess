@@ -2,6 +2,7 @@ package client;
 
 import client.ui.command.Command;
 import client.ui.command.Commands;
+import client.ui.command.UserCommand;
 
 import java.io.PrintStream;
 
@@ -45,11 +46,13 @@ public class ChessClient {
     }
 
     private void printHelpMenu() {
-        // TODO
+        for (UserCommand userCommand : Commands.USER_COMMANDS) {
+            printCommandHelp(userCommand);
+        }
     }
 
     private void quit() {
-        // TODO
+        printStream.println("Goodbye!");
     }
 
     private void register() {

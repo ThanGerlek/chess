@@ -11,4 +11,8 @@ public class UserCommand extends Command {
     public String getDescription() {
         return this.description;
     }
+
+    public String getCommandString() {
+        return this.getCommandID();
+    }
 }
