@@ -50,13 +50,8 @@ public class ChessServerFacade {
 
     public void joinGame(ChessGame.TeamColor playerColor, int gameID)
             throws FailedConnectionException, FailedResponseException {
-        JoinGameRequest request = new JoinGameRequest(playerColor.name(), gameID);
-        RequestData rd = new RequestData("PUT", "/game", request);
-        serverFacade.makeRequest(rd);
-    }
-
-    public void observeGame(int gameID) throws FailedConnectionException, FailedResponseException {
-        JoinGameRequest request = new JoinGameRequest(null, gameID);
+        String colorString = playerColor == null ? null : playerColor.name();
+        JoinGameRequest request = new JoinGameRequest(colorString, gameID);
         RequestData rd = new RequestData("PUT", "/game", request);
         serverFacade.makeRequest(rd);
     }
