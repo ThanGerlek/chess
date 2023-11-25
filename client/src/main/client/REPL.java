@@ -40,7 +40,7 @@ public class REPL {
     }
 
     private String sanitize(String input) {
-        return input.strip().toLowerCase();
+        return input.strip().split(" ")[0].strip().toLowerCase();
     }
 
 }
