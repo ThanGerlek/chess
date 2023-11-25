@@ -19,6 +19,11 @@ public class ServerFacade {
         this.serverURL = serverURL;
     }
 
+    public void clearApplication() {
+        // TODO
+        // delete /db
+    }
+
     public void register() {
         // TODO
     }
