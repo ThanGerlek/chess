@@ -1,7 +1,6 @@
 package client.connection;
 
 import com.google.gson.Gson;
-import http.CreateGameRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,10 +18,14 @@ public class ServerFacade {
         this.serverURL = serverURL;
     }
 
-    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass)
+    public void makeRequest(RequestData reqData) throws FailedResponseException, FailedConnectionException {
+        makeRequest(reqData, null);
+    }
+
+    public <T> T makeRequest(RequestData reqData, Class<T> responseClass)
             throws FailedResponseException, FailedConnectionException {
-        HttpURLConnection http = setUpConnection(method, path);
-        writeRequestBody(request, http);
+        HttpURLConnection http = setUpConnection(reqData.method(), reqData.path());
+        writeRequestBody(reqData.request(), http, reqData.authTokenString());
         connect(http);
         throwIfFailureResponseCode(http);
         return readResponseBody(http, responseClass);
@@ -40,9 +43,13 @@ public class ServerFacade {
         }
     }
 
-    private static void writeRequestBody(Object request, HttpURLConnection http) throws FailedConnectionException {
+    private static void writeRequestBody(Object request, HttpURLConnection http, String authTokenString)
+            throws FailedConnectionException {
         try {
             http.addRequestProperty("Content-type", "application/json");
+            if (authTokenString != null) {
+                http.addRequestProperty("authorization", authTokenString);
+            }
             String requestData = new Gson().toJson(request);
             try (OutputStream reqBody = http.getOutputStream()) {
                 reqBody.write(requestData.getBytes());
@@ -86,41 +93,4 @@ public class ServerFacade {
         }
         return response;
     }
-
-    public void clearApplication() {
-        // TODO
-        // delete /db
-    }
-
-    public void register() {
-        // TODO
-    }
-
-    public void login() {
-        // TODO
-    }
-
-    public void logout() {
-        // TODO
-    }
-
-    public void createGame(String gameName) {
-        // TODO
-        CreateGameRequest request = new CreateGameRequest(gameName);
-        String path = "/thing";
-
-    }
-
-    public void listGames() {
-        // TODO
-    }
-
-    public void joinGame() {
-        // TODO
-    }
-
-    public void observeGame() {
-        // TODO
-    }
-
 }
