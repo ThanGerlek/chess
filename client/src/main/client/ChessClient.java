@@ -48,7 +48,7 @@ public class ChessClient {
     private void printHelpMenu() {
         ui.println("Available commands:");
         for (UserCommand userCommand : Commands.USER_COMMANDS) {
-            printHelpForCommand(userCommand);
+            ui.println("\t" + getHelpStringForCommand(userCommand));
         }
     }
 
@@ -100,11 +100,10 @@ public class ChessClient {
         ui.println("Unrecognized command. Type 'help' to see available commands.");
     }
 
-    private void printHelpForCommand(UserCommand cmd) {
+    private String getHelpStringForCommand(UserCommand cmd) {
         // TODO. pretty-ify
-        String output = String.format("\t%s - %s\n", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
+        return String.format("%s - %s", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
                 SET_TEXT_ITALIC + cmd.getDescription() + RESET_TEXT_ITALIC);
-        ui.println(output);
     }
 
     public String getStatus() {
