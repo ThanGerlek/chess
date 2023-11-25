@@ -29,12 +29,17 @@ public class REPL {
     private Command getCommand() {
         printPrompt();
         String input = scanner.nextLine();
+        input = sanitize(input);
         return Commands.parse(input);
     }
 
     private void printPrompt() {
-        System.out.printf("[%s] >>> ", client.getStatus());
         // TODO pretty-ify
+        System.out.printf("[%s] >>> ", client.getStatus());
+    }
+
+    private String sanitize(String input) {
+        return input.strip().toLowerCase();
     }
 
 }
