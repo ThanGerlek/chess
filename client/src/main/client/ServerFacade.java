@@ -15,46 +15,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public class ServerFacade {
-    private String serverURL;
+    private final String serverURL;
 
     public ServerFacade(String serverURL) {
         this.serverURL = serverURL;
-    }
-
-    public void clearApplication() {
-        // TODO
-        // delete /db
-    }
-
-    public void register() {
-        // TODO
-    }
-
-    public void login() {
-        // TODO
-    }
-
-    public void logout() {
-        // TODO
-    }
-
-    public void createGame(String gameName) {
-        // TODO
-        CreateGameRequest request = new CreateGameRequest(gameName);
-        String path = "/thing";
-
-    }
-
-    public void listGames() {
-        // TODO
-    }
-
-    public void joinGame() {
-        // TODO
-    }
-
-    public void observeGame() {
-        // TODO
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass)
@@ -123,6 +87,42 @@ public class ServerFacade {
             }
         }
         return response;
+    }
+
+    public void clearApplication() {
+        // TODO
+        // delete /db
+    }
+
+    public void register() {
+        // TODO
+    }
+
+    public void login() {
+        // TODO
+    }
+
+    public void logout() {
+        // TODO
+    }
+
+    public void createGame(String gameName) {
+        // TODO
+        CreateGameRequest request = new CreateGameRequest(gameName);
+        String path = "/thing";
+
+    }
+
+    public void listGames() {
+        // TODO
+    }
+
+    public void joinGame() {
+        // TODO
+    }
+
+    public void observeGame() {
+        // TODO
     }
 
 }
