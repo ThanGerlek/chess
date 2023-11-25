@@ -1,7 +1,5 @@
-package client;
+package client.connection;
 
-import client.connection.FailedConnectionException;
-import client.connection.FailedResponseException;
 import com.google.gson.Gson;
 import http.CreateGameRequest;
 
