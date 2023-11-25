@@ -11,6 +11,10 @@ import java.util.LinkedList;
 public class ChessSerializer {
 
     public static Gson gson() {
+        return getBuilder().create();
+    }
+
+    public static GsonBuilder getBuilder() {
         LinkedList<RuntimeTypeAdapterFactory> factories = new LinkedList<>();
 
         factories.push(RuntimeTypeAdapterFactory.of(ChessGame.class, "type").registerSubtype(ChessGameImpl.class));
@@ -30,6 +34,6 @@ public class ChessSerializer {
         for (RuntimeTypeAdapterFactory factory : factories) {
             builder.registerTypeAdapterFactory(factory);
         }
-        return builder.create();
+        return builder;
     }
 }
