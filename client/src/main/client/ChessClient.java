@@ -6,6 +6,8 @@ import client.ui.command.UserCommand;
 
 import java.io.PrintStream;
 
+import static client.ui.EscapeSequences.*;
+
 public class ChessClient {
     private final String serverURL;
     private final PrintStream printStream;
@@ -46,6 +48,7 @@ public class ChessClient {
     }
 
     private void printHelpMenu() {
+        printStream.println("Available commands:");
         for (UserCommand userCommand : Commands.USER_COMMANDS) {
             printCommandHelp(userCommand);
         }
@@ -89,6 +92,12 @@ public class ChessClient {
 
     private void rejectInput() {
         printStream.println("Unrecognized command. Type 'help' to see available commands.");
+    }
+
+    private void printCommandHelp(UserCommand cmd) {
+        // TODO. pretty-ify
+        printStream.printf("\t%s - %s\n", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
+                SET_TEXT_ITALIC + cmd.getDescription() + RESET_TEXT_ITALIC);
     }
 
     public String getStatus() {
