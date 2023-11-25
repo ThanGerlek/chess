@@ -1,4 +1,4 @@
-package server;
+package http;
 
 import chess.*;
 import chess.pieces.*;
