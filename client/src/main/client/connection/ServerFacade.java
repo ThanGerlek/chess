@@ -1,6 +1,7 @@
 package client.connection;
 
 import com.google.gson.Gson;
+import http.MessageResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -94,7 +95,19 @@ public class ServerFacade {
     }
 
     private static void readErrorResponse(HttpURLConnection http) throws FailedResponseException {
-        // TODO
+        MessageResponse errorResponse;
+//        if (http.getContentLength() < 0) { // TODO Unneeded?
+        try (InputStream errorBody = http.getErrorStream()) {
+            if (errorBody != null) {
+                InputStreamReader reader = new InputStreamReader(errorBody);
+                errorResponse = new Gson().fromJson(reader, MessageResponse.class);
+                String errMsg = errorResponse.message();
+                throw new FailedResponseException(errMsg);
+            }
+        } catch (IOException e) {
+            throw new FailedResponseException("Failed to read error response body: " + e.getMessage());
+        }
+//        }
     }
 
     private static <T> T readResponseBody(HttpURLConnection http, Class<T> responseClass)
