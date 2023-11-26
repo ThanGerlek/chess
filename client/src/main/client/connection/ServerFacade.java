@@ -70,7 +70,7 @@ public class ServerFacade {
     private static void throwIfFailureResponseCode(HttpURLConnection http) throws FailedResponseException {
         int responseCode;
         try {
-            responseCode = http.getResponseCode() / 100;
+            responseCode = http.getResponseCode();
         } catch (IOException e) {
             throw new FailedResponseException("Could not get response code: " + e.getMessage());
         }
