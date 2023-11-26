@@ -24,15 +24,15 @@ public class ServerFacade {
 
     public <T> T makeRequest(RequestData reqData, Class<T> responseClass)
             throws FailedResponseException, FailedConnectionException {
-        HttpURLConnection http = setUpConnection(reqData.method(), reqData.path());
+        HttpURLConnection http = setUpConnection(reqData.method(), serverURL + reqData.path());
         writeRequest(reqData.request(), http, reqData.authTokenString());
         connect(http);
         return readResponse(http, responseClass);
     }
 
-    private HttpURLConnection setUpConnection(String method, String path) throws FailedConnectionException {
+    private static HttpURLConnection setUpConnection(String method, String urlString) throws FailedConnectionException {
         try {
-            URL url = (new URI(serverURL + path)).toURL();
+            URL url = (new URI(urlString)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput("POST".equals(method)); // TODO What if method=PUT?
