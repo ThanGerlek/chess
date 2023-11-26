@@ -102,7 +102,8 @@ public class Server {
     }
 
     private void createBeforeRoutes() {
-        Spark.before((req, res) -> System.out.println("Executing route: " + req.pathInfo()));
+        Spark.before(
+                (req, res) -> System.out.println("Executing route: " + req.requestMethod() + " " + req.pathInfo()));
         // Filters take an optional pattern to restrict the routes to which they are applied:
         // before("/protected/*", (req, res) -> {…});
     }
