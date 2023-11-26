@@ -70,7 +70,9 @@ public class ChessClient {
     private void printHelpMenu() {
         ui.println("Available commands:");
         for (UICommand cmd : Commands.UI_COMMANDS) {
-            ui.println("\t" + getHelpStringForCommand(cmd));
+            if (isAuthorizedToRun(cmd)) {
+                ui.println("\t" + getHelpStringForCommand(cmd));
+            }
         }
     }
 
