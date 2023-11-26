@@ -17,15 +17,21 @@ import static client.ui.EscapeSequences.*;
 public class ChessClient {
     private final ConsoleUI ui;
     private final ChessServerFacade serverFacade;
-    private LoginState state;
+    private AuthorizationLevel authLevel;
+    // TODO store sign in info
 
     public ChessClient(String serverURL, ConsoleUI ui) {
         this.ui = ui;
         this.serverFacade = new ChessServerFacade(serverURL);
-        this.state = LoginState.LOGGED_OUT;
+        this.authLevel = AuthorizationLevel.ANY;
     }
 
     public void runCommand(Command cmd) {
+        if (!isAuthorizedToRun(cmd)) {
+            rejectAuthorization();
+            return;
+        }
+
         if (Commands.HELP.equals(cmd)) {
             printHelpMenu();
         } else if (Commands.QUIT.equals(cmd)) {
@@ -51,6 +57,14 @@ public class ChessClient {
         } else {
             rejectInput();
         }
+    }
+
+    private boolean isAuthorizedToRun(Command cmd) {
+        return authLevel.hasPermission(cmd.getMinRequiredAuthLevel());
+    }
+
+    private void rejectAuthorization() {
+        ui.println("Woah! You're not allowed to do that right now. Try logging in first.");
     }
 
     private void printHelpMenu() {
@@ -163,6 +177,13 @@ public class ChessClient {
     }
 
     public String getStatus() {
-        return (state == LoginState.LOGGED_IN) ? "Signed In" : "Signed out";
+        if (authLevel.hasPermission(AuthorizationLevel.SUPERUSER)) {
+            return "SUPERUSER";
+        } else if (authLevel.hasPermission(AuthorizationLevel.USER)) {
+            // TODO return username
+            return "User";
+        } else {
+            return "Guest";
+        }
     }
 }
