@@ -27,8 +27,7 @@ public class ServerFacade {
         HttpURLConnection http = setUpConnection(reqData.method(), reqData.path());
         writeRequest(reqData.request(), http, reqData.authTokenString());
         connect(http);
-        throwIfFailureResponseCode(http);
-        return readResponseBody(http, responseClass);
+        return readResponse(http, responseClass);
     }
 
     private HttpURLConnection setUpConnection(String method, String path) throws FailedConnectionException {
@@ -61,17 +60,41 @@ public class ServerFacade {
         }
     }
 
-    private static void throwIfFailureResponseCode(HttpURLConnection http) throws FailedResponseException {
+    private static <T> T readResponse(HttpURLConnection http, Class<T> responseClass) throws FailedResponseException {
         int responseCode;
         try {
             responseCode = http.getResponseCode();
         } catch (IOException e) {
             throw new FailedResponseException("Could not get response code: " + e.getMessage());
         }
-        if (responseCode / 100 != 2) {
-            String msg = String.format("Received a failure response code: %d", responseCode);
-            throw new FailedResponseException(msg);
+
+        if (responseCode >= 400) {
+            readErrorResponse(http);
+            return null;
+        } else {
+            return readResponseBody(http, responseClass);
         }
+
+    }
+
+    private static void writeHeaders(HttpURLConnection http, String authTokenString) {
+        http.addRequestProperty("Content-type", "application/json");
+        if (authTokenString != null) {
+            http.addRequestProperty("authorization", authTokenString);
+        }
+    }
+
+    private static void writeRequestBody(Object request, HttpURLConnection http) throws IOException {
+        if (request != null) {
+            String requestData = new Gson().toJson(request);
+            try (OutputStream reqBody = http.getOutputStream()) {
+                reqBody.write(requestData.getBytes());
+            }
+        }
+    }
+
+    private static void readErrorResponse(HttpURLConnection http) throws FailedResponseException {
+        // TODO
     }
 
     private static <T> T readResponseBody(HttpURLConnection http, Class<T> responseClass)
