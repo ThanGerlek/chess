@@ -17,13 +17,12 @@ import static client.ui.EscapeSequences.*;
 public class ChessClient {
     private final ConsoleUI ui;
     private final ChessServerFacade serverFacade;
-    private AuthorizationLevel authLevel;
-    // TODO store sign in info
+    private SessionData sessionData;
 
     public ChessClient(String serverURL, ConsoleUI ui) {
         this.ui = ui;
         this.serverFacade = new ChessServerFacade(serverURL);
-        this.authLevel = AuthorizationLevel.ANY;
+        this.sessionData = new SessionData();
     }
 
     public void runCommand(Command cmd) {
@@ -60,7 +59,7 @@ public class ChessClient {
     }
 
     private boolean isAuthorizedToRun(Command cmd) {
-        return authLevel.hasPermission(cmd.getMinRequiredAuthLevel());
+        return sessionData.getAuthLevel().hasPermission(cmd.getMinRequiredAuthLevel());
     }
 
     private void rejectAuthorization() {
@@ -91,8 +90,7 @@ public class ChessClient {
 
         try {
             AuthResponse response = serverFacade.register(username, password, email);
-            ui.println(String.valueOf(response));
-            // TODO
+            sessionData.setUserData(response.authToken(), username);
         } catch (FailedConnectionException | FailedResponseException e) {
             printError(e);
         }
@@ -104,8 +102,7 @@ public class ChessClient {
 
         try {
             AuthResponse response = serverFacade.login(username, password);
-            ui.println(String.valueOf(response));
-            // TODO
+            sessionData.setUserData(response.authToken(), username);
         } catch (FailedConnectionException | FailedResponseException e) {
             printError(e);
         }
@@ -113,8 +110,8 @@ public class ChessClient {
 
     private void logout() {
         try {
-            serverFacade.logout(getTokenString());
-            // TODO
+            serverFacade.logout(sessionData.getAuthTokenString());
+            sessionData.clearUserData();
         } catch (FailedConnectionException | FailedResponseException e) {
             printError(e);
         }
@@ -123,7 +120,7 @@ public class ChessClient {
     private void createGame() {
         String gameName = ui.promptInput("Enter a name for this game: ");
         try {
-            int gameID = serverFacade.createGame(gameName, getTokenString());
+            int gameID = serverFacade.createGame(gameName, sessionData.getAuthTokenString());
             ui.println(String.valueOf(gameID));
             // TODO
         } catch (FailedConnectionException | FailedResponseException e) {
@@ -132,8 +129,9 @@ public class ChessClient {
     }
 
     private ArrayList<GameListItem> listGames() {
+        // TODO message if no games exist
         try {
-            ArrayList<GameListItem> games = serverFacade.listGames(getTokenString());
+            ArrayList<GameListItem> games = serverFacade.listGames(sessionData.getAuthTokenString());
             ui.println(String.valueOf(games));
             // TODO
             return games;
@@ -173,17 +171,11 @@ public class ChessClient {
         ui.println("[ERR] " + e.getMessage());
     }
 
-    private String getTokenString() {
-        // TODO
-        return "1234";
-    }
-
     public String getStatus() {
-        if (authLevel.hasPermission(AuthorizationLevel.SUPERUSER)) {
+        if (sessionData.getAuthLevel().hasPermission(AuthorizationLevel.SUPERUSER)) {
             return "SUPERUSER";
-        } else if (authLevel.hasPermission(AuthorizationLevel.USER)) {
-            // TODO return username
-            return "User";
+        } else if (sessionData.getAuthLevel().hasPermission(AuthorizationLevel.USER)) {
+            return sessionData.getUsername();
         } else {
             return "Guest";
         }
