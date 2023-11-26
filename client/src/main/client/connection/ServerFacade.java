@@ -36,7 +36,7 @@ public class ServerFacade {
             URL url = (new URI(serverURL + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
-//            http.setDoOutput(true); // TODO Unneeded?
+            http.setDoOutput("POST".equals(method)); // TODO What if method=PUT?
             return http;
         } catch (IOException | URISyntaxException e) {
             throw new FailedConnectionException("Failed to set up HTTP connection: " + e.getMessage());
