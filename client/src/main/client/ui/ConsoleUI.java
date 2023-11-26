@@ -28,4 +28,14 @@ public class ConsoleUI {
     private String sanitize(String input) {
         return input.strip().split(" ")[0].strip().toLowerCase();
     }
+
+    public Integer promptMaybeInteger(String prompt) {
+        print(prompt);
+        String raw = sanitize(scanner.nextLine());
+        if (raw.isEmpty()) {
+            return null;
+        } else {
+            return Integer.parseInt(raw);
+        }
+    }
 }

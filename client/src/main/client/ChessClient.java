@@ -142,13 +142,23 @@ public class ChessClient {
     }
 
     private void joinGame() {
-        ui.println("joinGame()");
-        // TODO
+        joinGame(false);
     }
 
     private void observeGame() {
-        ui.println("observeGame()");
-        // TODO
+        joinGame(true);
+    }
+
+    private void joinGame(boolean asSpectator) {
+        ArrayList<GameListItem> games = listGames();
+        if (games != null) {
+            try {
+                GameJoiner joiner = new GameJoiner(ui, serverFacade, games, sessionData.getAuthTokenString());
+                joiner.joinGame(asSpectator);
+            } catch (FailedConnectionException | FailedResponseException e) {
+                printError(e);
+            }
+        }
     }
 
     private void askForCommandInput() {
