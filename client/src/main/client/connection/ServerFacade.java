@@ -25,7 +25,7 @@ public class ServerFacade {
     public <T> T makeRequest(RequestData reqData, Class<T> responseClass)
             throws FailedResponseException, FailedConnectionException {
         HttpURLConnection http = setUpConnection(reqData.method(), reqData.path());
-        writeRequestBody(reqData.request(), http, reqData.authTokenString());
+        writeRequest(reqData.request(), http, reqData.authTokenString());
         connect(http);
         throwIfFailureResponseCode(http);
         return readResponseBody(http, responseClass);
@@ -43,17 +43,11 @@ public class ServerFacade {
         }
     }
 
-    private static void writeRequestBody(Object request, HttpURLConnection http, String authTokenString)
+    private static void writeRequest(Object request, HttpURLConnection http, String authTokenString)
             throws FailedConnectionException {
         try {
-            http.addRequestProperty("Content-type", "application/json");
-            if (authTokenString != null) {
-                http.addRequestProperty("authorization", authTokenString);
-            }
-            String requestData = new Gson().toJson(request);
-            try (OutputStream reqBody = http.getOutputStream()) {
-                reqBody.write(requestData.getBytes());
-            }
+            writeHeaders(http, authTokenString);
+            writeRequestBody(request, http);
         } catch (IOException e) {
             throw new FailedConnectionException("Could not write request body: " + e.getMessage());
         }
