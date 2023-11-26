@@ -6,7 +6,7 @@ import client.connection.FailedResponseException;
 import client.ui.ConsoleUI;
 import client.ui.command.Command;
 import client.ui.command.Commands;
-import client.ui.command.UserCommand;
+import client.ui.command.UICommand;
 import http.AuthResponse;
 import http.GameListItem;
 
@@ -55,8 +55,8 @@ public class ChessClient {
 
     private void printHelpMenu() {
         ui.println("Available commands:");
-        for (UserCommand userCommand : Commands.USER_COMMANDS) {
-            ui.println("\t" + getHelpStringForCommand(userCommand));
+        for (UICommand cmd : Commands.UI_COMMANDS) {
+            ui.println("\t" + getHelpStringForCommand(cmd));
         }
     }
 
@@ -145,7 +145,7 @@ public class ChessClient {
         ui.println("Unrecognized command. Type 'help' to see available commands.");
     }
 
-    private String getHelpStringForCommand(UserCommand cmd) {
+    private String getHelpStringForCommand(UICommand cmd) {
         // TODO. pretty-ify
         return String.format("%s - %s", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
                 SET_TEXT_ITALIC + cmd.getDescription() + RESET_TEXT_ITALIC);
