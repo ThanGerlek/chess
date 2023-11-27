@@ -56,7 +56,7 @@ class ChessServerFacadeTest {
 
     @Test
     void testTheTest__isValidAuthTokenString_of_invalid_returns_false() {
-        Assertions.assertTrue(isValidAuthTokenString("iAmInvalid"));
+        Assertions.assertFalse(isValidAuthTokenString("iAmInvalid"));
     }
 
     @Test
