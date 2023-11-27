@@ -112,6 +112,10 @@ public class ServerFacade {
 
     private static <T> T readResponseBody(HttpURLConnection http, Class<T> responseClass)
             throws FailedResponseException {
+        if (responseClass == null) {
+            return null;
+        }
+
         T response = null;
 //        if (http.getContentLength() < 0) {
         try (InputStream responseBody = http.getInputStream()) {
