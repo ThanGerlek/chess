@@ -51,12 +51,23 @@ class ChessServerFacadeTest {
 
     private String generateTestUsername() {
         // TODO? Replace with registerTestUser that returns a User model object?
+        nextTestUserID++;
         return String.format("testUser_%d", nextTestUserID);
     }
 
     @Test
     void testTheTest__isValidAuthTokenString_of_invalid_returns_false() {
         Assertions.assertFalse(isValidAuthTokenString("iAmInvalid"));
+    }
+
+    @Test
+    void generateTestUsername_twice_returns_different_usernames() {
+        Assertions.assertNotEquals(generateTestUsername(), generateTestUsername());
+    }
+
+    @Test
+    void generateTestGameName_twice_returns_different_gameNames() {
+        Assertions.assertNotEquals(generateTestGameName(), generateTestGameName());
     }
 
     @Test
@@ -169,6 +180,7 @@ class ChessServerFacadeTest {
     }
 
     private String generateTestGameName() {
+        nextTestGameNameID++;
         return String.format("testGameName_%d", nextTestGameNameID);
     }
 
