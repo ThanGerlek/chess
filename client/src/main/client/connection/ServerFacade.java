@@ -104,6 +104,7 @@ public class ServerFacade {
                 String errMsg = errorResponse.message();
                 throw new FailedResponseException(errMsg);
             }
+            throw new RuntimeException("Unreachable code! Called readErrorResponse() but errorBody was null");
         } catch (IOException e) {
             throw new FailedResponseException("Failed to read error response body: " + e.getMessage());
         }
