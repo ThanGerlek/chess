@@ -52,6 +52,7 @@ public class ChessServerFacade {
     }
 
     public void joinGame(ChessGame.TeamColor playerColor, int gameID, String authTokenString)
+        // TODO Change to use PlayerRole?
             throws FailedConnectionException, FailedResponseException {
         String colorString = playerColor == null ? null : playerColor.name();
         JoinGameRequest request = new JoinGameRequest(colorString, gameID);
