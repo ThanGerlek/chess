@@ -13,6 +13,7 @@ public class ChessServerFacade {
     }
 
     public void clearApplication() throws FailedConnectionException, FailedResponseException {
+        // Not currently available from the client. Used for testing only.
         serverFacade.makeRequest(new RequestData("DELETE", "/db"));
     }
 
