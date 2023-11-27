@@ -96,7 +96,6 @@ public class ServerFacade {
 
     private static void readErrorResponse(HttpURLConnection http) throws FailedResponseException {
         MessageResponse errorResponse;
-//        if (http.getContentLength() < 0) { // TODO Unneeded?
         try (InputStream errorBody = http.getErrorStream()) {
             if (errorBody != null) {
                 InputStreamReader reader = new InputStreamReader(errorBody);
@@ -108,7 +107,6 @@ public class ServerFacade {
         } catch (IOException e) {
             throw new FailedResponseException("Failed to read error response body: " + e.getMessage());
         }
-//        }
     }
 
     private static <T> T readResponseBody(HttpURLConnection http, Class<T> responseClass)
@@ -117,15 +115,13 @@ public class ServerFacade {
             return null;
         }
 
-        T response = null;
-//        if (http.getContentLength() < 0) {
+        T response;
         try (InputStream responseBody = http.getInputStream()) {
             InputStreamReader reader = new InputStreamReader(responseBody);
             response = new Gson().fromJson(reader, responseClass);
         } catch (IOException e) {
             throw new FailedResponseException("Failed to read response body: " + e.getMessage());
         }
-//        }
         return response;
     }
 }
