@@ -70,7 +70,6 @@ class ChessServerFacadeTest {
     @Test
     void login_as_cleared_user_throws_failedResponseException()
             throws FailedConnectionException, FailedResponseException {
-        // TODO
         String username = generateTestUsername();
         facade.register(username, "password", "");
 
@@ -83,10 +82,14 @@ class ChessServerFacadeTest {
 
     @Test
     void listGames_after_clearApplication_returns_empty() throws FailedConnectionException, FailedResponseException {
-        // TODO
         String authTokenString = generateValidAuthTokenString();
+        facade.createGame(generateTestGameName(), authTokenString);
+
         facade.clearApplication();
-        Assertions.assertFalse(isValidAuthTokenString(authTokenString));
+
+        authTokenString = generateValidAuthTokenString();
+        ArrayList<GameListItem> games = facade.listGames(authTokenString);
+        Assertions.assertEquals(0, games.size());
     }
 
     @Test
