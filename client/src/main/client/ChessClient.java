@@ -17,7 +17,7 @@ import static client.ui.EscapeSequences.*;
 public class ChessClient {
     private final ConsoleUI ui;
     private final ChessServerFacade serverFacade;
-    private SessionData sessionData;
+    private final SessionData sessionData;
 
     public ChessClient(String serverURL, ConsoleUI ui) {
         this.ui = ui;
@@ -50,6 +50,7 @@ public class ChessClient {
         } else if (Commands.OBSERVE_GAME.equals(cmd)) {
             observeGame();
         } else if (Commands.IDENTITY.equals(cmd)) {
+            // do nothing
             return;
         } else if (Commands.NO_INPUT.equals(cmd)) {
             askForCommandInput();
@@ -122,7 +123,7 @@ public class ChessClient {
         try {
             int gameID = serverFacade.createGame(gameName, sessionData.getAuthTokenString());
             ui.println(String.valueOf(gameID));
-            // TODO
+            // TODO. automatically run 'join' command after creation
         } catch (FailedConnectionException | FailedResponseException e) {
             printError(e);
         }
@@ -196,7 +197,7 @@ public class ChessClient {
     }
 
     private void printError(Exception e) {
-        // TODO Better logging
+        // TODO. Better logging
         System.err.println(e.getMessage());
         ui.println("[ERR] " + e.getMessage());
     }
