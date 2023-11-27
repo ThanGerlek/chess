@@ -16,6 +16,7 @@ class ChessServerFacadeTest {
     private ChessServerFacade facade;
 
     // TODO More thorough testing
+    //  More specific Exception types
 
     @BeforeEach
     void setUp() throws FailedConnectionException, FailedResponseException {
@@ -24,9 +25,9 @@ class ChessServerFacadeTest {
         // TODO Check for race conditions?
     }
 
-    // register() positive test
     @Test
     void register_new_user_returns_valid_authTokenString() throws FailedConnectionException, FailedResponseException {
+        // register() positive test
         String username = generateTestUsername();
         AuthResponse response = facade.register(username, "password", "email");
         Assertions.assertTrue(isValidAuthTokenString(response.authToken()));
@@ -47,10 +48,10 @@ class ChessServerFacadeTest {
         }
     }
 
-    // register() negative test
     @Test
     void register_user_twice_throws_failedResponseException()
             throws FailedConnectionException, FailedResponseException {
+        // register() negative test
         String username = generateTestUsername();
         facade.register(username, "password", "email");
 
@@ -59,9 +60,9 @@ class ChessServerFacadeTest {
         });
     }
 
-    // login() positive test
     @Test
     void login_valid_user_returns_valid_authTokenString() throws FailedConnectionException, FailedResponseException {
+        // login() positive test
         String username = generateTestUsername();
         facade.register(username, "password", "email");
 
@@ -70,10 +71,10 @@ class ChessServerFacadeTest {
         Assertions.assertTrue(isValidAuthTokenString(response.authToken()));
     }
 
-    // login() negative test
     @Test
     void login_incorrect_password_throws_failedResponseException()
             throws FailedConnectionException, FailedResponseException {
+        // login() negative test
         String username = generateTestUsername();
         facade.register(username, "password", "email");
 
@@ -82,9 +83,9 @@ class ChessServerFacadeTest {
         });
     }
 
-    // logout() positive test
     @Test
     void logout_current_user_invalidates_token() throws FailedConnectionException, FailedResponseException {
+        // logout() positive test
         String username = generateTestUsername();
         AuthResponse response = facade.register(username, "password", "email");
         String authTokenString = response.authToken();
@@ -94,17 +95,17 @@ class ChessServerFacadeTest {
         Assertions.assertFalse(isValidAuthTokenString(authTokenString));
     }
 
-    // logout() negative test
     @Test
     void logout_nonexistent_authTokenString_throws_failedResponseException() {
+        // logout() negative test
         Assertions.assertThrows(FailedResponseException.class, () -> {
             facade.logout("iAmInvalid");
         });
     }
 
-    // createGame() positive test
     @Test
     void valid_call_to_createGame_adds_game_to_listGames() throws FailedConnectionException, FailedResponseException {
+        // createGame() positive test
         String authTokenString = generateValidAuthTokenString();
         String gameName = generateTestGameName();
 
@@ -140,18 +141,18 @@ class ChessServerFacadeTest {
         return -1;
     }
 
-    // createGame() negative test
     @Test
     void createGame_with_invalid_token_throws_failedResponseException() {
+        // createGame() negative test
         Assertions.assertThrows(FailedResponseException.class, () -> {
             String gameName = generateTestGameName();
             facade.createGame(gameName, "iAmAnInvalidAuthTokenString");
         });
     }
 
-    // listGames() positive test
     @Test
     void listGames_with_two_active_games_returns_array_containing_both_gameNames()
+        // listGames() positive test
             throws FailedConnectionException, FailedResponseException {
         String authTokenString = generateValidAuthTokenString();
         String gameName1 = generateTestGameName();
@@ -165,19 +166,19 @@ class ChessServerFacadeTest {
         Assertions.assertTrue(containsGameName(games, gameName2));
     }
 
-    // listGames() negative test
     @Test
     void listGames_with_no_active_games_returns_empty() throws FailedConnectionException, FailedResponseException {
+        // listGames() negative test
         // TODO
         String authTokenString = generateValidAuthTokenString();
         ArrayList<GameListItem> games = facade.listGames(authTokenString);
         Assertions.assertEquals(0, games.size());
     }
 
-    // joinGame() positive test
     @Test
     void joinGame_as_white_adds_player_as_white_in_listGames()
             throws FailedConnectionException, FailedResponseException {
+        // joinGame() positive test
         String username = generateTestUsername();
         String authTokenString = facade.register(username, "password", "").authToken();
         String gameName = generateTestGameName();
@@ -191,10 +192,10 @@ class ChessServerFacadeTest {
         Assertions.assertEquals(username, gameListItem.whiteUsername());
     }
 
-    // joinGame() negative test
     @Test
     void joinGame_as_white_when_already_taken_throws_failedResponseException()
             throws FailedConnectionException, FailedResponseException {
+        // joinGame() negative test
         String username1 = generateTestUsername();
         String authTokenString1 = facade.register(username1, "password1", "").authToken();
         String username2 = generateTestUsername();
