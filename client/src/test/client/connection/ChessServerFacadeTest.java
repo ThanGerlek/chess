@@ -26,16 +26,17 @@ class ChessServerFacadeTest {
     }
 
     @Test
-    void register_new_user_returns_valid_authTokenString() throws FailedConnectionException, FailedResponseException {
-        // register() positive test
-        String username = generateTestUsername();
-        AuthResponse response = facade.register(username, "password", "email");
-        Assertions.assertTrue(isValidAuthTokenString(response.authToken()));
+    void testTheTest__isValidAuthTokenString_of_generateValidAuthTokenString_returns_true()
+            throws FailedConnectionException, FailedResponseException {
+        String authTokenString = generateValidAuthTokenString();
+        Assertions.assertTrue(isValidAuthTokenString(authTokenString));
     }
 
-    private String generateTestUsername() {
-        // TODO? Replace with registerTestUser that returns a User model object?
-        return String.format("testUser_%d", nextTestUserID);
+    private String generateValidAuthTokenString() throws FailedConnectionException, FailedResponseException {
+        // TODO Make independent of register()? (Add test function to ServerFacade?)
+        String username = generateTestUsername();
+        AuthResponse response = facade.register(username, "password", "email");
+        return response.authToken();
     }
 
     private boolean isValidAuthTokenString(String authTokenString) {
@@ -46,6 +47,54 @@ class ChessServerFacadeTest {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private String generateTestUsername() {
+        // TODO? Replace with registerTestUser that returns a User model object?
+        return String.format("testUser_%d", nextTestUserID);
+    }
+
+    @Test
+    void testTheTest__isValidAuthTokenString_of_invalid_returns_false() {
+        Assertions.assertTrue(isValidAuthTokenString("iAmInvalid"));
+    }
+
+    @Test
+    void clearApplication_invalidates_token() throws FailedConnectionException, FailedResponseException {
+        // clearApplication() positive test
+        String authTokenString = generateValidAuthTokenString();
+        facade.clearApplication();
+        Assertions.assertFalse(isValidAuthTokenString(authTokenString));
+    }
+
+    @Test
+    void login_as_cleared_user_throws_failedResponseException()
+            throws FailedConnectionException, FailedResponseException {
+        // TODO
+        String username = generateTestUsername();
+        facade.register(username, "password", "");
+
+        facade.clearApplication();
+
+        Assertions.assertThrows(FailedResponseException.class, () -> {
+            facade.login(username, "password");
+        });
+    }
+
+    @Test
+    void listGames_after_clearApplication_returns_empty() throws FailedConnectionException, FailedResponseException {
+        // TODO
+        String authTokenString = generateValidAuthTokenString();
+        facade.clearApplication();
+        Assertions.assertFalse(isValidAuthTokenString(authTokenString));
+    }
+
+    @Test
+    void register_new_user_returns_valid_authTokenString() throws FailedConnectionException, FailedResponseException {
+        // register() positive test
+        String username = generateTestUsername();
+        AuthResponse response = facade.register(username, "password", "email");
+        Assertions.assertTrue(isValidAuthTokenString(response.authToken()));
     }
 
     @Test
@@ -114,13 +163,6 @@ class ChessServerFacadeTest {
         // TODO Race condition?
         ArrayList<GameListItem> gameList = facade.listGames(authTokenString);
         Assertions.assertTrue(containsGameName(gameList, gameName));
-    }
-
-    private String generateValidAuthTokenString() throws FailedConnectionException, FailedResponseException {
-        // TODO Make independent of register()? (Add test function to ServerFacade?)
-        String username = generateTestUsername();
-        AuthResponse response = facade.register(username, "password", "email");
-        return response.authToken();
     }
 
     private String generateTestGameName() {
