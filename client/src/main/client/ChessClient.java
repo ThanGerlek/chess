@@ -129,16 +129,36 @@ public class ChessClient {
     }
 
     private ArrayList<GameListItem> listGames() {
-        // TODO message if no games exist
         try {
             ArrayList<GameListItem> games = serverFacade.listGames(sessionData.getAuthTokenString());
-            ui.println(String.valueOf(games));
-            // TODO
+            printGameList(games);
             return games;
         } catch (FailedConnectionException | FailedResponseException e) {
             printError(e);
             return null;
         }
+    }
+
+    private void printGameList(ArrayList<GameListItem> games) {
+        if (games.isEmpty()) {
+            ui.println("There are no currently active games. Use the 'create' command to add one.");
+        } else {
+            for (int i = 0; i < games.size(); i++) {
+                ui.println(String.format("There are %d currently active games.", games.size()));
+                ui.println(formatGameInfoString(i, games.get(i)));
+            }
+        }
+    }
+
+    private String formatGameInfoString(int gameNumber, GameListItem game) {
+        String whitePlayer = formatUsernameOutput(game.whiteUsername());
+        String blackPlayer = formatUsernameOutput(game.blackUsername());
+        return String.format("\t[%d] Game name: '%s', white player: %s, black player: %s", gameNumber, game.gameName(),
+                whitePlayer, blackPlayer);
+    }
+
+    private String formatUsernameOutput(String username) {
+        return (username == null || username.isEmpty()) ? "None" : "'" + username + "'";
     }
 
     private void joinGame() {
