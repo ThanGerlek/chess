@@ -195,6 +195,7 @@ public class ChessClient {
                 printError(e);
             }
         }
+        drawBoard();
     }
 
     private void askForCommandInput() {
