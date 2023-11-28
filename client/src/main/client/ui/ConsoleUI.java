@@ -10,6 +10,11 @@ public class ConsoleUI {
     public ConsoleUI(Scanner scanner, PrintStream printStream) {
         this.scanner = scanner;
         this.printStream = printStream;
+        resetColors();
+    }
+
+    public void resetColors() {
+        print(EscapeSequences.RESET_TEXT_AND_BG);
     }
 
     public void println(String string) {
