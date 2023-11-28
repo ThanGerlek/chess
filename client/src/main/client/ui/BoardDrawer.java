@@ -19,18 +19,24 @@ public class BoardDrawer {
     }
 
     public void draw() {
-        // TODO
-        drawForegroundOnly();
-    }
-
-    public void drawForegroundOnly() {
-        // TODO
+        StringBuilder builder = new StringBuilder();
+        appendNewLine(builder);
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
-                ui.print(reader.get(row, col).fgElem().toString());
+                reader.get(row, col).appendTo(builder);
             }
-            ui.println();
+            appendNewLine(builder);
         }
-        ui.println();
+
+        ui.println(builder.toString());
+    }
+
+    private void appendNewLine(StringBuilder builder) {
+        appendReset(builder);
+        builder.append("\n");
+    }
+
+    private void appendReset(StringBuilder builder) {
+        builder.append(EscapeSequences.RESET_TEXT_AND_BG);
     }
 }
