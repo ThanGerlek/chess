@@ -179,9 +179,10 @@ public class ChessClient {
     private void drawBoard() {
         // TODO
         ChessBoard board = new ChessBoardImpl();
-        BoardDrawer drawer = new BoardDrawer(ui);
-        drawer.drawBoard(board, ChessGame.TeamColor.WHITE);
-        drawer.drawBoard(board, ChessGame.TeamColor.BLACK);
+        BoardDrawer drawer = new BoardDrawer(ui, board);
+        drawer.draw(ChessGame.TeamColor.WHITE);
+//        drawer.draw(ChessGame.TeamColor.BLACK);
+        ui.println("TODO: draw black");
     }
 
     private void joinGame(boolean asSpectator) {
