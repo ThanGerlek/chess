@@ -35,7 +35,7 @@ public class ConsoleUI {
     }
 
     private String sanitize(String input) {
-        return input.strip().split(" ")[0].strip().toLowerCase();
+        return input.strip().toLowerCase();
     }
 
     public Integer promptMaybeInteger(String prompt) {
