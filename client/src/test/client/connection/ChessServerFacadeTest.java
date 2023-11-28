@@ -3,6 +3,7 @@ package client.connection;
 import chess.ChessGame;
 import http.AuthResponse;
 import http.GameListItem;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ class ChessServerFacadeTest {
     private static final String DEFAULT_SERVER_URL = "http://localhost:8080"; // TODO. Pull from config file
     int nextTestUserID = 0;
     int nextTestGameNameID = 0;
-    private ChessServerFacade facade;
+    private static ChessServerFacade facade;
 
     // TODO More thorough testing
     //  More specific Exception types
@@ -23,6 +24,11 @@ class ChessServerFacadeTest {
         facade = new ChessServerFacade(DEFAULT_SERVER_URL);
         facade.clearApplication();
         // TODO Check for race conditions?
+    }
+
+    @AfterAll
+    static void tearDown() throws FailedConnectionException, FailedResponseException {
+        facade.clearApplication();
     }
 
     @Test
