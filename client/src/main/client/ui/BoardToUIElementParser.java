@@ -37,10 +37,10 @@ public class BoardToUIElementParser implements BoardUIElementReader {
     private BackgroundElement generateBackgroundElement(int row, int col) {
         if (isOnBorder(row, col)) {
             return BackgroundElement.BORDER;
-        } else if (row + col % 2 == 0) {
-            return BackgroundElement.WHITE_SQUARE;
-        } else {
+        } else if ((row + col) % 2 == 0) {
             return BackgroundElement.BLACK_SQUARE;
+        } else {
+            return BackgroundElement.WHITE_SQUARE;
         }
     }
 
