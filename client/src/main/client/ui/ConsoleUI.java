@@ -16,6 +16,10 @@ public class ConsoleUI {
         printStream.println(string);
     }
 
+    public void println() {
+        printStream.println();
+    }
+
     public String promptInput(String prompt) {
         print(prompt);
         return sanitize(scanner.nextLine());
