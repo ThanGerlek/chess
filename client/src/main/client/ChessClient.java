@@ -181,8 +181,10 @@ public class ChessClient {
         ChessBoard board = new ChessBoardImpl();
         board.resetBoard();
         BoardDrawer drawer = new BoardDrawer(ui, board);
-        drawer.draw(ChessGame.TeamColor.WHITE);
-        drawer.draw(ChessGame.TeamColor.BLACK);
+        drawer.setViewerTeamColor(ChessGame.TeamColor.WHITE);
+        drawer.draw();
+        drawer.setViewerTeamColor(ChessGame.TeamColor.BLACK);
+        drawer.draw();
     }
 
     private void joinGame(boolean asSpectator) {

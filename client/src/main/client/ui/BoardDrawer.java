@@ -14,19 +14,20 @@ public class BoardDrawer {
         this.reader = parser;
     }
 
-    public void draw(ChessGame.TeamColor color) {
-        draw();
+    public void setViewerTeamColor(ChessGame.TeamColor color) {
+        this.reader = new BoardUIElementRotator(parser, color);
     }
 
     public void draw() {
         // TODO
+        drawForegroundOnly();
     }
 
     public void drawForegroundOnly() {
         // TODO
-        for (int row = 9; row >= 0; row--) {
-            for (int col = 0; col <= 9; col++) {
-                ui.print(parser.get(row, col).fgElem().toString());
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                ui.print(reader.get(row, col).fgElem().toString());
             }
             ui.println();
         }
