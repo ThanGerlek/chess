@@ -1,8 +1,12 @@
 package client;
 
+import chess.ChessBoard;
+import chess.ChessBoardImpl;
+import chess.ChessGame;
 import client.connection.ChessServerFacade;
 import client.connection.FailedConnectionException;
 import client.connection.FailedResponseException;
+import client.ui.BoardDrawer;
 import client.ui.ConsoleUI;
 import client.ui.command.Command;
 import client.ui.command.Commands;
@@ -49,6 +53,8 @@ public class ChessClient {
             joinGame();
         } else if (Commands.OBSERVE_GAME.equals(cmd)) {
             observeGame();
+        } else if (Commands.DRAW.equals(cmd)) {
+            drawBoard();
         } else if (Commands.IDENTITY.equals(cmd)) {
             // do nothing
             return;
@@ -168,6 +174,14 @@ public class ChessClient {
 
     private void observeGame() {
         joinGame(true);
+    }
+
+    private void drawBoard() {
+        // TODO
+        ChessBoard board = new ChessBoardImpl();
+        BoardDrawer drawer = new BoardDrawer(ui);
+        drawer.drawBoard(board, ChessGame.TeamColor.WHITE);
+        drawer.drawBoard(board, ChessGame.TeamColor.BLACK);
     }
 
     private void joinGame(boolean asSpectator) {
