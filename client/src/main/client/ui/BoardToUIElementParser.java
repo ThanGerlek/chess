@@ -1,12 +1,19 @@
 package client.ui;
 
-import chess.*;
+import chess.ChessBoard;
+import chess.ChessPiece;
+import chess.ChessPosition;
+import chess.ChessPositionImpl;
 
 public class BoardToUIElementParser {
     private BoardElement[][] elements;
 
     public BoardToUIElementParser(ChessBoard board) {
         parseElements(board);
+    }
+
+    public BoardElement get(int row, int col) {
+        return elements[row][col];
     }
 
     private void parseElements(ChessBoard board) {
@@ -90,7 +97,7 @@ public class BoardToUIElementParser {
         return (char) (row - 1 + '1');
     }
 
-    private record BoardElement(BackgroundElement bgElem, ForegroundElement fgElem) {
+    public record BoardElement(BackgroundElement bgElem, ForegroundElement fgElem) {
     }
 
     private enum BackgroundElement {
