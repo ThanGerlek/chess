@@ -14,7 +14,9 @@ public abstract class Commands {
     public static UICommand JOIN_GAME = new UICommand("join", "Join an existing game", AuthorizationLevel.USER);
     public static UICommand OBSERVE_GAME =
             new UICommand("observe", "Observe an existing game as a spectator", AuthorizationLevel.USER);
-    public static UICommand DRAW = new UICommand("draw", "Draw the game board", AuthorizationLevel.USER);
+
+    // TODO Change back to USER level
+    public static UICommand DRAW = new UICommand("draw", "Draw the game board", AuthorizationLevel.ANY);
 
     public static Command INVALID = new Command("invalid", AuthorizationLevel.CONSOLE);
     public static Command IDENTITY = new Command("identity", AuthorizationLevel.CONSOLE);
