@@ -128,8 +128,6 @@ public class ChessClient {
         String gameName = ui.promptInput("Enter a name for this game: ");
         try {
             int gameID = serverFacade.createGame(gameName, sessionData.getAuthTokenString());
-            ui.println(String.valueOf(gameID));
-            // TODO. automatically run 'join' command after creation
         } catch (FailedConnectionException | FailedResponseException e) {
             printError(e);
         }
@@ -150,8 +148,8 @@ public class ChessClient {
         if (games.isEmpty()) {
             ui.println("There are no currently active games. Use the 'create' command to add one.");
         } else {
+            ui.println(String.format("Currently active games: %d", games.size()));
             for (int i = 0; i < games.size(); i++) {
-                ui.println(String.format("There are %d currently active games.", games.size()));
                 ui.println(formatGameInfoString(i, games.get(i)));
             }
         }
@@ -208,7 +206,6 @@ public class ChessClient {
     }
 
     private String getHelpStringForCommand(UICommand cmd) {
-        // TODO. pretty-ify
         return String.format("%s - %s", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
                 SET_TEXT_ITALIC + cmd.getDescription() + RESET_TEXT_ITALIC);
     }
