@@ -5,19 +5,34 @@ package client.ui;
  */
 public class EscapeSequences {
 
-    public static final String WHITE_KING = " ♔ ";
-    public static final String WHITE_QUEEN = " ♕ ";
-    public static final String WHITE_BISHOP = " ♗ ";
-    public static final String WHITE_KNIGHT = " ♘ ";
-    public static final String WHITE_ROOK = " ♖ ";
-    public static final String WHITE_PAWN = " ♙ ";
-    public static final String BLACK_KING = " ♚ ";
-    public static final String BLACK_QUEEN = " ♛ ";
-    public static final String BLACK_BISHOP = " ♝ ";
-    public static final String BLACK_KNIGHT = " ♞ ";
-    public static final String BLACK_ROOK = " ♜ ";
-    public static final String BLACK_PAWN = " ♟ ";
-    public static final String EMPTY = " \u2003 ";
+    public static final String WHITE_KING = " K ";
+    public static final String WHITE_QUEEN = " Q ";
+    public static final String WHITE_BISHOP = " B ";
+    public static final String WHITE_KNIGHT = " N ";
+    public static final String WHITE_ROOK = " R ";
+    public static final String WHITE_PAWN = " P ";
+    public static final String BLACK_KING = " k ";
+    public static final String BLACK_QUEEN = " q ";
+    public static final String BLACK_BISHOP = " b ";
+    public static final String BLACK_KNIGHT = " n ";
+    public static final String BLACK_ROOK = " r ";
+    public static final String BLACK_PAWN = " p ";
+    public static final String EMPTY = "   ";
+
+//    public static final String WHITE_KING = " ♔ ";
+//    public static final String WHITE_QUEEN = " ♕ ";
+//    public static final String WHITE_BISHOP = " ♗ ";
+//    public static final String WHITE_KNIGHT = " ♘ ";
+//    public static final String WHITE_ROOK = " ♖ ";
+//    public static final String WHITE_PAWN = " ♙ ";
+//    public static final String BLACK_KING = " ♚ ";
+//    public static final String BLACK_QUEEN = " ♛ ";
+//    public static final String BLACK_BISHOP = " ♝ ";
+//    public static final String BLACK_KNIGHT = " ♞ ";
+//    public static final String BLACK_ROOK = " ♜ ";
+//    public static final String BLACK_PAWN = " ♟ ";
+//    public static final String EMPTY = " \u2003 ";
+
     private static final String UNICODE_ESCAPE = "\u001b";
     public static final String ERASE_SCREEN = UNICODE_ESCAPE + "[H" + UNICODE_ESCAPE + "[2J";
     public static final String ERASE_LINE = UNICODE_ESCAPE + "[2K";
