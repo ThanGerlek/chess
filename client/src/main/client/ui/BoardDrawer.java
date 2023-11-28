@@ -52,7 +52,7 @@ public class BoardDrawer {
             return generateBorderFGElement(row, col);
         }
 
-        ChessPosition chessPos = new ChessPositionImpl(row + 1, col + 1);
+        ChessPosition chessPos = new ChessPositionImpl(row, col);
         if (board.hasPieceAt(chessPos)) {
             return new ForegroundElement(board.getPiece(chessPos));
         }
