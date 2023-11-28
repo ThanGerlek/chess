@@ -7,13 +7,14 @@ import client.ui.element.BackgroundElement;
 import client.ui.element.BoardElement;
 import client.ui.element.ForegroundElement;
 
-public class BoardToUIElementParser {
+public class BoardToUIElementParser implements BoardUIElementReader {
     private BoardElement[][] elements;
 
     public BoardToUIElementParser(ChessBoard board) {
         parseElements(board);
     }
 
+    @Override
     public BoardElement get(int row, int col) {
         return elements[row][col];
     }
