@@ -2,8 +2,9 @@ package client.ui.element;
 
 public record BoardElement(BackgroundElement bgElem, ForegroundElement fgElem) {
 
-    public String toString() {
-        return fgElem.toString();
+    public void appendTo(StringBuilder builder) {
+        bgElem.appendTo(builder);
+        fgElem.appendTo(builder);
     }
 
 }

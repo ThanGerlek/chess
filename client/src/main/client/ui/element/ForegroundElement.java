@@ -42,7 +42,7 @@ public class ForegroundElement {
         }
     }
 
-    public String toString() {
-        return str;
+    public void appendTo(StringBuilder builder) {
+        builder.append(str);
     }
 }
