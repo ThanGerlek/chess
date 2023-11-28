@@ -1,9 +1,11 @@
 package client.ui;
 
 import chess.ChessBoard;
-import chess.ChessPiece;
 import chess.ChessPosition;
 import chess.ChessPositionImpl;
+import client.ui.element.BackgroundElement;
+import client.ui.element.BoardElement;
+import client.ui.element.ForegroundElement;
 
 public class BoardToUIElementParser {
     private BoardElement[][] elements;
@@ -97,54 +99,4 @@ public class BoardToUIElementParser {
         return (char) (row - 1 + '1');
     }
 
-    public record BoardElement(BackgroundElement bgElem, ForegroundElement fgElem) {
-    }
-
-    private enum BackgroundElement {
-        BORDER,
-        WHITE_SQUARE,
-        BLACK_SQUARE
-    }
-
-    private static class ForegroundElement {
-        private final String str;
-
-        public ForegroundElement(ChessPiece piece) {
-            this.str = getStrFromPiece(piece);
-        }
-
-        public ForegroundElement(char label) {
-            this.str = " " + label + " ";
-        }
-
-        public ForegroundElement() {
-            this.str = EscapeSequences.EMPTY;
-        }
-
-        private String getStrFromPiece(ChessPiece piece) {
-            if (piece.getTeamColor() == ChessGame.TeamColor.WHITE) {
-                return switch (piece.getPieceType()) {
-                    case KING -> EscapeSequences.WHITE_KING;
-                    case QUEEN -> EscapeSequences.WHITE_QUEEN;
-                    case BISHOP -> EscapeSequences.WHITE_BISHOP;
-                    case KNIGHT -> EscapeSequences.WHITE_KNIGHT;
-                    case ROOK -> EscapeSequences.WHITE_ROOK;
-                    case PAWN -> EscapeSequences.WHITE_PAWN;
-                };
-            } else {
-                return switch (piece.getPieceType()) {
-                    case KING -> EscapeSequences.BLACK_KING;
-                    case QUEEN -> EscapeSequences.BLACK_QUEEN;
-                    case BISHOP -> EscapeSequences.BLACK_BISHOP;
-                    case KNIGHT -> EscapeSequences.BLACK_KNIGHT;
-                    case ROOK -> EscapeSequences.BLACK_ROOK;
-                    case PAWN -> EscapeSequences.BLACK_PAWN;
-                };
-            }
-        }
-
-        public String toString() {
-            return str;
-        }
-    }
 }
