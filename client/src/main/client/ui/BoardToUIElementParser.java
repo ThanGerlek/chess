@@ -2,24 +2,11 @@ package client.ui;
 
 import chess.*;
 
-public class BoardDrawer {
-    private final ConsoleUI ui;
+public class BoardToUIElementParser {
     private BoardElement[][] elements;
 
-    public BoardDrawer(ConsoleUI ui, ChessBoard board) {
-        this.ui = ui;
+    public BoardToUIElementParser(ChessBoard board) {
         parseElements(board);
-    }
-
-    public void draw(ChessGame.TeamColor color) {
-        // TODO
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                ui.print(elements[i][j].fgElem.toString());
-            }
-            ui.println();
-        }
-        ui.println();
     }
 
     private void parseElements(ChessBoard board) {

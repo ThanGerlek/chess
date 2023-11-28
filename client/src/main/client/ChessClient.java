@@ -6,7 +6,7 @@ import chess.ChessGame;
 import client.connection.ChessServerFacade;
 import client.connection.FailedConnectionException;
 import client.connection.FailedResponseException;
-import client.ui.BoardDrawer;
+import client.ui.BoardToUIElementParser;
 import client.ui.ConsoleUI;
 import client.ui.command.Command;
 import client.ui.command.Commands;
@@ -179,8 +179,9 @@ public class ChessClient {
     private void drawBoard() {
         // TODO
         ChessBoard board = new ChessBoardImpl();
-        BoardDrawer drawer = new BoardDrawer(ui, board);
-        drawer.draw(ChessGame.TeamColor.WHITE);
+        board.resetBoard();
+        BoardToUIElementParser drawer = new BoardToUIElementParser(board);
+//        drawer.draw(ChessGame.TeamColor.WHITE);
 //        drawer.draw(ChessGame.TeamColor.BLACK);
         ui.println("TODO: draw black");
     }
