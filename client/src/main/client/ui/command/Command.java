@@ -1,14 +1,14 @@
 package client.ui.command;
 
-import client.AuthorizationLevel;
+import client.AuthorizationRole;
 
 import java.util.Objects;
 
 public class Command {
     private final String commandID;
-    private final AuthorizationLevel minRequiredAuthLevel;
+    private final AuthorizationRole minRequiredAuthLevel;
 
-    Command(String commandID, AuthorizationLevel minRequiredAuthLevel) {
+    Command(String commandID, AuthorizationRole minRequiredAuthLevel) {
         this.commandID = commandID;
         this.minRequiredAuthLevel = minRequiredAuthLevel;
     }
@@ -17,7 +17,7 @@ public class Command {
         return this.commandID;
     }
 
-    public AuthorizationLevel getMinRequiredAuthLevel() {
+    public AuthorizationRole getMinRequiredAuthLevel() {
         return minRequiredAuthLevel;
     }
 

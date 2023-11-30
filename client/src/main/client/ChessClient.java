@@ -66,7 +66,7 @@ public class ChessClient {
     }
 
     private boolean isAuthorizedToRun(Command cmd) {
-        return sessionData.getAuthLevel().hasPermission(cmd.getMinRequiredAuthLevel());
+        return sessionData.getAuthRole().hasPermission(cmd.getMinRequiredAuthLevel());
     }
 
     private void rejectAuthorization() {
@@ -218,9 +218,9 @@ public class ChessClient {
     }
 
     public String getStatus() {
-        if (sessionData.getAuthLevel().hasPermission(AuthorizationLevel.SUPERUSER)) {
+        if (sessionData.getAuthRole().hasPermission(AuthorizationRole.SUPERUSER)) {
             return "SUPERUSER";
-        } else if (sessionData.getAuthLevel().hasPermission(AuthorizationLevel.USER)) {
+        } else if (sessionData.getAuthRole().hasPermission(AuthorizationRole.USER)) {
             return sessionData.getUsername();
         } else {
             return "Guest";

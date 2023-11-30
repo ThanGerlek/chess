@@ -1,37 +1,37 @@
 package client;
 
 public class SessionData {
-    private AuthorizationLevel authLevel;
+    private AuthorizationRole authRole;
     private String authTokenString;
     private String username;
 
     public SessionData() {
-        this(AuthorizationLevel.ANY, null, null);
+        this(AuthorizationRole.GUEST, null, null);
     }
 
-    public SessionData(AuthorizationLevel authLevel, String authTokenString, String username) {
-        this.authLevel = authLevel;
+    public SessionData(AuthorizationRole authRole, String authTokenString, String username) {
+        this.authRole = authRole;
         this.authTokenString = authTokenString;
         this.username = username;
     }
 
     public void clearUserData() {
         setUserData(null, null);
-        this.authLevel = AuthorizationLevel.ANY;
+        this.authRole = AuthorizationRole.GUEST;
     }
 
     public void setUserData(String authTokenString, String username) {
         this.authTokenString = authTokenString;
         this.username = username;
         if (authTokenString == null || authTokenString.isEmpty()) {
-            this.authLevel = AuthorizationLevel.ANY;
+            this.authRole = AuthorizationRole.GUEST;
         } else {
-            this.authLevel = AuthorizationLevel.USER;
+            this.authRole = AuthorizationRole.USER;
         }
     }
 
-    public AuthorizationLevel getAuthLevel() {
-        return authLevel;
+    public AuthorizationRole getAuthRole() {
+        return authRole;
     }
 
     public String getAuthTokenString() {
