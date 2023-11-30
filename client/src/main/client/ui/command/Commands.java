@@ -6,7 +6,8 @@ public abstract class Commands {
     // ANY or higher
     public static UICommand HELP = new UICommand("help", "Print a list of available commands", AuthorizationRole.ANY);
     public static UICommand QUIT = new UICommand("quit", "Quit the game", AuthorizationRole.ANY);
-    public static Command TEST = new Command("test", AuthorizationRole.ANY);
+    public static UICommand TEST =
+            new UICommand("test", "For testing purposes only. Please ignore.", AuthorizationRole.ANY);
 
     // GUEST
     public static UICommand REGISTER =
@@ -39,7 +40,7 @@ public abstract class Commands {
     public static Command NO_INPUT = new Command("", AuthorizationRole.CONSOLE);
 
     public static UICommand[] UI_COMMANDS =
-            {HELP, QUIT, REGISTER, LOGIN, LOGOUT, CREATE_GAME, LIST_GAMES, JOIN_GAME, OBSERVE_GAME, DRAW, LEAVE,
+            {HELP, TEST, QUIT, REGISTER, LOGIN, LOGOUT, CREATE_GAME, LIST_GAMES, JOIN_GAME, OBSERVE_GAME, DRAW, LEAVE,
                     MAKE_MOVE, RESIGN, HIGHLIGHT_MOVES};
 
     public static Command parse(String input) {
