@@ -55,6 +55,14 @@ public class ChessClient {
             observeGame();
         } else if (Commands.DRAW.equals(cmd)) {
             drawBoard();
+        } else if (Commands.LEAVE.equals(cmd)) {
+            // TODO
+        } else if (Commands.MAKE_MOVE.equals(cmd)) {
+            // TODO
+        } else if (Commands.RESIGN.equals(cmd)) {
+            // TODO
+        } else if (Commands.HIGHLIGHT_MOVES.equals(cmd)) {
+            // TODO
         } else if (Commands.IDENTITY.equals(cmd)) {
             // do nothing
             return;
