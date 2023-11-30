@@ -1,11 +1,10 @@
 package client.websocket;
 
 import client.httpConnection.FailedConnectionException;
-import http.ChessSerializer;
 import jakarta.websocket.*;
-import webSocketMessages.serverMessages.ServerMessage;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -26,7 +25,7 @@ public class WebSocketClient extends Endpoint {
             URI socketURI = getURI(serverURL);
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, socketURI);
-            this.session.addMessageHandler((MessageHandler.Whole<String>) this::parseServerMessageString);
+            this.session.addMessageHandler(getMessageHandler());
         } catch (URISyntaxException | DeploymentException | IOException e) {
             throw new FailedConnectionException("Failed to create WebSocket connection: " + e.getMessage());
         }
@@ -37,9 +36,13 @@ public class WebSocketClient extends Endpoint {
         return new URI(uriString);
     }
 
+    private MessageHandler.Whole<String> getMessageHandler() {
+        return new MyMessageHandler(System.out);
+    }
+
     private void parseServerMessageString(String messageJson) {
-        ServerMessage message = ChessSerializer.gson().fromJson(messageJson, ServerMessage.class);
-        serverMessageHandler.handleServerMessage(message);
+//        ServerMessage message = ChessSerializer.gson().fromJson(messageJson, ServerMessage.class);
+        serverMessageHandler.handleServerMessage(messageJson);
     }
 
     public void sendMessage(String message) throws IOException {
@@ -48,5 +51,12 @@ public class WebSocketClient extends Endpoint {
 
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {
+    }
+
+    private record MyMessageHandler(PrintStream printStream) implements MessageHandler.Whole<String> {
+        @Override
+        public void onMessage(String s) {
+            printStream.printf("Received server message '%s'%n", s);
+        }
     }
 }

@@ -3,6 +3,7 @@ package server;
 import dataAccess.*;
 import http.MessageResponse;
 import server.handlers.*;
+import server.webSocket.WebSocketServer;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -17,6 +18,8 @@ public class Server {
     private final LoginHandler loginHandler;
     private final LogoutHandler logoutHandler;
     private final RegisterHandler registerHandler;
+
+    private final WebSocketServer webSocketServer;
 
     private final ChessDatabase database;
 
@@ -39,6 +42,8 @@ public class Server {
         loginHandler = new LoginHandler(authDAO, userDAO);
         logoutHandler = new LogoutHandler(authDAO);
         registerHandler = new RegisterHandler(authDAO, userDAO);
+
+        webSocketServer = new WebSocketServer();
     }
 
     public static void main(String[] args) throws DataAccessException {
@@ -60,6 +65,7 @@ public class Server {
     private void setupHttpRouting() {
         Spark.port(PORT);
         Spark.externalStaticFileLocation("web");
+        exposeWebSocketServer();
         createRoutes();
         addShutdownHook();
         Spark.awaitInitialization();
@@ -71,6 +77,10 @@ public class Server {
         userDAO.initialize();
         authDAO.initialize();
         gameDAO.initialize();
+    }
+
+    private void exposeWebSocketServer() {
+        Spark.webSocket("/connect", webSocketServer);
     }
 
     private void createRoutes() {

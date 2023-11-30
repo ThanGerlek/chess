@@ -16,6 +16,7 @@ import client.websocket.WebSocketClient;
 import http.AuthResponse;
 import http.GameListItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static client.ui.EscapeSequences.*;
@@ -89,6 +90,39 @@ public class ChessClient {
 
     private void test() {
         ui.println("This command is for testing purposes only and is subject to change at any time.");
+
+        String thing = ui.promptInput("? ");
+
+        if ("connect".equals(thing)) {
+            testCreateConnection();
+        } else if ("send".equals(thing)) {
+            testSendMessage();
+        }
+    }
+
+    private void testCreateConnection() {
+        ui.println("Creating WS connection to server");
+        ServerMessageHandler messageHandler = (serverMessage) -> {
+            System.out.printf("Received server message '%s'%n", serverMessage);
+            throw new RuntimeException("Problem!");
+        };
+        try {
+            ws.openConnection(messageHandler);
+            ui.println("Connection created. Listening");
+        } catch (FailedConnectionException e) {
+            printError(e);
+            return;
+        }
+    }
+
+    private void testSendMessage() {
+        ui.println("Sending message");
+        try {
+            ws.sendMessage("forty-two");
+        } catch (IOException e) {
+            printError(e);
+            return;
+        }
     }
 
     private void printHelpMenu() {
