@@ -28,22 +28,25 @@ public class WebSocketClient extends Endpoint {
             URI socketURI = getURI(serverURL);
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, socketURI);
-            this.session.addMessageHandler(getMessageHandler());
+            addMessageHandler();
         } catch (URISyntaxException | DeploymentException | IOException e) {
             throw new FailedConnectionException("Failed to create WebSocket connection: " + e.getMessage());
         }
     }
 
+    private void addMessageHandler() {
+        this.session.addMessageHandler(new MessageHandler.Whole<String>() {
+            @Override
+            public void onMessage(String s) {
+                ServerMessage serverMessage = ChessSerializer.gson().fromJson(s, ServerMessage.class);
+                notificationHandler.notify(serverMessage);
+            }
+        });
+    }
+
     private URI getURI(String serverURL) throws URISyntaxException {
         String uriString = serverURL.replace("https", "ws").replace("http", "ws") + "/connect";
         return new URI(uriString);
-    }
-
-    private MessageHandler.Whole<String> getMessageHandler() {
-        return s -> {
-            ServerMessage serverMessage = ChessSerializer.gson().fromJson(s, ServerMessage.class);
-            notificationHandler.notify(serverMessage);
-        };
     }
 
     public void send(UserGameCommand gameCommand) throws FailedConnectionException {
