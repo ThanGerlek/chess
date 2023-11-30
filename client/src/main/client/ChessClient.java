@@ -36,61 +36,19 @@ public class ChessClient {
         this.sessionData = new SessionData();
     }
 
-    public void runCommand(Command cmd) {
-        if (!isAuthorizedToRun(cmd)) {
-            rejectAuthorization();
-            return;
-        }
-
-        if (Commands.HELP.equals(cmd)) {
-            printHelpMenu();
-        } else if (Commands.TEST.equals(cmd)) {
-            test();
-        } else if (Commands.QUIT.equals(cmd)) {
-            quit();
-        } else if (Commands.REGISTER.equals(cmd)) {
-            register();
-        } else if (Commands.LOGIN.equals(cmd)) {
-            login();
-        } else if (Commands.LOGOUT.equals(cmd)) {
-            logout();
-        } else if (Commands.CREATE_GAME.equals(cmd)) {
-            createGame();
-        } else if (Commands.LIST_GAMES.equals(cmd)) {
-            listGames();
-        } else if (Commands.JOIN_GAME.equals(cmd)) {
-            joinGame();
-        } else if (Commands.OBSERVE_GAME.equals(cmd)) {
-            observeGame();
-        } else if (Commands.DRAW.equals(cmd)) {
-            drawBoard();
-        } else if (Commands.LEAVE.equals(cmd)) {
-            // TODO
-        } else if (Commands.MAKE_MOVE.equals(cmd)) {
-            // TODO
-        } else if (Commands.RESIGN.equals(cmd)) {
-            // TODO
-        } else if (Commands.HIGHLIGHT_MOVES.equals(cmd)) {
-            // TODO
-        } else if (Commands.IDENTITY.equals(cmd)) {
-            // do nothing
-            return;
-        } else if (Commands.NO_INPUT.equals(cmd)) {
-            askForCommandInput();
-        } else {
-            rejectInput();
-        }
+    public SessionData getSessionData() {
+        return sessionData;
     }
 
-    private boolean isAuthorizedToRun(Command cmd) {
+    public boolean isAuthorizedToRun(Command cmd) {
         return cmd.canBeRunBy(sessionData.getAuthRole());
     }
 
-    private void rejectAuthorization() {
+    public void rejectAuthorization() {
         ui.println("Woah! You're not allowed to do that right now. Try logging in first.");
     }
 
-    private void test() {
+    public void test() throws FailedConnectionException {
         ui.println("This command is for testing purposes only and is subject to change at any time.");
 
         String thing = ui.promptInput("? ");
@@ -102,33 +60,25 @@ public class ChessClient {
         }
     }
 
-    private void testCreateConnection() {
+    private void testCreateConnection() throws FailedConnectionException {
         ui.println("Creating WS connection to server");
         NotificationHandler notificationHandler = (serverMessage) -> {
             System.out.printf("Received server message '%s'%n", serverMessage);
             throw new RuntimeException("Problem!");
         };
-        try {
-            ws.openConnection(messageHandler);
-            ui.println("Connection created. Listening");
-        } catch (FailedConnectionException e) {
-            printError(e);
-            return;
-        }
+
+        ws.openConnection(notificationHandler);
+        ui.println("Connection created. Listening");
     }
 
-    private void testSendMessage() {
+    private void testSendMessage() throws FailedConnectionException {
         ui.println("Sending message");
         UserGameCommand gameCommand = new LeaveGameCommand("myAuthToken", 3);
-        try {
-            ws.send(gameCommand);
-        } catch (FailedConnectionException e) {
-            printError(e);
-            return;
-        }
+        ws.send(gameCommand);
+
     }
 
-    private void printHelpMenu() {
+    public void printHelpMenu() {
         ui.println("Available commands:");
         for (UICommand cmd : Commands.UI_COMMANDS) {
             if (isAuthorizedToRun(cmd)) {
@@ -137,11 +87,11 @@ public class ChessClient {
         }
     }
 
-    private void quit() {
+    public void quit() {
         ui.println("Goodbye!");
     }
 
-    private void register() {
+    public void register() throws FailedConnectionException, FailedResponseException {
         ui.println("Please enter a username and password.");
         ui.println(String.format(
                 "%sWARNING: DO NOT USE A REAL PASSWORD.%s This program was built by a college undergrad, not a " +
@@ -150,55 +100,35 @@ public class ChessClient {
         String password = ui.promptInput("Password: ");
         String email = ui.promptInput("Email (optional): ");
 
-        try {
-            AuthResponse response = serverFacade.register(username, password, email);
-            sessionData.setUserData(response.authToken(), username);
-            sessionData.setAuthRole(AuthorizationRole.GUEST);
-        } catch (FailedConnectionException | FailedResponseException e) {
-            printError(e);
-        }
+        AuthResponse response = serverFacade.register(username, password, email);
+        sessionData.setUserData(response.authToken(), username);
+        sessionData.setAuthRole(AuthorizationRole.GUEST);
     }
 
-    private void login() {
+    public void login() throws FailedConnectionException, FailedResponseException {
         String username = ui.promptInput("Username: ");
         String password = ui.promptInput("Password: ");
 
-        try {
-            AuthResponse response = serverFacade.login(username, password);
-            sessionData.setUserData(response.authToken(), username);
-            sessionData.setAuthRole(AuthorizationRole.USER);
-        } catch (FailedConnectionException | FailedResponseException e) {
-            printError(e);
-        }
+        AuthResponse response = serverFacade.login(username, password);
+        sessionData.setUserData(response.authToken(), username);
+        sessionData.setAuthRole(AuthorizationRole.USER);
     }
 
-    private void logout() {
-        try {
-            serverFacade.logout(sessionData.getAuthTokenString());
-            sessionData.clearUserData();
-        } catch (FailedConnectionException | FailedResponseException e) {
-            printError(e);
-        }
+    public void logout() throws FailedConnectionException, FailedResponseException {
+        serverFacade.logout(sessionData.getAuthTokenString());
+        sessionData.clearUserData();
+
     }
 
-    private void createGame() {
+    public void createGame() throws FailedConnectionException, FailedResponseException {
         String gameName = ui.promptInput("Enter a name for this game: ");
-        try {
-            serverFacade.createGame(gameName, sessionData.getAuthTokenString());
-        } catch (FailedConnectionException | FailedResponseException e) {
-            printError(e);
-        }
+        serverFacade.createGame(gameName, sessionData.getAuthTokenString());
     }
 
-    private ArrayList<GameListItem> listGames() {
-        try {
-            ArrayList<GameListItem> games = serverFacade.listGames(sessionData.getAuthTokenString());
-            printGameList(games);
-            return games;
-        } catch (FailedConnectionException | FailedResponseException e) {
-            printError(e);
-            return null;
-        }
+    public ArrayList<GameListItem> listGames() throws FailedConnectionException, FailedResponseException {
+        ArrayList<GameListItem> games = serverFacade.listGames(sessionData.getAuthTokenString());
+        printGameList(games);
+        return games;
     }
 
     private void printGameList(ArrayList<GameListItem> games) {
@@ -223,15 +153,15 @@ public class ChessClient {
         return (username == null || username.isEmpty()) ? "None" : "'" + username + "'";
     }
 
-    private void joinGame() {
+    public void joinGame() throws FailedConnectionException, FailedResponseException {
         joinGame(false);
     }
 
-    private void observeGame() {
+    public void observeGame() throws FailedConnectionException, FailedResponseException {
         joinGame(true);
     }
 
-    private void drawBoard() {
+    public void drawBoard() {
         ChessBoard board = new ChessBoardImpl();
         board.resetBoard();
         BoardDrawer drawer = new BoardDrawer(ui, board);
@@ -241,7 +171,7 @@ public class ChessClient {
         drawer.draw();
     }
 
-    private void joinGame(boolean asSpectator) {
+    private void joinGame(boolean asSpectator) throws FailedConnectionException, FailedResponseException {
         ArrayList<GameListItem> games = listGames();
         if (games != null) {
             try {
@@ -249,39 +179,29 @@ public class ChessClient {
                 joiner.joinGame(asSpectator);
                 sessionData.setAuthRole(AuthorizationRole.OBSERVER);
                 drawBoard();
-            } catch (FailedConnectionException | FailedResponseException e) {
-                printError(e);
             } catch (CommandCancelException ignored) {
             }
         }
     }
 
-    private void askForCommandInput() {
-        ui.println("Please enter a command. Type 'help' to see available commands.");
+    public void leaveGame() {
+        // TODO
     }
 
-    private void rejectInput() {
-        ui.println("Unrecognized command. Type 'help' to see available commands.");
+    public void makeMove() {
+        // TODO
+    }
+
+    public void resign() {
+        // TODO
+    }
+
+    public void highlightMoves() {
+        // TODO
     }
 
     private String getHelpStringForCommand(UICommand cmd) {
         return String.format("%s - %s", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
                 SET_TEXT_ITALIC + cmd.getDescription() + RESET_TEXT_ITALIC);
-    }
-
-    private void printError(Exception e) {
-        // TODO. Better logging
-        System.err.println(e.getMessage());
-        ui.println("[ERR] " + e.getMessage());
-    }
-
-    public String getStatus() {
-        if (sessionData.getAuthRole().hasPermission(AuthorizationRole.SUPERUSER)) {
-            return "SUPERUSER";
-        } else if (sessionData.getAuthRole().hasPermission(AuthorizationRole.USER)) {
-            return sessionData.getUsername();
-        } else {
-            return "Guest";
-        }
     }
 }
