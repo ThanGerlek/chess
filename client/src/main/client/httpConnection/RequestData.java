@@ -1,4 +1,4 @@
-package client.connection;
+package client.httpConnection;
 
 public record RequestData(String method, String path, Object request, String authTokenString) {
     public RequestData(String method, String path, Object request) {

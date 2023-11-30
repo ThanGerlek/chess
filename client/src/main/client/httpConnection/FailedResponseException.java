@@ -1,4 +1,4 @@
-package client.connection;
+package client.httpConnection;
 
 public class FailedResponseException extends Exception {
     public FailedResponseException(String msg) {
