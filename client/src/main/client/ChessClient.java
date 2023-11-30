@@ -129,7 +129,7 @@ public class ChessClient {
         try {
             AuthResponse response = serverFacade.login(username, password);
             sessionData.setUserData(response.authToken(), username);
-            sessionData.setAuthRole(AuthorizationRole.GUEST);
+            sessionData.setAuthRole(AuthorizationRole.USER);
         } catch (FailedConnectionException | FailedResponseException e) {
             printError(e);
         }
