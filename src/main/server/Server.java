@@ -10,13 +10,13 @@ import spark.Spark;
 public class Server {
     private static final int PORT = 8080;
 
-    private final ClearApplicationHandler CLEAR_APPLICATION_HANDLER;
-    private final CreateGameHandler CREATE_GAME_HANDLER;
-    private final JoinGameHandler JOIN_GAME_HANDLER;
-    private final ListGamesHandler LIST_GAMES_HANDLER;
-    private final LoginHandler LOGIN_HANDLER;
-    private final LogoutHandler LOGOUT_HANDLER;
-    private final RegisterHandler REGISTER_HANDLER;
+    private final ClearApplicationHandler clearApplicationHandler;
+    private final CreateGameHandler createGameHandler;
+    private final JoinGameHandler joinGameHandler;
+    private final ListGamesHandler listGamesHandler;
+    private final LoginHandler loginHandler;
+    private final LogoutHandler logoutHandler;
+    private final RegisterHandler registerHandler;
 
     private final ChessDatabase database;
 
@@ -32,13 +32,13 @@ public class Server {
         authDAO = new DatabaseAuthDAO(database, userDAO);
         gameDAO = new DatabaseGameDAO(database, userDAO);
 
-        CLEAR_APPLICATION_HANDLER = new ClearApplicationHandler(authDAO, gameDAO, userDAO);
-        CREATE_GAME_HANDLER = new CreateGameHandler(authDAO, gameDAO);
-        JOIN_GAME_HANDLER = new JoinGameHandler(authDAO, gameDAO);
-        LIST_GAMES_HANDLER = new ListGamesHandler(authDAO, gameDAO);
-        LOGIN_HANDLER = new LoginHandler(authDAO, userDAO);
-        LOGOUT_HANDLER = new LogoutHandler(authDAO);
-        REGISTER_HANDLER = new RegisterHandler(authDAO, userDAO);
+        clearApplicationHandler = new ClearApplicationHandler(authDAO, gameDAO, userDAO);
+        createGameHandler = new CreateGameHandler(authDAO, gameDAO);
+        joinGameHandler = new JoinGameHandler(authDAO, gameDAO);
+        listGamesHandler = new ListGamesHandler(authDAO, gameDAO);
+        loginHandler = new LoginHandler(authDAO, userDAO);
+        logoutHandler = new LogoutHandler(authDAO);
+        registerHandler = new RegisterHandler(authDAO, userDAO);
     }
 
     public static void main(String[] args) throws DataAccessException {
@@ -109,13 +109,13 @@ public class Server {
     }
 
     private void createServiceRoutes() {
-        Spark.delete("/db", CLEAR_APPLICATION_HANDLER::handleRequest);
-        Spark.post("/user", REGISTER_HANDLER::handleRequest);
-        Spark.post("/session", LOGIN_HANDLER::handleRequest);
-        Spark.delete("/session", LOGOUT_HANDLER::handleRequest);
-        Spark.get("/game", LIST_GAMES_HANDLER::handleRequest);
-        Spark.post("/game", CREATE_GAME_HANDLER::handleRequest);
-        Spark.put("/game", JOIN_GAME_HANDLER::handleRequest);
+        Spark.delete("/db", clearApplicationHandler::handleRequest);
+        Spark.post("/user", registerHandler::handleRequest);
+        Spark.post("/session", loginHandler::handleRequest);
+        Spark.delete("/session", logoutHandler::handleRequest);
+        Spark.get("/game", listGamesHandler::handleRequest);
+        Spark.post("/game", createGameHandler::handleRequest);
+        Spark.put("/game", joinGameHandler::handleRequest);
     }
 
     private void createAfterRoutes() {
