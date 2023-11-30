@@ -143,7 +143,7 @@ public class ChessClient {
     private void createGame() {
         String gameName = ui.promptInput("Enter a name for this game: ");
         try {
-            int gameID = serverFacade.createGame(gameName, sessionData.getAuthTokenString());
+            serverFacade.createGame(gameName, sessionData.getAuthTokenString());
         } catch (FailedConnectionException | FailedResponseException e) {
             printError(e);
         }
@@ -191,7 +191,6 @@ public class ChessClient {
     }
 
     private void drawBoard() {
-        // TODO
         ChessBoard board = new ChessBoardImpl();
         board.resetBoard();
         BoardDrawer drawer = new BoardDrawer(ui, board);

@@ -10,10 +10,10 @@ import http.GameListItem;
 import java.util.ArrayList;
 
 public class GameJoiner {
-    private ConsoleUI ui;
-    private ChessServerFacade serverFacade;
-    private ArrayList<GameListItem> games;
-    private String authTokenString;
+    private final ConsoleUI ui;
+    private final ChessServerFacade serverFacade;
+    private final ArrayList<GameListItem> games;
+    private final String authTokenString;
 
     public GameJoiner(ConsoleUI ui, ChessServerFacade serverFacade, ArrayList<GameListItem> games,
             String authTokenString) {
