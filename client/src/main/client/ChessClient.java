@@ -15,8 +15,10 @@ import client.websocket.NotificationHandler;
 import client.websocket.WebSocketClient;
 import http.AuthResponse;
 import http.GameListItem;
+import webSocketMessages.serverMessages.ServerMessage;
+import webSocketMessages.userCommands.LeaveGameCommand;
+import webSocketMessages.userCommands.UserGameCommand;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static client.ui.EscapeSequences.*;
@@ -117,9 +119,10 @@ public class ChessClient {
 
     private void testSendMessage() {
         ui.println("Sending message");
+        UserGameCommand gameCommand = new LeaveGameCommand("myAuthToken", 3);
         try {
-            ws.sendMessage("forty-two");
-        } catch (IOException e) {
+            ws.send(gameCommand);
+        } catch (FailedConnectionException e) {
             printError(e);
             return;
         }

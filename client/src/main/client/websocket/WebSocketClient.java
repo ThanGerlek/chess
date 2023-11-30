@@ -1,10 +1,12 @@
 package client.websocket;
 
 import client.httpConnection.FailedConnectionException;
+import http.ChessSerializer;
 import jakarta.websocket.*;
+import webSocketMessages.serverMessages.ServerMessage;
+import webSocketMessages.userCommands.UserGameCommand;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -38,26 +40,23 @@ public class WebSocketClient extends Endpoint {
     }
 
     private MessageHandler.Whole<String> getMessageHandler() {
-        return new MyMessageHandler(System.out);
+        return s -> {
+            ServerMessage serverMessage = ChessSerializer.gson().fromJson(s, ServerMessage.class);
+            notificationHandler.notify(serverMessage);
+        };
     }
 
-    private void parseServerMessageString(String messageJson) {
-//        ServerMessage message = ChessSerializer.gson().fromJson(messageJson, ServerMessage.class);
-        serverMessageHandler.handleServerMessage(messageJson);
-    }
-
-    public void sendMessage(String message) throws IOException {
-        session.getBasicRemote().sendText(message);
+    public void send(UserGameCommand gameCommand) throws FailedConnectionException {
+        String messageJson = ChessSerializer.gson().toJson(gameCommand);
+        try {
+            session.getBasicRemote().sendText(messageJson);
+        } catch (IOException e) {
+            throw new FailedConnectionException(
+                    "Client failed to send WebSocket message with error: " + e.getMessage());
+        }
     }
 
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {
-    }
-
-    private record MyMessageHandler(PrintStream printStream) implements MessageHandler.Whole<String> {
-        @Override
-        public void onMessage(String s) {
-            printStream.printf("Received server message '%s'%n", s);
-        }
     }
 }
