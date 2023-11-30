@@ -199,11 +199,13 @@ public class ChessClient {
             try {
                 GameJoiner joiner = new GameJoiner(ui, serverFacade, games, sessionData.getAuthTokenString());
                 joiner.joinGame(asSpectator);
+                sessionData.setAuthRole(AuthorizationRole.OBSERVER);
+                drawBoard();
             } catch (FailedConnectionException | FailedResponseException e) {
                 printError(e);
+            } catch (CommandCancelException ignored) {
             }
         }
-        drawBoard();
     }
 
     private void askForCommandInput() {

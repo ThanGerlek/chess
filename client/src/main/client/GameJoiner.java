@@ -23,14 +23,12 @@ public class GameJoiner {
         this.authTokenString = authTokenString;
     }
 
-    public void joinGame(boolean asSpectator) throws FailedResponseException, FailedConnectionException {
+    public void joinGame(boolean asSpectator)
+            throws FailedResponseException, FailedConnectionException, CommandCancelException {
         ui.println("Enter the number for the game you would like to play.");
-        try {
-            int gameID = selectGame();
-            ChessGame.TeamColor color = asSpectator ? null : selectColor();
-            serverFacade.joinGame(color, gameID, authTokenString);
-        } catch (CommandCancelException ignored) {
-        }
+        int gameID = selectGame();
+        ChessGame.TeamColor color = asSpectator ? null : selectColor();
+        serverFacade.joinGame(color, gameID, authTokenString);
     }
 
     private int selectGame() throws CommandCancelException {
