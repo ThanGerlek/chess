@@ -6,6 +6,7 @@ public abstract class Commands {
     // ANY or higher
     public static UICommand HELP = new UICommand("help", "Print a list of available commands", AuthorizationRole.ANY);
     public static UICommand QUIT = new UICommand("quit", "Quit the game", AuthorizationRole.ANY);
+    public static Command TEST = new Command("test", AuthorizationRole.ANY);
 
     // GUEST
     public static UICommand REGISTER =

@@ -37,6 +37,8 @@ public class ChessClient {
 
         if (Commands.HELP.equals(cmd)) {
             printHelpMenu();
+        } else if (Commands.TEST.equals(cmd)) {
+            test();
         } else if (Commands.QUIT.equals(cmd)) {
             quit();
         } else if (Commands.REGISTER.equals(cmd)) {
@@ -79,6 +81,10 @@ public class ChessClient {
 
     private void rejectAuthorization() {
         ui.println("Woah! You're not allowed to do that right now. Try logging in first.");
+    }
+
+    private void test() {
+        ui.println("This command is for testing purposes only and is subject to change at any time.");
     }
 
     private void printHelpMenu() {
