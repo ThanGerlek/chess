@@ -20,14 +20,13 @@ public class SessionData {
         this.authRole = AuthorizationRole.GUEST;
     }
 
+    public void setAuthRole(AuthorizationRole authRole) {
+        this.authRole = authRole;
+    }
+
     public void setUserData(String authTokenString, String username) {
         this.authTokenString = authTokenString;
         this.username = username;
-        if (authTokenString == null || authTokenString.isEmpty()) {
-            this.authRole = AuthorizationRole.GUEST;
-        } else {
-            this.authRole = AuthorizationRole.USER;
-        }
     }
 
     public AuthorizationRole getAuthRole() {
