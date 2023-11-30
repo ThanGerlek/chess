@@ -15,7 +15,6 @@ import client.websocket.NotificationHandler;
 import client.websocket.WebSocketClient;
 import http.AuthResponse;
 import http.GameListItem;
-import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.LeaveGameCommand;
 import webSocketMessages.userCommands.UserGameCommand;
 
@@ -24,12 +23,14 @@ import java.util.ArrayList;
 import static client.ui.EscapeSequences.*;
 
 public class ChessClient {
+    private final NotificationHandler notificationHandler;
     private final ConsoleUI ui;
     private final ChessServerFacade serverFacade;
     private final WebSocketClient ws;
     private final SessionData sessionData;
 
-    public ChessClient(String serverURL, ConsoleUI ui) {
+    public ChessClient(String serverURL, ConsoleUI ui, NotificationHandler notificationHandler) {
+        this.notificationHandler = notificationHandler;
         this.ui = ui;
         this.serverFacade = new ChessServerFacade(serverURL);
         this.ws = new WebSocketClient(serverURL);
@@ -62,11 +63,6 @@ public class ChessClient {
 
     private void testCreateConnection() throws FailedConnectionException {
         ui.println("Creating WS connection to server");
-        NotificationHandler notificationHandler = (serverMessage) -> {
-            System.out.printf("Received server message '%s'%n", serverMessage);
-            throw new RuntimeException("Problem!");
-        };
-
         ws.openConnection(notificationHandler);
         ui.println("Connection created. Listening");
     }

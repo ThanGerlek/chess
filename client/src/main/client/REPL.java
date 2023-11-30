@@ -5,16 +5,18 @@ import client.httpConnection.FailedResponseException;
 import client.ui.ConsoleUI;
 import client.ui.command.Command;
 import client.ui.command.Commands;
+import client.websocket.NotificationHandler;
+import webSocketMessages.serverMessages.ServerMessage;
 
 import java.util.Scanner;
 
-public class REPL {
+public class REPL implements NotificationHandler {
     private final ConsoleUI ui;
     private final ChessClient client;
 
     public REPL(String serverURL) {
         this.ui = new ConsoleUI(new Scanner(System.in), System.out);
-        this.client = new ChessClient(serverURL, ui);
+        this.client = new ChessClient(serverURL, ui, this);
     }
 
     public void run() {
@@ -111,4 +113,8 @@ public class REPL {
         }
     }
 
+    @Override
+    public void notify(ServerMessage serverMessage) {
+        ui.println("Received serverMessage of type " + serverMessage.getServerMessageType().name());
+    }
 }
