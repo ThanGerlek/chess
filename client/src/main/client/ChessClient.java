@@ -11,6 +11,8 @@ import client.ui.ConsoleUI;
 import client.ui.command.Command;
 import client.ui.command.Commands;
 import client.ui.command.UICommand;
+import client.websocket.ServerMessageHandler;
+import client.websocket.WebSocketClient;
 import http.AuthResponse;
 import http.GameListItem;
 
@@ -21,11 +23,13 @@ import static client.ui.EscapeSequences.*;
 public class ChessClient {
     private final ConsoleUI ui;
     private final ChessServerFacade serverFacade;
+    private final WebSocketClient ws;
     private final SessionData sessionData;
 
     public ChessClient(String serverURL, ConsoleUI ui) {
         this.ui = ui;
         this.serverFacade = new ChessServerFacade(serverURL);
+        this.ws = new WebSocketClient(serverURL);
         this.sessionData = new SessionData();
     }
 
