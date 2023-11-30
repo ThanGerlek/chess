@@ -1,9 +1,9 @@
 package client;
 
 import chess.ChessGame;
-import client.connection.ChessServerFacade;
-import client.connection.FailedConnectionException;
-import client.connection.FailedResponseException;
+import client.httpConnection.ChessServerFacade;
+import client.httpConnection.FailedConnectionException;
+import client.httpConnection.FailedResponseException;
 import client.ui.ConsoleUI;
 import http.GameListItem;
 
