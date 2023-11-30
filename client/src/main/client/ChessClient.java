@@ -11,7 +11,7 @@ import client.ui.ConsoleUI;
 import client.ui.command.Command;
 import client.ui.command.Commands;
 import client.ui.command.UICommand;
-import client.websocket.ServerMessageHandler;
+import client.websocket.NotificationHandler;
 import client.websocket.WebSocketClient;
 import http.AuthResponse;
 import http.GameListItem;
@@ -102,7 +102,7 @@ public class ChessClient {
 
     private void testCreateConnection() {
         ui.println("Creating WS connection to server");
-        ServerMessageHandler messageHandler = (serverMessage) -> {
+        NotificationHandler notificationHandler = (serverMessage) -> {
             System.out.printf("Received server message '%s'%n", serverMessage);
             throw new RuntimeException("Problem!");
         };

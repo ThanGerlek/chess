@@ -10,17 +10,18 @@ import java.net.URISyntaxException;
 
 public class WebSocketClient extends Endpoint {
     private Session session;
-    private ServerMessageHandler serverMessageHandler;
+    private NotificationHandler notificationHandler;
     private final String serverURL;
 
     public WebSocketClient(String serverURL) {
         this.session = null;
-        this.serverMessageHandler = null;
+        this.notificationHandler = null;
         this.serverURL = serverURL;
     }
 
-    public void openConnection(ServerMessageHandler serverMessageHandler) throws FailedConnectionException {
-        this.serverMessageHandler = serverMessageHandler;
+    public void openConnection(NotificationHandler notificationHandler) throws FailedConnectionException {
+        this.notificationHandler = notificationHandler;
+        // TODO close previous connection?
         try {
             URI socketURI = getURI(serverURL);
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
