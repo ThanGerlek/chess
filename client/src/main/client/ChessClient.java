@@ -66,7 +66,7 @@ public class ChessClient {
     }
 
     private boolean isAuthorizedToRun(Command cmd) {
-        return sessionData.getAuthRole().hasPermission(cmd.getMinRequiredAuthLevel());
+        return cmd.canBeRunBy(sessionData.getAuthRole());
     }
 
     private void rejectAuthorization() {

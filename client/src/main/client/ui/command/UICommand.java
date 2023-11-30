@@ -5,12 +5,13 @@ import client.AuthorizationRole;
 public class UICommand extends Command {
     private final String description;
 
-    UICommand(String commandString, String description) {
-        this(commandString, description, AuthorizationRole.GUEST);
+    UICommand(String commandString, String description, AuthorizationRole[] acceptedAuthRoles) {
+        super(commandString, acceptedAuthRoles);
+        this.description = description;
     }
 
-    UICommand(String commandString, String description, AuthorizationRole minRequiredAuthRole) {
-        super(commandString, minRequiredAuthRole);
+    UICommand(String commandString, String description, AuthorizationRole acceptedAuthRole) {
+        super(commandString, acceptedAuthRole);
         this.description = description;
     }
 

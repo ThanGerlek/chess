@@ -6,19 +6,29 @@ import java.util.Objects;
 
 public class Command {
     private final String commandID;
-    private final AuthorizationRole minRequiredAuthLevel;
+    private final AuthorizationRole[] acceptedAuthRoles;
 
-    Command(String commandID, AuthorizationRole minRequiredAuthLevel) {
+    Command(String commandID, AuthorizationRole[] acceptedAuthRoles) {
         this.commandID = commandID;
-        this.minRequiredAuthLevel = minRequiredAuthLevel;
+        this.acceptedAuthRoles = acceptedAuthRoles;
+    }
+
+    Command(String commandID, AuthorizationRole acceptedAuthRole) {
+        this.commandID = commandID;
+        this.acceptedAuthRoles = new AuthorizationRole[]{acceptedAuthRole};
     }
 
     String getCommandID() {
         return this.commandID;
     }
 
-    public AuthorizationRole getMinRequiredAuthLevel() {
-        return minRequiredAuthLevel;
+    public boolean canBeRunBy(AuthorizationRole role) {
+        for (AuthorizationRole acceptedRole : acceptedAuthRoles) {
+            if (role.hasPermission(acceptedRole)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

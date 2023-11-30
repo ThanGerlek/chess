@@ -1,8 +1,10 @@
 package client;
 
 public class AuthorizationRole {
-    // GUEST < USER < CONSOLE < SUPERUSER
-    // PLAYER and OBSERVER must be exact matches.
+    // ANY < GUEST
+    // ANY < USER < CONSOLE < SUPERUSER
+    // ANY < OBSERVER < PLAYER
+    public static AuthorizationRole ANY = new AuthorizationRole(Role.ANY);
     public static AuthorizationRole GUEST = new AuthorizationRole(Role.GUEST);
     public static AuthorizationRole USER = new AuthorizationRole(Role.USER);
     public static AuthorizationRole CONSOLE = new AuthorizationRole(Role.CONSOLE);
@@ -18,18 +20,24 @@ public class AuthorizationRole {
 
     public boolean hasPermission(AuthorizationRole required) {
         switch (required.role) {
-            case GUEST -> {
-                return role != Role.PLAYER && role != Role.OBSERVER;
+            case ANY -> {
+                return true;
             }
+
+            // USER < CONSOLE < SUPERUSER
             case USER -> {
-                return role == Role.GUEST || role == Role.CONSOLE || role == Role.SUPERUSER;
+                return role == Role.USER || role == Role.CONSOLE || role == Role.SUPERUSER;
             }
             case CONSOLE -> {
                 return role == Role.CONSOLE || role == Role.SUPERUSER;
             }
-            case SUPERUSER -> {
-                return role == Role.SUPERUSER;
+
+            // OBSERVER < PLAYER
+            case OBSERVER -> {
+                return role == Role.OBSERVER || role == Role.PLAYER;
             }
+
+            // GUEST, SUPERUSER, or PLAYER (the highest levels in their respective chains)
             default -> {
                 return role == required.role;
             }
@@ -37,6 +45,7 @@ public class AuthorizationRole {
     }
 
     private enum Role {
+        ANY,
         GUEST,
         USER,
         PLAYER,
