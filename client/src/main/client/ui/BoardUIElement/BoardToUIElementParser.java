@@ -1,11 +1,11 @@
-package client.ui;
+package client.ui.BoardUIElement;
 
 import chess.ChessBoard;
 import chess.ChessPosition;
 import chess.ChessPositionImpl;
-import client.ui.element.BackgroundElement;
-import client.ui.element.BoardElement;
-import client.ui.element.ForegroundElement;
+import client.ui.BoardUIElement.element.BackgroundElement;
+import client.ui.BoardUIElement.element.BoardElement;
+import client.ui.BoardUIElement.element.ForegroundElement;
 
 public class BoardToUIElementParser implements BoardUIElementReader {
     private BoardElement[][] elements;

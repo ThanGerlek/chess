@@ -1,4 +1,4 @@
-package client.ui.element;
+package client.ui.BoardUIElement.element;
 
 public record BoardElement(BackgroundElement bgElem, ForegroundElement fgElem) {
 

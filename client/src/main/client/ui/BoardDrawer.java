@@ -2,6 +2,9 @@ package client.ui;
 
 import chess.ChessBoard;
 import chess.ChessGame;
+import client.ui.BoardUIElement.BoardToUIElementParser;
+import client.ui.BoardUIElement.BoardUIElementReader;
+import client.ui.BoardUIElement.BoardUIElementRotator;
 
 public class BoardDrawer {
     private final ConsoleUI ui;

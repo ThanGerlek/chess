@@ -1,7 +1,7 @@
-package client.ui;
+package client.ui.BoardUIElement;
 
 import chess.ChessGame;
-import client.ui.element.BoardElement;
+import client.ui.BoardUIElement.element.BoardElement;
 
 public class BoardUIElementRotator implements BoardUIElementReader {
     private final BoardUIElementReader reader;

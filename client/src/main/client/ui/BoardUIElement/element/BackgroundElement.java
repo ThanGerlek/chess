@@ -1,4 +1,4 @@
-package client.ui.element;
+package client.ui.BoardUIElement.element;
 
 import client.ui.EscapeSequences;
 
