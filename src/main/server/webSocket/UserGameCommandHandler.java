@@ -1,8 +1,11 @@
 package server.webSocket;
 
+import chess.ChessGame;
 import dataAccess.*;
 import http.ChessSerializer;
+import model.Game;
 import org.eclipse.jetty.websocket.api.Session;
+import webSocketMessages.serverMessages.LoadGameServerMessage;
 import webSocketMessages.userCommands.*;
 
 public class UserGameCommandHandler {
@@ -24,10 +27,25 @@ public class UserGameCommandHandler {
         System.out.printf("JOIN_OBSERVER | gameID: %d%n", gameCommand.getGameID());
     }
 
-    public void parseAsJoinPlayer(Session session, String message) {
+    public void parseAsJoinPlayer(Session session, String message) throws DataAccessException {
         JoinPlayerGameCommand gameCommand = ChessSerializer.gson().fromJson(message, JoinPlayerGameCommand.class);
         System.out.printf("JOIN_PLAYER | gameID: %d, color: %s%n", gameCommand.getGameID(),
                 gameCommand.getPlayerColor().name());
+
+        requireValidAuthString(gameCommand);
+
+        String username = authDAO.getUsername(gameCommand.getAuthString());
+        int gameID = gameCommand.getGameID();
+        PlayerRole role = gameCommand.getPlayerColor() == ChessGame.TeamColor.WHITE
+                ? PlayerRole.WHITE_PLAYER
+                : PlayerRole.BLACK_PLAYER;
+
+        gameDAO.assignPlayerRole(gameID, username, role);
+        sessionManager.addUser(gameID, username, session);
+
+        Game game = gameDAO.findGame(gameID);
+        LoadGameServerMessage reply = new LoadGameServerMessage(game);
+        sessionManager.message(gameID, username, reply);
     }
 
     public void parseAsMakeMove(Session session, String message) {
