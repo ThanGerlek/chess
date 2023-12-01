@@ -6,6 +6,7 @@ import http.ChessSerializer;
 import model.Game;
 import org.eclipse.jetty.websocket.api.Session;
 import webSocketMessages.serverMessages.LoadGameServerMessage;
+import webSocketMessages.serverMessages.NotificationServerMessage;
 import webSocketMessages.userCommands.*;
 
 public class UserGameCommandHandler {
@@ -44,8 +45,13 @@ public class UserGameCommandHandler {
         sessionManager.addUser(gameID, username, session);
 
         Game game = gameDAO.findGame(gameID);
-        LoadGameServerMessage reply = new LoadGameServerMessage(game);
-        sessionManager.message(gameID, username, reply);
+        LoadGameServerMessage loadGameMsg = new LoadGameServerMessage(game);
+        sessionManager.message(gameID, username, loadGameMsg);
+
+        String roleString = PlayerRole.roleToString(role);
+        String notifyStr = String.format("User %s has joined the game as %s", username, roleString);
+        NotificationServerMessage notifyMsg = new NotificationServerMessage(notifyStr);
+        sessionManager.broadcast(gameID, username, notifyMsg);
     }
 
     public void parseAsMakeMove(Session session, String message) {
