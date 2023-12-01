@@ -1,8 +1,6 @@
 package server.webSocket;
 
-import dataAccess.AuthDAO;
-import dataAccess.GameDAO;
-import dataAccess.UserDAO;
+import dataAccess.*;
 import http.ChessSerializer;
 import org.eclipse.jetty.websocket.api.Session;
 import webSocketMessages.userCommands.*;
@@ -47,5 +45,11 @@ public class UserGameCommandHandler {
     public void parseAsResign(Session session, String message) {
         ResignGameCommand gameCommand = ChessSerializer.gson().fromJson(message, ResignGameCommand.class);
         System.out.printf("RESIGN | gameID: %d%n", gameCommand.getGameID());
+    }
+
+    private void requireValidAuthString(UserGameCommand gameCommand) throws DataAccessException {
+        if (!authDAO.isValidAuthToken(gameCommand.getAuthString())) {
+            throw new UnauthorizedAccessException("Invalid token provided");
+        }
     }
 }
