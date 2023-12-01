@@ -15,6 +15,8 @@ import client.websocket.NotificationHandler;
 import client.websocket.WebSocketClient;
 import http.AuthResponse;
 import http.GameListItem;
+import webSocketMessages.userCommands.JoinObserverGameCommand;
+import webSocketMessages.userCommands.JoinPlayerGameCommand;
 import webSocketMessages.userCommands.LeaveGameCommand;
 import webSocketMessages.userCommands.UserGameCommand;
 
@@ -173,10 +175,22 @@ public class ChessClient {
             try {
                 GameJoiner joiner = new GameJoiner(ui, serverFacade, sessionData, games);
                 joiner.joinGame(asSpectator);
-                sessionData.setAuthRole(AuthorizationRole.OBSERVER);
-                drawBoard();
-            } catch (CommandCancelException ignored) {
+            } catch (CommandCancelException e) {
+                return;
             }
+
+            ws.openConnection(notificationHandler);
+
+            String authToken = sessionData.getAuthTokenString();
+            int gameID = sessionData.getGameID();
+            UserGameCommand gameCommand;
+            if (asSpectator) {
+                gameCommand = new JoinObserverGameCommand(authToken, gameID);
+            } else {
+                gameCommand = new JoinPlayerGameCommand(authToken, gameID, sessionData.getPlayerColor());
+            }
+
+            ws.send(gameCommand);
         }
     }
 
