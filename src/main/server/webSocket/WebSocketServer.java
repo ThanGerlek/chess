@@ -1,5 +1,8 @@
 package server.webSocket;
 
+import dataAccess.AuthDAO;
+import dataAccess.GameDAO;
+import dataAccess.UserDAO;
 import http.ChessSerializer;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
@@ -12,6 +15,15 @@ import java.io.IOException;
 
 @WebSocket
 public class WebSocketServer {
+    private final AuthDAO authDAO;
+    private final GameDAO gameDAO;
+    private final UserDAO userDAO;
+
+    public WebSocketServer(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO) {
+        this.authDAO = authDAO;
+        this.gameDAO = gameDAO;
+        this.userDAO = userDAO;
+    }
 
     @OnWebSocketMessage
     public void onMessage(Session session, String message) {

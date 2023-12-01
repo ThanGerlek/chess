@@ -43,7 +43,7 @@ public class Server {
         logoutHandler = new LogoutHandler(authDAO);
         registerHandler = new RegisterHandler(authDAO, userDAO);
 
-        webSocketServer = new WebSocketServer();
+        webSocketServer = new WebSocketServer(authDAO, gameDAO, userDAO);
     }
 
     public static void main(String[] args) throws DataAccessException {
