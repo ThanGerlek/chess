@@ -17,11 +17,14 @@ public class GameSessionManager {
         this.wsServer = wsServer;
     }
 
-    public void createGame(int gameID) {
-        gameSessions.put(gameID, new ConcurrentHashMap<>());
+    public void createGameIfNeeded(int gameID) {
+        if (!gameSessions.containsKey(gameID)) {
+            gameSessions.put(gameID, new ConcurrentHashMap<>());
+        }
     }
 
     public void addUser(int gameID, String username, Session session) throws DataAccessException {
+        createGameIfNeeded(gameID);
         var gameSession = gameSessions.get(gameID);
         if (gameSession == null) {
             throw new DataAccessException("Tried to add user to a GameSession that doesn't exist");
