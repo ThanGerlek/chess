@@ -15,10 +15,7 @@ import client.websocket.NotificationHandler;
 import client.websocket.WebSocketClient;
 import http.AuthResponse;
 import http.GameListItem;
-import webSocketMessages.userCommands.JoinObserverGameCommand;
-import webSocketMessages.userCommands.JoinPlayerGameCommand;
-import webSocketMessages.userCommands.LeaveGameCommand;
-import webSocketMessages.userCommands.UserGameCommand;
+import webSocketMessages.userCommands.*;
 
 import java.util.ArrayList;
 
@@ -116,7 +113,6 @@ public class ChessClient {
     public void logout() throws FailedConnectionException, FailedResponseException {
         serverFacade.logout(sessionData.getAuthTokenString());
         sessionData.clearUserData();
-
     }
 
     public void createGame() throws FailedConnectionException, FailedResponseException {
@@ -195,16 +191,26 @@ public class ChessClient {
         }
     }
 
-    public void leaveGame() {
-        // TODO
+    public void leaveGame() throws FailedConnectionException {
+        ws.send(new LeaveGameCommand(sessionData.getAuthTokenString(), sessionData.getGameID()));
+        // TODO Race condition?
+//        ws.closeConnection();
+        sessionData.clearGameData();
+        sessionData.setAuthRole(AuthorizationRole.USER);
     }
 
     public void makeMove() {
         // TODO
     }
 
-    public void resign() {
-        // TODO
+    public void resign() throws FailedConnectionException {
+        String input = ui.promptInput(
+                "Are you sure you want to resign? This cannot be undone. Enter 'confirm' if so, or anything else to " +
+                        "cancel: ");
+        if ("confirm".equals(input)) {
+            ws.send(new ResignGameCommand(sessionData.getAuthTokenString(), sessionData.getGameID()));
+            sessionData.setAuthRole(AuthorizationRole.OBSERVER);
+        }
     }
 
     public void highlightMoves() {

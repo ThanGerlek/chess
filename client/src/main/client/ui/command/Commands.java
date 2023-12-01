@@ -25,7 +25,7 @@ public abstract class Commands {
     // OBSERVER or higher
     public static UICommand DRAW = new UICommand("draw", "Redraw the game board", AuthorizationRole.OBSERVER);
     public static UICommand LEAVE =
-            new UICommand("leave", "Leave the current game (does not resign; you can rejoin later)",
+            new UICommand("leave", "Leave the current game",
                     AuthorizationRole.OBSERVER);
 
     // PLAYER
