@@ -18,12 +18,14 @@ public class WebSocketServer {
     private final GameDAO gameDAO;
     private final UserDAO userDAO;
     private final UserGameCommandHandler cmdHandler;
+    private final GameSessionManager sessionManager;
 
     public WebSocketServer(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO) {
         this.authDAO = authDAO;
         this.gameDAO = gameDAO;
         this.userDAO = userDAO;
         this.cmdHandler = new UserGameCommandHandler(authDAO, gameDAO, userDAO);
+        this.sessionManager = new GameSessionManager(this);
     }
 
     @OnWebSocketMessage
@@ -31,11 +33,11 @@ public class WebSocketServer {
         UserGameCommand gameCommand = ChessSerializer.gson().fromJson(message, UserGameCommand.class);
         try {
             switch (gameCommand.getCommandType()) {
-                case JOIN_PLAYER -> cmdHandler.parseAsJoinPlayer(session, message);
-                case JOIN_OBSERVER -> cmdHandler.parseAsJoinObserver(session, message);
-                case MAKE_MOVE -> cmdHandler.parseAsMakeMove(session, message);
-                case LEAVE -> cmdHandler.parseAsLeave(session, message);
-                case RESIGN -> cmdHandler.parseAsResign(session, message);
+                case JOIN_PLAYER -> cmdHandler.parseAsJoinPlayer(sessionManager, message);
+                case JOIN_OBSERVER -> cmdHandler.parseAsJoinObserver(sessionManager, message);
+                case MAKE_MOVE -> cmdHandler.parseAsMakeMove(sessionManager, message);
+                case LEAVE -> cmdHandler.parseAsLeave(sessionManager, message);
+                case RESIGN -> cmdHandler.parseAsResign(sessionManager, message);
             }
         } catch (UnauthorizedAccessException e) {
             sendError(session, "Invalid token. Are you logged in correctly?");
@@ -49,7 +51,7 @@ public class WebSocketServer {
         System.err.println("Server threw uncaught WebSocket error: " + exception.getMessage());
     }
 
-    private void send(Session session, ServerMessage serverMessage) {
+    public void send(Session session, ServerMessage serverMessage) {
         String messageJson = ChessSerializer.gson().toJson(serverMessage);
         try {
             session.getRemote().sendString(messageJson);
@@ -58,7 +60,7 @@ public class WebSocketServer {
         }
     }
 
-    private void sendError(Session session, String errMsg) {
+    public void sendError(Session session, String errMsg) {
         System.err.println("Server threw error while parsing UserGameCommand: " + errMsg);
         send(session, new ErrorServerMessage(errMsg));
     }
