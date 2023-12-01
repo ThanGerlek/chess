@@ -9,7 +9,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.*;
+import webSocketMessages.userCommands.UserGameCommand;
 
 import java.io.IOException;
 
@@ -18,22 +18,24 @@ public class WebSocketServer {
     private final AuthDAO authDAO;
     private final GameDAO gameDAO;
     private final UserDAO userDAO;
+    private final UserGameCommandHandler cmdHandler;
 
     public WebSocketServer(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO) {
         this.authDAO = authDAO;
         this.gameDAO = gameDAO;
         this.userDAO = userDAO;
+        this.cmdHandler = new UserGameCommandHandler(authDAO, gameDAO, userDAO);
     }
 
     @OnWebSocketMessage
     public void onMessage(Session session, String message) {
         UserGameCommand gameCommand = ChessSerializer.gson().fromJson(message, UserGameCommand.class);
         switch (gameCommand.getCommandType()) {
-            case JOIN_PLAYER -> parseAsJoinPlayer(session, message);
-            case JOIN_OBSERVER -> parseAsJoinObserver(session, message);
-            case MAKE_MOVE -> parseAsMakeMove(session, message);
-            case LEAVE -> parseAsLeave(session, message);
-            case RESIGN -> parseAsResign(session, message);
+            case JOIN_PLAYER -> cmdHandler.parseAsJoinPlayer(session, message);
+            case JOIN_OBSERVER -> cmdHandler.parseAsJoinObserver(session, message);
+            case MAKE_MOVE -> cmdHandler.parseAsMakeMove(session, message);
+            case LEAVE -> cmdHandler.parseAsLeave(session, message);
+            case RESIGN -> cmdHandler.parseAsResign(session, message);
         }
     }
 
@@ -51,36 +53,4 @@ public class WebSocketServer {
         }
     }
 
-    private void parseAsJoinObserver(Session session, String message) {
-        JoinObserverGameCommand gameCommand = ChessSerializer.gson().fromJson(message, JoinObserverGameCommand.class);
-
-        System.out.printf("JOIN_OBSERVER | gameID: %d%n", gameCommand.getGameID());
-    }
-
-    private void parseAsJoinPlayer(Session session, String message) {
-        JoinPlayerGameCommand gameCommand = ChessSerializer.gson().fromJson(message, JoinPlayerGameCommand.class);
-
-        System.out.printf("JOIN_PLAYER | gameID: %d, color: %s%n", gameCommand.getGameID(),
-                gameCommand.getPlayerColor().name());
-    }
-
-    private void parseAsMakeMove(Session session, String message) {
-        MakeMoveGameCommand gameCommand = ChessSerializer.gson().fromJson(message, MakeMoveGameCommand.class);
-
-        System.out.printf("MAKE_MOVE | gameID: %d, move: %d.%d to %d.%d%n", gameCommand.getGameID(),
-                gameCommand.getMove().getStartPosition().getRow(), gameCommand.getMove().getStartPosition().getColumn(),
-                gameCommand.getMove().getEndPosition().getRow(), gameCommand.getMove().getEndPosition().getColumn());
-    }
-
-    private void parseAsLeave(Session session, String message) {
-        LeaveGameCommand gameCommand = ChessSerializer.gson().fromJson(message, LeaveGameCommand.class);
-
-        System.out.printf("LEAVE | gameID: %d%n", gameCommand.getGameID());
-    }
-
-    private void parseAsResign(Session session, String message) {
-        ResignGameCommand gameCommand = ChessSerializer.gson().fromJson(message, ResignGameCommand.class);
-
-        System.out.printf("RESIGN | gameID: %d%n", gameCommand.getGameID());
-    }
 }
