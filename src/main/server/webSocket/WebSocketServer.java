@@ -18,11 +18,11 @@ public class WebSocketServer {
     public void onMessage(Session session, String message) {
         UserGameCommand gameCommand = ChessSerializer.gson().fromJson(message, UserGameCommand.class);
         switch (gameCommand.getCommandType()) {
-            case JOIN_PLAYER -> parseAsJoinPlayer(message);
-            case JOIN_OBSERVER -> parseAsJoinObserver(message);
-            case MAKE_MOVE -> parseAsMakeMove(message);
-            case LEAVE -> parseAsLeave(message);
-            case RESIGN -> parseAsResign(message);
+            case JOIN_PLAYER -> parseAsJoinPlayer(session, message);
+            case JOIN_OBSERVER -> parseAsJoinObserver(session, message);
+            case MAKE_MOVE -> parseAsMakeMove(session, message);
+            case LEAVE -> parseAsLeave(session, message);
+            case RESIGN -> parseAsResign(session, message);
         }
 
         ServerMessage serverMessage = new NotificationServerMessage(
@@ -44,20 +44,20 @@ public class WebSocketServer {
         }
     }
 
-    private void parseAsJoinObserver(String message) {
+    private void parseAsJoinObserver(Session session, String message) {
         JoinObserverGameCommand gameCommand = ChessSerializer.gson().fromJson(message, JoinObserverGameCommand.class);
 
         System.out.printf("JOIN_OBSERVER | gameID: %d", gameCommand.getGameID());
     }
 
-    private void parseAsJoinPlayer(String message) {
+    private void parseAsJoinPlayer(Session session, String message) {
         JoinPlayerGameCommand gameCommand = ChessSerializer.gson().fromJson(message, JoinPlayerGameCommand.class);
 
         System.out.printf("JOIN_PLAYER | gameID: %d, color: %s", gameCommand.getGameID(),
                 gameCommand.getPlayerColor().name());
     }
 
-    private void parseAsMakeMove(String message) {
+    private void parseAsMakeMove(Session session, String message) {
         MakeMoveGameCommand gameCommand = ChessSerializer.gson().fromJson(message, MakeMoveGameCommand.class);
 
         System.out.printf("MAKE_MOVE | gameID: %d, move: %d.%d to %d.%d", gameCommand.getGameID(),
@@ -65,13 +65,13 @@ public class WebSocketServer {
                 gameCommand.getMove().getEndPosition().getRow(), gameCommand.getMove().getEndPosition().getColumn());
     }
 
-    private void parseAsLeave(String message) {
+    private void parseAsLeave(Session session, String message) {
         LeaveGameCommand gameCommand = ChessSerializer.gson().fromJson(message, LeaveGameCommand.class);
 
         System.out.printf("LEAVE | gameID: %d", gameCommand.getGameID());
     }
 
-    private void parseAsResign(String message) {
+    private void parseAsResign(Session session, String message) {
         ResignGameCommand gameCommand = ChessSerializer.gson().fromJson(message, ResignGameCommand.class);
 
         System.out.printf("RESIGN | gameID: %d", gameCommand.getGameID());
