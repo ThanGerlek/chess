@@ -40,9 +40,9 @@ public class WebSocketServer {
                 case RESIGN -> cmdHandler.parseAsResign(sessionManager, message);
             }
         } catch (UnauthorizedAccessException e) {
-            sendError(session, "Invalid token. Are you logged in correctly?");
+            sendError(session, e, "Invalid token. Are you logged in correctly?");
         } catch (DataAccessException e) {
-            sendError(session, "Sorry, there's an unknown problem. Please try again.");
+            sendError(session, e, "Sorry, there's an unknown problem. Please try again.");
         }
     }
 
@@ -60,8 +60,14 @@ public class WebSocketServer {
         }
     }
 
+    public void sendError(Session session, Throwable e, String errMsg) {
+        System.err.println("Server sent an error while parsing UserGameCommand: '" + errMsg + "'\n\tOriginal error: " +
+                e.getMessage());
+        send(session, new ErrorServerMessage(errMsg));
+    }
+
     public void sendError(Session session, String errMsg) {
-        System.err.println("Server threw error while parsing UserGameCommand: " + errMsg);
+        System.err.println("Server sent an error while parsing UserGameCommand: " + errMsg);
         send(session, new ErrorServerMessage(errMsg));
     }
 
