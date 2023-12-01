@@ -4,15 +4,16 @@ import chess.*;
 import client.httpConnection.FailedConnectionException;
 import client.ui.ConsoleUI;
 import client.websocket.WebSocketClient;
+import model.Game;
 import webSocketMessages.userCommands.MakeMoveGameCommand;
 
 public class MoveMaker {
     private final ConsoleUI ui;
     private final WebSocketClient wsClient;
     private final SessionData sessionData;
-    private final ChessGame game;
+    private final Game game;
 
-    public MoveMaker(ConsoleUI ui, WebSocketClient wsClient, SessionData sessionData, ChessGame game) {
+    public MoveMaker(ConsoleUI ui, WebSocketClient wsClient, SessionData sessionData, Game game) {
         this.ui = ui;
         this.wsClient = wsClient;
         this.sessionData = sessionData;
@@ -29,7 +30,7 @@ public class MoveMaker {
 
         ChessMove move = new ChessMoveImpl(startPosition, endPosition, promotionPiece);
 
-        if (game.validMoves(startPosition).contains(move)) {
+        if (game.chessGame().validMoves(startPosition).contains(move)) {
             wsClient.send(new MakeMoveGameCommand(sessionData.getAuthTokenString(), sessionData.getGameID(), move));
         }
     }

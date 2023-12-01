@@ -1,9 +1,9 @@
 package client.websocket;
 
-import chess.ChessGame;
 import client.ChessClient;
 import client.ui.ConsoleUI;
 import http.ChessSerializer;
+import model.Game;
 import webSocketMessages.serverMessages.ErrorServerMessage;
 import webSocketMessages.serverMessages.LoadGameServerMessage;
 import webSocketMessages.serverMessages.NotificationServerMessage;
@@ -64,7 +64,7 @@ public class ServerMessageHandler {
 
         ui.println("LoadGameServerMessage | ChessGame");
 
-        ChessGame game = loadGameMessage.getGame();
+        Game game = loadGameMessage.getGame();
         client.drawBoard();
     }
 }
