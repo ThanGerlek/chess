@@ -85,7 +85,8 @@ public class ChessClient {
         }
     }
 
-    public void quit() {
+    public void quit() throws FailedConnectionException {
+        ws.closeConnection();
         ui.println("Goodbye!");
     }
 

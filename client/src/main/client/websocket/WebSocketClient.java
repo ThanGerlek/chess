@@ -33,6 +33,14 @@ public class WebSocketClient extends Endpoint {
         }
     }
 
+    public void closeConnection() throws FailedConnectionException {
+        try {
+            this.session.close();
+        } catch (IOException e) {
+            throw new FailedConnectionException("Threw an error while closing WebSocket connection: " + e.getMessage());
+        }
+    }
+
     private void addMessageHandler() {
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             @Override
