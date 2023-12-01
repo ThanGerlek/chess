@@ -41,6 +41,10 @@ public class WebSocketServer {
             }
         } catch (UnauthorizedAccessException e) {
             sendError(session, e, "Invalid token. Are you logged in correctly?");
+        } catch (BadRequestException e) {
+            sendError(session, e, "Bad request. Did you enter everything correctly?");
+        } catch (NoSuchItemException e) {
+            sendError(session, e, "Not found. Did you enter everything correctly?");
         } catch (DataAccessException e) {
             sendError(session, e, "Sorry, there's an unknown problem. Please try again.");
         }
