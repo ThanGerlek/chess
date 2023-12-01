@@ -52,4 +52,12 @@ public class GameSessionManager {
             }
         }
     }
+
+    public void broadcastAll(int gameID, ServerMessage message) {
+        var gameSession = gameSessions.get(gameID);
+        for (String username : gameSession.keySet()) {
+            Session session = gameSession.get(username);
+            wsServer.send(session, message);
+        }
+    }
 }
