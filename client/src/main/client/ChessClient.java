@@ -27,6 +27,7 @@ public class ChessClient {
     private final ChessServerFacade serverFacade;
     private final WebSocketClient ws;
     private final SessionData sessionData;
+    private ChessGame chessGame;
 
     public ChessClient(String serverURL, ConsoleUI ui, NotificationHandler notificationHandler) {
         this.notificationHandler = notificationHandler;
@@ -46,6 +47,10 @@ public class ChessClient {
 
     public void rejectAuthorization() {
         ui.println("Woah! You're not allowed to do that right now. Try logging in first.");
+    }
+
+    public void setCurrentGame(ChessGame game) {
+        this.chessGame = game;
     }
 
     public void test() throws FailedConnectionException {
@@ -199,8 +204,13 @@ public class ChessClient {
         sessionData.setAuthRole(AuthorizationRole.USER);
     }
 
-    public void makeMove() {
-        // TODO
+    public void makeMove() throws FailedConnectionException {
+        try {
+            MoveMaker moveMaker = new MoveMaker(ui, ws, sessionData, chessGame);
+            moveMaker.makeMove();
+        } catch (CommandCancelException ignored) {
+            return;
+        }
     }
 
     public void resign() throws FailedConnectionException {
