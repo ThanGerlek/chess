@@ -20,7 +20,6 @@ public class ServerMessageHandler {
 
     public void handleMessage(String message) {
         ServerMessage serverMessage = ChessSerializer.gson().fromJson(message, ServerMessage.class);
-        ui.println("Received serverMessage of type " + serverMessage.getServerMessageType().name());
         switch (serverMessage.getServerMessageType()) {
             case NOTIFICATION -> parseAsNotification(message);
             case ERROR -> parseAsError(message);
@@ -32,7 +31,6 @@ public class ServerMessageHandler {
 
     private void parseAsNotification(String message) {
         // TODO
-        ui.println("ServerMessageHandler.parseAsNotification()");
 
         NotificationServerMessage notification =
                 ChessSerializer.gson().fromJson(message, NotificationServerMessage.class);
