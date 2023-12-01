@@ -24,8 +24,8 @@ public class WebSocketServer {
         this.authDAO = authDAO;
         this.gameDAO = gameDAO;
         this.userDAO = userDAO;
-        this.cmdHandler = new UserGameCommandHandler(authDAO, gameDAO, userDAO);
         this.sessionManager = new GameSessionManager(this);
+        this.cmdHandler = new UserGameCommandHandler(authDAO, gameDAO, userDAO, sessionManager);
     }
 
     @OnWebSocketMessage
@@ -33,11 +33,11 @@ public class WebSocketServer {
         UserGameCommand gameCommand = ChessSerializer.gson().fromJson(message, UserGameCommand.class);
         try {
             switch (gameCommand.getCommandType()) {
-                case JOIN_PLAYER -> cmdHandler.parseAsJoinPlayer(sessionManager, message);
-                case JOIN_OBSERVER -> cmdHandler.parseAsJoinObserver(sessionManager, message);
-                case MAKE_MOVE -> cmdHandler.parseAsMakeMove(sessionManager, message);
-                case LEAVE -> cmdHandler.parseAsLeave(sessionManager, message);
-                case RESIGN -> cmdHandler.parseAsResign(sessionManager, message);
+                case JOIN_PLAYER -> cmdHandler.parseAsJoinPlayer(session, message);
+                case JOIN_OBSERVER -> cmdHandler.parseAsJoinObserver(session, message);
+                case MAKE_MOVE -> cmdHandler.parseAsMakeMove(session, message);
+                case LEAVE -> cmdHandler.parseAsLeave(session, message);
+                case RESIGN -> cmdHandler.parseAsResign(session, message);
             }
         } catch (UnauthorizedAccessException e) {
             sendError(session, e, "Invalid token. Are you logged in correctly?");
