@@ -6,7 +6,6 @@ import model.Game;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A DAO (Data Access Object) for CRUD operations on Games currently being played.
@@ -90,13 +89,13 @@ public class MemoryGameDAO implements GameDAO {
         // TODO style: neaten this up using game.hasRole()
         Game game = gameDatabase.get(gameID);
         if (PlayerRole.WHITE_PLAYER.equals(role)) {
-            if (!Objects.equals(game.whiteUsername(), "")) {
+            if (!game.whiteUsername().isEmpty() && !game.whiteUsername().equals(username)) {
                 throw new ValueAlreadyTakenException("Role already taken.");
             } else {
                 game.setWhiteUsername(username);
             }
         } else if (PlayerRole.BLACK_PLAYER.equals(role)) {
-            if (!Objects.equals(game.blackUsername(), "")) {
+            if (!game.blackUsername().isEmpty() && !game.blackUsername().equals(username)) {
                 throw new ValueAlreadyTakenException("Role already taken.");
             } else {
                 game.setBlackUsername(username);

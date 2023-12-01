@@ -221,6 +221,16 @@ class GameDAOTest {
         Assertions.assertEquals("user2", gameDAO.findGame(1).blackUsername());
     }
 
+    // assignPlayerRole positive test
+    @Test
+    void assignPlayerRole_same_color_twice_then_get_white_username_matches() throws DataAccessException {
+        gameDAO.insertNewGame(game1);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.WHITE_PLAYER);
+        gameDAO.assignPlayerRole(1, "user1", PlayerRole.WHITE_PLAYER);
+
+        Assertions.assertEquals("user1", gameDAO.findGame(1).whiteUsername());
+    }
+
     @Test
     void assignPlayerRoleSpectator_adds_player_to_spectators_list() throws DataAccessException {
         gameDAO.insertNewGame(game1);

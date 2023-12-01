@@ -74,6 +74,15 @@ class JoinGameServiceTest extends ServiceTest {
     }
 
     @Test
+    void join_Game_with_same_color_twice_returns_okay() throws DataAccessException {
+        service.joinGame(requestW, token1.authToken());
+
+        MessageResponse response = service.joinGame(requestW, token1.authToken());
+
+        Assertions.assertEquals("Okay!", response.message());
+    }
+
+    @Test
     void join_Game_with_invalid_token_errors() throws DataAccessException {
         Assertions.assertThrows(UnauthorizedAccessException.class, () -> service.joinGame(requestW, "iAmIncorrect"));
     }

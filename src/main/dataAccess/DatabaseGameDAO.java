@@ -141,7 +141,7 @@ public class DatabaseGameDAO implements GameDAO {
         if (role == null) role = PlayerRole.SPECTATOR;
 
         Game game = findGame(gameID);
-        if (isRoleTaken(game, role)) {
+        if (isRoleTakenForUser(game, username, role)) {
             String msg = String.format("Failed to assign player role %s, that role is already taken", role);
             throw new ValueAlreadyTakenException(msg);
         }
@@ -161,15 +161,17 @@ public class DatabaseGameDAO implements GameDAO {
         }
     }
 
-    private boolean isRoleTaken(Game game, PlayerRole role) {
+    private boolean isRoleTakenForUser(Game game, String username, PlayerRole role) {
         if (PlayerRole.WHITE_PLAYER.equals(role)) {
-            return game.whiteUsername() != null && !game.whiteUsername().isEmpty();
+            return game.whiteUsername() != null && !game.whiteUsername().isEmpty() &&
+                    !game.whiteUsername().equals(username);
         } else if (PlayerRole.BLACK_PLAYER.equals(role)) {
-            return game.blackUsername() != null && !game.blackUsername().isEmpty();
+            return game.blackUsername() != null && !game.blackUsername().isEmpty() &&
+                    !game.blackUsername().equals(username);
         } else if (PlayerRole.SPECTATOR.equals(role)) {
             return false;
         } else {
-            throw new IllegalArgumentException("Called isRoleTaken() with an unrecognized role type");
+            throw new IllegalArgumentException("Called isRoleTakenForUser() with an unrecognized role type");
         }
     }
 
