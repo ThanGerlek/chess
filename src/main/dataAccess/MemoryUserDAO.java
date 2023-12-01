@@ -40,7 +40,7 @@ public class MemoryUserDAO implements UserDAO {
                 return user;
             }
         }
-        throw new UnauthorizedAccessException("User not found");
+        throw new NoSuchItemException("User not found");
     }
 
     /**
