@@ -51,6 +51,6 @@ public class ServerMessageHandler {
         ui.println("ServerMessageHandler.loadGame()");
 
         ChessGame game = loadGameMessage.getGame();
-        client.drawBoard(game.getBoard());
+        client.drawBoard();
     }
 }
