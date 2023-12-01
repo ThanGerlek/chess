@@ -9,7 +9,7 @@ import server.services.ClearApplicationService;
 import spark.Request;
 import spark.Response;
 
-public class ClearApplicationHandler extends Handler {
+public class ClearApplicationHandler extends HttpHandler {
     private final ClearApplicationService service;
 
     public ClearApplicationHandler(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO) {

@@ -7,7 +7,7 @@ import server.services.LogoutService;
 import spark.Request;
 import spark.Response;
 
-public class LogoutHandler extends Handler {
+public class LogoutHandler extends HttpHandler {
     private final LogoutService service;
 
     public LogoutHandler(AuthDAO authDAO) {

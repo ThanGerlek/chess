@@ -9,7 +9,7 @@ import server.services.JoinGameService;
 import spark.Request;
 import spark.Response;
 
-public class JoinGameHandler extends Handler {
+public class JoinGameHandler extends HttpHandler {
     private final JoinGameService service;
 
     public JoinGameHandler(AuthDAO authDAO, GameDAO gameDAO) {

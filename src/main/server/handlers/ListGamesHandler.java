@@ -8,7 +8,7 @@ import server.services.ListGamesService;
 import spark.Request;
 import spark.Response;
 
-public class ListGamesHandler extends Handler {
+public class ListGamesHandler extends HttpHandler {
     private final ListGamesService service;
 
     public ListGamesHandler(AuthDAO authDAO, GameDAO gameDAO) {

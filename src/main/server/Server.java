@@ -136,7 +136,7 @@ public class Server {
         String msg = String.format("[ERROR] Unknown server error: %s", e.getMessage());
         System.out.println(msg);
         MessageResponse response = new MessageResponse(msg);
-        return Handler.parseToBody(res, response, 500);
+        return HttpHandler.parseToBody(res, response, 500);
     }
 
 }

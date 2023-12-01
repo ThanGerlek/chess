@@ -6,7 +6,7 @@ import http.MessageResponse;
 import spark.Request;
 import spark.Response;
 
-public abstract class Handler {
+public abstract class HttpHandler {
     protected Gson gson = new Gson();
 
     public Object handleRequest(Request req, Response res) {

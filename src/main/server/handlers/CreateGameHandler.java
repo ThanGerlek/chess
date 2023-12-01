@@ -9,7 +9,7 @@ import server.services.CreateGameService;
 import spark.Request;
 import spark.Response;
 
-public class CreateGameHandler extends Handler {
+public class CreateGameHandler extends HttpHandler {
     private final CreateGameService service;
 
     public CreateGameHandler(AuthDAO authDAO, GameDAO gameDAO) {

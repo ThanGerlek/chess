@@ -9,7 +9,7 @@ import server.services.RegisterService;
 import spark.Request;
 import spark.Response;
 
-public class RegisterHandler extends Handler {
+public class RegisterHandler extends HttpHandler {
     private final RegisterService service;
 
     public RegisterHandler(AuthDAO authDAO, UserDAO userDAO) {

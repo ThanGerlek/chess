@@ -9,7 +9,7 @@ import server.services.LoginService;
 import spark.Request;
 import spark.Response;
 
-public class LoginHandler extends Handler {
+public class LoginHandler extends HttpHandler {
     private final LoginService service;
 
     public LoginHandler(AuthDAO authDAO, UserDAO userDAO) {
