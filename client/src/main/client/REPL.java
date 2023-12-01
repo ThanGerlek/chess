@@ -7,7 +7,6 @@ import client.ui.command.Command;
 import client.ui.command.Commands;
 import client.websocket.NotificationHandler;
 import client.websocket.ServerMessageHandler;
-import webSocketMessages.serverMessages.ServerMessage;
 
 import java.util.Scanner;
 
@@ -117,7 +116,7 @@ public class REPL implements NotificationHandler {
     }
 
     @Override
-    public void notify(ServerMessage serverMessage) {
-        serverMessageHandler.handleMessage(serverMessage);
+    public void notify(String message) {
+        serverMessageHandler.handleMessage(message);
     }
 }

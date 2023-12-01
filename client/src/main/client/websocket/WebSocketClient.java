@@ -3,7 +3,6 @@ package client.websocket;
 import client.httpConnection.FailedConnectionException;
 import http.ChessSerializer;
 import jakarta.websocket.*;
-import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.UserGameCommand;
 
 import java.io.IOException;
@@ -38,8 +37,7 @@ public class WebSocketClient extends Endpoint {
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             @Override
             public void onMessage(String s) {
-                ServerMessage serverMessage = ChessSerializer.gson().fromJson(s, ServerMessage.class);
-                notificationHandler.notify(serverMessage);
+                notificationHandler.notify(s);
             }
         });
     }

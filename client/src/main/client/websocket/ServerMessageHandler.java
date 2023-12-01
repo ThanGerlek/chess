@@ -3,7 +3,7 @@ package client.websocket;
 import chess.ChessGame;
 import client.ChessClient;
 import client.ui.ConsoleUI;
-import client.ui.EscapeSequences;
+import http.ChessSerializer;
 import webSocketMessages.serverMessages.ErrorServerMessage;
 import webSocketMessages.serverMessages.LoadGameServerMessage;
 import webSocketMessages.serverMessages.NotificationServerMessage;
@@ -18,37 +18,53 @@ public class ServerMessageHandler {
         this.client = client;
     }
 
-    public void handleMessage(ServerMessage serverMessage) {
+    public void handleMessage(String message) {
+        ServerMessage serverMessage = ChessSerializer.gson().fromJson(message, ServerMessage.class);
         ui.println("Received serverMessage of type " + serverMessage.getServerMessageType().name());
         switch (serverMessage.getServerMessageType()) {
-            case NOTIFICATION -> displayNotification((NotificationServerMessage) serverMessage);
-            case ERROR -> displayError((ErrorServerMessage) serverMessage);
-            case LOAD_GAME -> loadGame((LoadGameServerMessage) serverMessage);
+            case NOTIFICATION -> parseAsNotification(message);
+            case ERROR -> parseAsError(message);
+            case LOAD_GAME -> parseAsLoadGame(message);
+            default -> ui.println("Problem: " + serverMessage.getServerMessageType().name() +
+                    " wasn't recognized as a valid message type");
         }
     }
 
-    private void displayNotification(NotificationServerMessage notification) {
+    private void parseAsNotification(String message) {
         // TODO
-        ui.println("ServerMessageHandler.displayNotification()");
+        ui.println("ServerMessageHandler.parseAsNotification()");
 
-        String format = EscapeSequences.SET_TEXT_ITALIC;
-        String reset = EscapeSequences.RESET_TEXT_ITALIC;
-        ui.println(format + notification.getMessage() + reset);
+        NotificationServerMessage notification =
+                ChessSerializer.gson().fromJson(message, NotificationServerMessage.class);
+
+        ui.println("NotificationServerMessage | " + notification.getMessage());
+
+//        String format = EscapeSequences.SET_TEXT_ITALIC;
+//        String reset = EscapeSequences.RESET_TEXT_ITALIC;
+//        ui.println(format + notification.getMessage() + reset);
     }
 
-    private void displayError(ErrorServerMessage error) {
+    private void parseAsError(String message) {
         // TODO
-        ui.println("ServerMessageHandler.displayError()");
+        ui.println("ServerMessageHandler.parseAsError()");
 
-        String format = EscapeSequences.SET_TEXT_ITALIC + EscapeSequences.SET_TEXT_COLOR_RED;
-        String reset =
-                EscapeSequences.RESET_TEXT_ITALIC + EscapeSequences.RESET_TEXT_AND_BG; // TODO don't reset background?
-        ui.println(format + error.getErrorMessage() + reset);
+        ErrorServerMessage errorMessage = ChessSerializer.gson().fromJson(message, ErrorServerMessage.class);
+
+        ui.println("ErrorServerMessage | " + errorMessage.getErrorMessage());
+
+//        String format = EscapeSequences.SET_TEXT_ITALIC + EscapeSequences.SET_TEXT_COLOR_RED;
+//        String reset =
+//                EscapeSequences.RESET_TEXT_ITALIC + EscapeSequences.RESET_TEXT_AND_BG; // TODO don't reset background?
+//        ui.println(format + errorMessage.getErrorMessage() + reset);
     }
 
-    private void loadGame(LoadGameServerMessage loadGameMessage) {
+    private void parseAsLoadGame(String message) {
         // TODO
-        ui.println("ServerMessageHandler.loadGame()");
+        ui.println("ServerMessageHandler.parseAsLoadGame()");
+
+        LoadGameServerMessage loadGameMessage = ChessSerializer.gson().fromJson(message, LoadGameServerMessage.class);
+
+        ui.println("LoadGameServerMessage | ChessGame");
 
         ChessGame game = loadGameMessage.getGame();
         client.drawBoard();
