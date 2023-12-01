@@ -12,15 +12,15 @@ import java.util.ArrayList;
 public class GameJoiner {
     private final ConsoleUI ui;
     private final ChessServerFacade serverFacade;
+    private final SessionData sessionData;
     private final ArrayList<GameListItem> games;
-    private final String authTokenString;
 
-    public GameJoiner(ConsoleUI ui, ChessServerFacade serverFacade, ArrayList<GameListItem> games,
-            String authTokenString) {
+    public GameJoiner(ConsoleUI ui, ChessServerFacade serverFacade, SessionData sessionData,
+            ArrayList<GameListItem> games) {
         this.ui = ui;
         this.serverFacade = serverFacade;
+        this.sessionData = sessionData;
         this.games = games;
-        this.authTokenString = authTokenString;
     }
 
     public void joinGame(boolean asSpectator)
@@ -28,7 +28,11 @@ public class GameJoiner {
         ui.println("Enter the number for the game you would like to play.");
         int gameID = selectGame();
         ChessGame.TeamColor color = asSpectator ? null : selectColor();
-        serverFacade.joinGame(color, gameID, authTokenString);
+
+        serverFacade.joinGame(color, gameID, sessionData.getAuthTokenString());
+
+        sessionData.setGameData(gameID, color);
+        sessionData.setAuthRole(asSpectator ? AuthorizationRole.OBSERVER : AuthorizationRole.PLAYER);
     }
 
     private int selectGame() throws CommandCancelException {

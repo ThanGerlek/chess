@@ -171,7 +171,7 @@ public class ChessClient {
         ArrayList<GameListItem> games = listGames();
         if (games != null) {
             try {
-                GameJoiner joiner = new GameJoiner(ui, serverFacade, games, sessionData.getAuthTokenString());
+                GameJoiner joiner = new GameJoiner(ui, serverFacade, sessionData, games);
                 joiner.joinGame(asSpectator);
                 sessionData.setAuthRole(AuthorizationRole.OBSERVER);
                 drawBoard();
