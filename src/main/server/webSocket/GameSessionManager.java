@@ -2,6 +2,7 @@ package server.webSocket;
 
 import dataAccess.DataAccessException;
 import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.WebSocketException;
 import webSocketMessages.serverMessages.ServerMessage;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,28 +40,40 @@ public class GameSessionManager {
         }
         gameSession.get(username).close();
         gameSession.remove(username);
+        if (gameSession.isEmpty()) {
+            gameSessions.remove(gameID);
+        }
     }
 
-    public void message(int gameID, String username, ServerMessage message) {
-        Session session = gameSessions.get(gameID).get(username);
-        wsServer.send(session, message);
-    }
-
-    public void broadcast(int gameID, String excludedUsername, ServerMessage message) {
+    public void message(int gameID, String username, ServerMessage message) throws DataAccessException {
         var gameSession = gameSessions.get(gameID);
-        for (String username : gameSession.keySet()) {
-            if (!username.equals(excludedUsername)) {
-                Session session = gameSession.get(username);
-                wsServer.send(session, message);
+        Session session = gameSession.get(username);
+        try {
+            wsServer.send(session, message);
+        } catch (WebSocketException e) {
+            if ("Session closed".equals(e.getMessage())) {
+                System.err.println("Tried to send to a closed connection. Removing");
+                removeUser(gameID, username);
+            } else {
+                throw e;
             }
         }
     }
 
-    public void broadcastAll(int gameID, ServerMessage message) {
+    public void broadcast(int gameID, String excludedUsername, ServerMessage message) throws DataAccessException {
         var gameSession = gameSessions.get(gameID);
         for (String username : gameSession.keySet()) {
-            Session session = gameSession.get(username);
-            wsServer.send(session, message);
+            if (!username.equals(excludedUsername)) {
+                Session session = gameSession.get(username);
+                message(gameID, username, message);
+            }
+        }
+    }
+
+    public void broadcastAll(int gameID, ServerMessage message) throws DataAccessException {
+        var gameSession = gameSessions.get(gameID);
+        for (String username : gameSession.keySet()) {
+            message(gameID, username, message);
         }
     }
 
