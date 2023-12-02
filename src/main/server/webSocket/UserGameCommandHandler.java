@@ -9,6 +9,8 @@ import webSocketMessages.serverMessages.LoadGameServerMessage;
 import webSocketMessages.serverMessages.NotificationServerMessage;
 import webSocketMessages.userCommands.*;
 
+import java.util.Objects;
+
 public class UserGameCommandHandler {
     private final AuthDAO authDAO;
     private final GameDAO gameDAO;
@@ -38,16 +40,27 @@ public class UserGameCommandHandler {
 
         String username = authDAO.getUsername(gameCommand.getAuthString());
         int gameID = gameCommand.getGameID();
-        PlayerRole role = gameCommand.getPlayerColor() == ChessGame.TeamColor.WHITE
-                ? PlayerRole.WHITE_PLAYER
-                : PlayerRole.BLACK_PLAYER;
+        Game game = gameDAO.findGame(gameID);
 
-        gameDAO.assignPlayerRole(gameID, username, role);
+        PlayerRole role;
+        String assignedUsername;
+        if (gameCommand.getPlayerColor() == ChessGame.TeamColor.WHITE) {
+            role = PlayerRole.WHITE_PLAYER;
+            assignedUsername = game.whiteUsername();
+        } else {
+            role = PlayerRole.BLACK_PLAYER;
+            assignedUsername = game.blackUsername();
+        }
+
+        if (!Objects.equals(username, assignedUsername)) {
+            wsServer.sendError(session, "Sorry, that role is already taken.");
+            return;
+        }
+
         sessionManager.addUser(gameID, username, session);
 
-        Game game = gameDAO.findGame(gameID);
         LoadGameServerMessage loadGameMsg = new LoadGameServerMessage(game);
-        sessionManager.message(gameID, username, loadGameMsg);
+        wsServer.send(session, loadGameMsg);
 
         String roleString = PlayerRole.roleToString(role);
         String notifyStr = String.format("User %s has joined the game as %s", username, roleString);
