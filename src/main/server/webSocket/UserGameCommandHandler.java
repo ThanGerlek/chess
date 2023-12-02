@@ -14,13 +14,14 @@ public class UserGameCommandHandler {
     private final GameDAO gameDAO;
     private final UserDAO userDAO;
     private final GameSessionManager sessionManager;
+    private final WebSocketServer wsServer;
 
-    public UserGameCommandHandler(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO,
-            GameSessionManager sessionManager) {
+    public UserGameCommandHandler(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO, WebSocketServer wsServer) {
         this.authDAO = authDAO;
         this.gameDAO = gameDAO;
         this.userDAO = userDAO;
-        this.sessionManager = sessionManager;
+        this.sessionManager = new GameSessionManager(wsServer);
+        this.wsServer = wsServer;
     }
 
     public void parseAsJoinObserver(Session session, String message) {

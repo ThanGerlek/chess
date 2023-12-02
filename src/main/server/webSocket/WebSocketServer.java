@@ -14,18 +14,10 @@ import java.io.IOException;
 
 @WebSocket
 public class WebSocketServer {
-    private final AuthDAO authDAO;
-    private final GameDAO gameDAO;
-    private final UserDAO userDAO;
     private final UserGameCommandHandler cmdHandler;
-    private final GameSessionManager sessionManager;
 
     public WebSocketServer(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO) {
-        this.authDAO = authDAO;
-        this.gameDAO = gameDAO;
-        this.userDAO = userDAO;
-        this.sessionManager = new GameSessionManager(this);
-        this.cmdHandler = new UserGameCommandHandler(authDAO, gameDAO, userDAO, sessionManager);
+        this.cmdHandler = new UserGameCommandHandler(authDAO, gameDAO, userDAO, this);
     }
 
     @OnWebSocketMessage
