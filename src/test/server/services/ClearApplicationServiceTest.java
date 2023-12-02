@@ -18,7 +18,7 @@ class ClearApplicationServiceTest extends ServiceTest {
     @BeforeEach
     void setUp() {
         initDAOs();
-        service = new ClearApplicationService(authDAO, gameDAO, userDAO);
+        service = new ClearApplicationService(authDAO, gameDAO, userDAO, null);
     }
 
     // Positive test

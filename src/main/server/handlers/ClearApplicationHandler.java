@@ -6,14 +6,16 @@ import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import http.MessageResponse;
 import server.services.ClearApplicationService;
+import server.webSocket.GameSessionManager;
 import spark.Request;
 import spark.Response;
 
 public class ClearApplicationHandler extends HttpHandler {
     private final ClearApplicationService service;
 
-    public ClearApplicationHandler(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO) {
-        service = new ClearApplicationService(authDAO, gameDAO, userDAO);
+    public ClearApplicationHandler(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO,
+            GameSessionManager sessionManager) {
+        service = new ClearApplicationService(authDAO, gameDAO, userDAO, sessionManager);
     }
 
     @Override

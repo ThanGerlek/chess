@@ -5,6 +5,7 @@ import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import http.MessageResponse;
+import server.webSocket.GameSessionManager;
 
 /**
  * Provides the Clear Application service, which performs a hard reset of the database, erasing all users, games, and
@@ -14,11 +15,14 @@ public class ClearApplicationService {
     private final AuthDAO authDAO;
     private final GameDAO gameDAO;
     private final UserDAO userDAO;
+    private final GameSessionManager sessionManager;
 
-    public ClearApplicationService(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO) {
+    public ClearApplicationService(AuthDAO authDAO, GameDAO gameDAO, UserDAO userDAO,
+            GameSessionManager sessionManager) {
         this.authDAO = authDAO;
         this.gameDAO = gameDAO;
         this.userDAO = userDAO;
+        this.sessionManager = sessionManager;
     }
 
     /**
@@ -31,6 +35,9 @@ public class ClearApplicationService {
         authDAO.clearAuthTokens();
         gameDAO.clearGames();
         userDAO.clearUsers();
+        if (this.sessionManager != null) {
+            sessionManager.clearGameSessions();
+        }
         return new MessageResponse("Okay!");
     }
 }

@@ -63,4 +63,8 @@ public class GameSessionManager {
             wsServer.send(session, message);
         }
     }
+
+    public void clearGameSessions() {
+        gameSessions.clear();
+    }
 }

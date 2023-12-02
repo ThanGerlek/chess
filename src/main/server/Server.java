@@ -3,6 +3,7 @@ package server;
 import dataAccess.*;
 import http.MessageResponse;
 import server.handlers.*;
+import server.webSocket.GameSessionManager;
 import server.webSocket.WebSocketServer;
 import spark.Request;
 import spark.Response;
@@ -35,7 +36,6 @@ public class Server {
         authDAO = new DatabaseAuthDAO(database, userDAO);
         gameDAO = new DatabaseGameDAO(database, userDAO);
 
-        clearApplicationHandler = new ClearApplicationHandler(authDAO, gameDAO, userDAO);
         createGameHandler = new CreateGameHandler(authDAO, gameDAO);
         joinGameHandler = new JoinGameHandler(authDAO, gameDAO);
         listGamesHandler = new ListGamesHandler(authDAO, gameDAO);
@@ -44,6 +44,9 @@ public class Server {
         registerHandler = new RegisterHandler(authDAO, userDAO);
 
         webSocketServer = new WebSocketServer(authDAO, gameDAO, userDAO);
+        GameSessionManager sessionManager = new GameSessionManager(webSocketServer);
+
+        clearApplicationHandler = new ClearApplicationHandler(authDAO, gameDAO, userDAO, sessionManager);
     }
 
     public static void main(String[] args) throws DataAccessException {
