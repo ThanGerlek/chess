@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class ChessGameImpl implements ChessGame {
-
     private ChessBoard board;
     private TeamColor teamTurn;
+    private boolean isGameOver = false;
 
     public ChessGameImpl() {
         board = new ChessBoardImpl();
@@ -36,6 +36,10 @@ public class ChessGameImpl implements ChessGame {
         teamTurn = ChessPieces.not(teamTurn);
     }
 
+    public void resign(TeamColor color) {
+        isGameOver = true;
+    }
+
     /**
      * Gets all valid moves for a piece at the given location.
      *
@@ -45,6 +49,7 @@ public class ChessGameImpl implements ChessGame {
     @Override
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         Collection<ChessMove> validMoves = new HashSet<>();
+        if (isGameOver) return validMoves;
 
         ChessPiece piece = board.getPiece(startPosition);
         Collection<ChessMove> potentialMoves = piece.pieceMoves(board, startPosition);
@@ -87,12 +92,23 @@ public class ChessGameImpl implements ChessGame {
             throw new InvalidMoveException("Called makeMove() on an invalid move");
         }
 
+        if (isGameOver) {
+            throw new InvalidMoveException("Called makeMove() after the game is over");
+        }
+
         board.forceApplyMove(move);
 
         ChessPiece piece = board.getPiece(move.getEndPosition());
         piece.markAsHavingMoved();
         promoteIfValid(move.getEndPosition(), move.getPromotionPiece());
         changeTeamTurn();
+        updateGameOver();
+    }
+
+    private void updateGameOver() {
+        if (isInCheckmate(TeamColor.WHITE) || isInCheckmate(TeamColor.BLACK)) {
+            isGameOver = true;
+        }
     }
 
     private void promoteIfValid(ChessPosition position, ChessPiece.PieceType promotionPiece)
