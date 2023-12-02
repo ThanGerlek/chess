@@ -26,9 +26,24 @@ public class UserGameCommandHandler {
         this.wsServer = wsServer;
     }
 
-    public void parseAsJoinObserver(Session session, String message) {
+    public void parseAsJoinObserver(Session session, String message) throws DataAccessException {
         JoinObserverGameCommand gameCommand = ChessSerializer.gson().fromJson(message, JoinObserverGameCommand.class);
         System.out.printf("JOIN_OBSERVER | gameID: %d%n", gameCommand.getGameID());
+
+        requireValidAuthString(gameCommand);
+
+        String username = authDAO.getUsername(gameCommand.getAuthString());
+        int gameID = gameCommand.getGameID();
+        Game game = gameDAO.findGame(gameID);
+
+        sessionManager.addUser(gameID, username, session);
+
+        LoadGameServerMessage loadGameMsg = new LoadGameServerMessage(game);
+        wsServer.send(session, loadGameMsg);
+
+        String notifyStr = String.format("User %s has joined the game as an observer", username);
+        NotificationServerMessage notifyMsg = new NotificationServerMessage(notifyStr);
+        sessionManager.broadcast(gameID, username, notifyMsg);
     }
 
     public void parseAsJoinPlayer(Session session, String message) throws DataAccessException {
