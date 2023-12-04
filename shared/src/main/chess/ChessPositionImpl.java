@@ -2,6 +2,8 @@ package chess;
 
 public class ChessPositionImpl implements ChessPosition {
 
+    private final String type = "ChessPositionImpl";
+
     private final int row;
     private final int col;
 
