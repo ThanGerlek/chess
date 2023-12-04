@@ -90,9 +90,14 @@ public class UserGameCommandHandler {
                 gameCommand.getMove().getEndPosition().getRow(), gameCommand.getMove().getEndPosition().getColumn());
     }
 
-    public void parseAsLeave(Session session, String message) {
+    public void parseAsLeave(Session session, String message) throws DataAccessException {
         LeaveGameCommand gameCommand = ChessSerializer.gson().fromJson(message, LeaveGameCommand.class);
         System.out.printf("LEAVE | gameID: %d%n", gameCommand.getGameID());
+
+        String username = authDAO.getUsername(gameCommand.getAuthString());
+        String msg = String.format("User %s left the game", username);
+        sessionManager.removeUser(gameCommand.getGameID(), username);
+        sessionManager.broadcast(gameCommand.getGameID(), username, new NotificationServerMessage(msg));
     }
 
     public void parseAsResign(Session session, String message) {
