@@ -1,6 +1,7 @@
 package server.webSocket;
 
 import chess.ChessGame;
+import chess.ChessGameImpl;
 import chess.ChessMove;
 import chess.InvalidMoveException;
 import dataAccess.*;
@@ -128,9 +129,26 @@ public class UserGameCommandHandler {
         sessionManager.broadcast(gameCommand.getGameID(), username, new NotificationServerMessage(msg));
     }
 
-    public void parseAsResign(Session session, String message) {
+    public void parseAsResign(Session session, String message) throws DataAccessException {
         ResignGameCommand gameCommand = ChessSerializer.gson().fromJson(message, ResignGameCommand.class);
         System.out.printf("RESIGN | gameID: %d%n", gameCommand.getGameID());
+
+        requireValidAuthString(gameCommand);
+
+        ChessGame.TeamColor playerColor = requireColor(gameCommand.getAuthString(), gameCommand.getGameID());
+        if (playerColor == null) {
+            wsServer.sendError(session, "Only active players can resign.");
+            return;
+        }
+
+        Game game = gameDAO.findGame(gameCommand.getGameID());
+        ChessGame chessGame = game.chessGame();
+        ((ChessGameImpl) chessGame).resign(playerColor); // TODO Why do I need to cast?
+
+        String username = authDAO.getUsername(gameCommand.getAuthString());
+        String msg = String.format("User %s (%s) has resigned the game.", username, playerColor.name());
+        NotificationServerMessage serverMessage = new NotificationServerMessage(msg);
+        sessionManager.broadcastAll(gameCommand.getGameID(), serverMessage);
     }
 
     private void requireValidAuthString(UserGameCommand gameCommand) throws DataAccessException {
