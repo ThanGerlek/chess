@@ -58,12 +58,12 @@ public class UserGameCommandHandler {
         String username = authDAO.getUsername(authString);
         Game game = gameDAO.findGame(gameID);
         ArrayList<String> observers = game.getSpectators();
-        if (!Objects.equals(username, game.blackUsername())
-                && !Objects.equals(username, game.whiteUsername())
-                && !observers.contains(username)) {
-            throw new BadRequestException("Call to requireUserInGame() failed to find a role for the given username");
+        if (!Objects.equals(username, game.blackUsername()) && !Objects.equals(username, game.whiteUsername()) &&
+                !observers.contains(username)) {
+            String msg = String.format("Call to requireUserInGame() failed to find a role for user '%s' in game %d",
+                    username, gameID);
+            throw new BadRequestException(msg);
         }
-
     }
 
     public void parseAsJoinPlayer(Session session, String message) throws DataAccessException {
@@ -143,7 +143,7 @@ public class UserGameCommandHandler {
         } else if (Objects.equals(username, game.blackUsername())) {
             playerColor = ChessGame.TeamColor.BLACK;
         } else {
-            throw new BadRequestException("Called requireColor() when user was an observer");
+            throw new BadRequestException("Called requireColor() when user '" + username + "' was an observer");
         }
         return playerColor;
     }
@@ -153,7 +153,9 @@ public class UserGameCommandHandler {
         ChessGame chessGame = game.chessGame();
         WinState winState = ((ChessGameImpl) chessGame).getWinState(); // TODO Why do I need to cast?
         if (winState != WinState.IN_PROGRESS) {
-            throw new BadRequestException("Called requireUnfinishedGame() when winState was " + winState.name());
+            String msg = String.format("Called requireUnfinishedGame() when winState of game %d was %s", gameID,
+                    winState.name());
+            throw new BadRequestException(msg);
         }
     }
 
