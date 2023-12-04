@@ -37,6 +37,7 @@ public class UserGameCommandHandler {
         int gameID = gameCommand.getGameID();
         Game game = gameDAO.findGame(gameID);
 
+        gameDAO.assignPlayerRole(gameID, username, PlayerRole.SPECTATOR);
         sessionManager.addUser(gameID, username, session);
 
         LoadGameServerMessage loadGameMsg = new LoadGameServerMessage(game);
@@ -92,6 +93,7 @@ public class UserGameCommandHandler {
         }
 
         sessionManager.addUser(gameID, username, session);
+        gameDAO.assignPlayerRole(gameID, username, role);
 
         LoadGameServerMessage loadGameMsg = new LoadGameServerMessage(game);
         wsServer.send(session, loadGameMsg);
@@ -184,6 +186,7 @@ public class UserGameCommandHandler {
         Game game = gameDAO.findGame(gameCommand.getGameID());
         ChessGame chessGame = game.chessGame();
         ((ChessGameImpl) chessGame).resign(playerColor); // TODO Why do I need to cast?
+        gameDAO.updateGameState(game);
 
         String username = authDAO.getUsername(gameCommand.getAuthString());
         String msg = String.format("User %s (%s) has resigned the game.", username, playerColor.name());
