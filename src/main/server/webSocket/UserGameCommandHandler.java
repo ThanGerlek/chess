@@ -1,9 +1,6 @@
 package server.webSocket;
 
-import chess.ChessGame;
-import chess.ChessGameImpl;
-import chess.ChessMove;
-import chess.InvalidMoveException;
+import chess.*;
 import dataAccess.*;
 import http.ChessSerializer;
 import model.Game;
@@ -12,6 +9,7 @@ import webSocketMessages.serverMessages.LoadGameServerMessage;
 import webSocketMessages.serverMessages.NotificationServerMessage;
 import webSocketMessages.userCommands.*;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class UserGameCommandHandler {
@@ -53,6 +51,18 @@ public class UserGameCommandHandler {
         if (!authDAO.isValidAuthToken(gameCommand.getAuthString())) {
             throw new UnauthorizedAccessException("Invalid token provided");
         }
+    }
+
+    private void requireHasRoleInGame(String authString, int gameID) throws DataAccessException {
+        String username = authDAO.getUsername(authString);
+        Game game = gameDAO.findGame(gameID);
+        ArrayList<String> observers = game.getSpectators();
+        if (!Objects.equals(username, game.blackUsername())
+                && !Objects.equals(username, game.whiteUsername())
+                && !observers.contains(username)) {
+            throw new BadRequestException("Call to requireUserInGame() failed to find a role for the given username");
+        }
+
     }
 
     public void parseAsJoinPlayer(Session session, String message) throws DataAccessException {
@@ -99,12 +109,8 @@ public class UserGameCommandHandler {
                 gameCommand.getMove().getEndPosition().getRow(), gameCommand.getMove().getEndPosition().getColumn());
 
         requireValidAuthString(gameCommand);
-
+        requireUnfinishedGame(gameCommand.getGameID());
         ChessGame.TeamColor playerColor = requireColor(gameCommand.getAuthString(), gameCommand.getGameID());
-        if (playerColor == null) {
-            wsServer.sendError(session, "Only active players can make moves.");
-            return;
-        }
 
         Game game = gameDAO.findGame(gameCommand.getGameID());
         ChessGame chessGame = game.chessGame();
@@ -135,14 +141,26 @@ public class UserGameCommandHandler {
         } else if (Objects.equals(username, game.blackUsername())) {
             playerColor = ChessGame.TeamColor.BLACK;
         } else {
-            return null;
+            throw new BadRequestException("Called requireColor() when user was an observer");
         }
         return playerColor;
+    }
+
+    private void requireUnfinishedGame(int gameID) throws DataAccessException {
+        Game game = gameDAO.findGame(gameID);
+        ChessGame chessGame = game.chessGame();
+        WinState winState = ((ChessGameImpl) chessGame).getWinState(); // TODO Why do I need to cast?
+        if (winState != WinState.IN_PROGRESS) {
+            throw new BadRequestException("Called requireUnfinishedGame() when winState was " + winState.name());
+        }
     }
 
     public void parseAsLeave(Session session, String message) throws DataAccessException {
         LeaveGameCommand gameCommand = ChessSerializer.gson().fromJson(message, LeaveGameCommand.class);
         System.out.printf("LEAVE | gameID: %d%n", gameCommand.getGameID());
+
+        requireValidAuthString(gameCommand);
+        requireHasRoleInGame(gameCommand.getAuthString(), gameCommand.getGameID());
 
         String username = authDAO.getUsername(gameCommand.getAuthString());
         String msg = String.format("User %s left the game", username);
@@ -155,6 +173,7 @@ public class UserGameCommandHandler {
         System.out.printf("RESIGN | gameID: %d%n", gameCommand.getGameID());
 
         requireValidAuthString(gameCommand);
+        requireUnfinishedGame(gameCommand.getGameID());
 
         ChessGame.TeamColor playerColor = requireColor(gameCommand.getAuthString(), gameCommand.getGameID());
         if (playerColor == null) {
