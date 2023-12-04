@@ -20,6 +20,10 @@ public interface ChessGame {
      */
     void setTeamTurn(TeamColor team);
 
+    void resign(TeamColor color);
+
+    WinState getWinState();
+
     /**
      * Gets a valid moves for a piece at the given location
      *

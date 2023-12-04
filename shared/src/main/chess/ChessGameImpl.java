@@ -6,7 +6,7 @@ import java.util.HashSet;
 public class ChessGameImpl implements ChessGame {
     private ChessBoard board;
     private TeamColor teamTurn;
-    private boolean isGameOver = false;
+    private WinState winState = WinState.IN_PROGRESS;
 
     public ChessGameImpl() {
         board = new ChessBoardImpl();
@@ -20,6 +20,11 @@ public class ChessGameImpl implements ChessGame {
     @Override
     public TeamColor getTeamTurn() {
         return teamTurn;
+    }
+
+    @Override
+    public WinState getWinState() {
+        return winState;
     }
 
     /**
@@ -36,8 +41,9 @@ public class ChessGameImpl implements ChessGame {
         teamTurn = ChessPieces.not(teamTurn);
     }
 
+    @Override
     public void resign(TeamColor color) {
-        isGameOver = true;
+        winState = (color == TeamColor.BLACK) ? WinState.WHITE_WIN : WinState.BLACK_WIN;
     }
 
     /**
@@ -49,7 +55,7 @@ public class ChessGameImpl implements ChessGame {
     @Override
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         Collection<ChessMove> validMoves = new HashSet<>();
-        if (isGameOver) return validMoves;
+        if (winState != WinState.IN_PROGRESS) return validMoves;
 
         ChessPiece piece = board.getPiece(startPosition);
         Collection<ChessMove> potentialMoves = piece.pieceMoves(board, startPosition);
@@ -92,7 +98,7 @@ public class ChessGameImpl implements ChessGame {
             throw new InvalidMoveException("Called makeMove() on an invalid move");
         }
 
-        if (isGameOver) {
+        if (winState != WinState.IN_PROGRESS) {
             throw new InvalidMoveException("Called makeMove() after the game is over");
         }
 
@@ -106,8 +112,10 @@ public class ChessGameImpl implements ChessGame {
     }
 
     private void updateGameOver() {
-        if (isInCheckmate(TeamColor.WHITE) || isInCheckmate(TeamColor.BLACK)) {
-            isGameOver = true;
+        if (isInCheckmate(TeamColor.WHITE)) {
+            winState = WinState.BLACK_WIN;
+        } else if (isInCheckmate(TeamColor.BLACK)) {
+            winState = WinState.WHITE_WIN;
         }
     }
 
@@ -124,8 +132,7 @@ public class ChessGameImpl implements ChessGame {
                 board.removePiece(position);
                 board.addPiece(position, newPiece);
             } else {
-                throw new InvalidMoveException("Tried to promote to an invalid type: "
-                        + promotionPiece);
+                throw new InvalidMoveException("Tried to promote to an invalid type: " + promotionPiece);
             }
         }
     }
@@ -189,8 +196,7 @@ public class ChessGameImpl implements ChessGame {
     @Override
     public boolean isInStalemate(TeamColor teamColor) {
         for (ChessPosition position : board.getTeamPieces(teamColor))
-            if (!validMoves(position).isEmpty())
-                return false;
+            if (!validMoves(position).isEmpty()) return false;
 
         return true;
     }
