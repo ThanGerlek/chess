@@ -93,19 +93,13 @@ public class UserGameCommandHandler {
 
         requireValidAuthString(gameCommand);
 
-        String username = authDAO.getUsername(gameCommand.getAuthString());
-        Game game = gameDAO.findGame(gameCommand.getGameID());
-
-        ChessGame.TeamColor playerColor;
-        if (Objects.equals(username, game.whiteUsername())) {
-            playerColor = ChessGame.TeamColor.WHITE;
-        } else if (Objects.equals(username, game.blackUsername())) {
-            playerColor = ChessGame.TeamColor.BLACK;
-        } else {
+        ChessGame.TeamColor playerColor = requireColor(gameCommand.getAuthString(), gameCommand.getGameID());
+        if (playerColor == null) {
             wsServer.sendError(session, "Only active players can make moves.");
             return;
         }
 
+        Game game = gameDAO.findGame(gameCommand.getGameID());
         ChessGame chessGame = game.chessGame();
         if (!playerColor.equals(chessGame.getTeamTurn())) {
             wsServer.sendError(session, "It's the other player's turn right now.");
@@ -143,5 +137,21 @@ public class UserGameCommandHandler {
         if (!authDAO.isValidAuthToken(gameCommand.getAuthString())) {
             throw new UnauthorizedAccessException("Invalid token provided");
         }
+    }
+
+    private ChessGame.TeamColor requireColor(String authString, int gameID)
+            throws DataAccessException {
+        String username = authDAO.getUsername(authString);
+        Game game = gameDAO.findGame(gameID);
+
+        ChessGame.TeamColor playerColor;
+        if (Objects.equals(username, game.whiteUsername())) {
+            playerColor = ChessGame.TeamColor.WHITE;
+        } else if (Objects.equals(username, game.blackUsername())) {
+            playerColor = ChessGame.TeamColor.BLACK;
+        } else {
+            return null;
+        }
+        return playerColor;
     }
 }
