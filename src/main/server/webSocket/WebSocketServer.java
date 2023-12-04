@@ -42,9 +42,10 @@ public class WebSocketServer {
         }
     }
 
-    @OnWebSocketError
-    public void onWebSocketError(Session session, Throwable exception) {
-        System.err.println("Server threw uncaught WebSocket error: " + exception.getMessage());
+    public void sendError(Session session, Throwable e, String errMsg) {
+        System.err.println("Server sent an error while parsing UserGameCommand: '" + errMsg + "'\n\tOriginal error: " +
+                e.getMessage());
+        send(session, new ErrorServerMessage(errMsg));
     }
 
     public void send(Session session, ServerMessage serverMessage) {
@@ -56,10 +57,9 @@ public class WebSocketServer {
         }
     }
 
-    public void sendError(Session session, Throwable e, String errMsg) {
-        System.err.println("Server sent an error while parsing UserGameCommand: '" + errMsg + "'\n\tOriginal error: " +
-                e.getMessage());
-        send(session, new ErrorServerMessage(errMsg));
+    @OnWebSocketError
+    public void onWebSocketError(Session session, Throwable exception) {
+        System.err.println("Server threw uncaught WebSocket error: " + exception.getMessage());
     }
 
     public void sendError(Session session, String errMsg) {

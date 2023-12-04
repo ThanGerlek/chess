@@ -39,11 +39,6 @@ public class REPL implements NotificationHandler {
         return Commands.parse(input);
     }
 
-    private String getCommandPrompt() {
-        // TODO pretty-ify
-        return String.format("[%s] >>> ", getStatus());
-    }
-
     public void runCommand(Command cmd) throws FailedConnectionException, FailedResponseException {
         if (!client.isAuthorizedToRun(cmd)) {
             client.rejectAuthorization();
@@ -90,18 +85,23 @@ public class REPL implements NotificationHandler {
         }
     }
 
+    private void printError(Exception e) {
+        // TODO. Better logging
+        System.err.println(e.getMessage());
+        ui.println("[ERR] " + e.getMessage());
+    }
+
+    private String getCommandPrompt() {
+        // TODO pretty-ify
+        return String.format("[%s] >>> ", getStatus());
+    }
+
     private void askForCommandInput() {
         ui.println("Please enter a command. Type 'help' to see available commands.");
     }
 
     private void rejectInput() {
         ui.println("Unrecognized command. Type 'help' to see available commands.");
-    }
-
-    private void printError(Exception e) {
-        // TODO. Better logging
-        System.err.println(e.getMessage());
-        ui.println("[ERR] " + e.getMessage());
     }
 
     public String getStatus() {

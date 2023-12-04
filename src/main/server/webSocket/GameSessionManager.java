@@ -18,12 +18,6 @@ public class GameSessionManager {
         this.wsServer = wsServer;
     }
 
-    public void createGameIfNeeded(int gameID) {
-        if (!gameSessions.containsKey(gameID)) {
-            gameSessions.put(gameID, new ConcurrentHashMap<>());
-        }
-    }
-
     public void addUser(int gameID, String username, Session session) throws DataAccessException {
         createGameIfNeeded(gameID);
         var gameSession = gameSessions.get(gameID);
@@ -33,15 +27,19 @@ public class GameSessionManager {
         gameSession.put(username, session);
     }
 
-    public void removeUser(int gameID, String username) throws DataAccessException {
-        var gameSession = gameSessions.get(gameID);
-        if (gameSession == null) {
-            throw new DataAccessException("Tried to add user to a GameSession that doesn't exist");
+    public void createGameIfNeeded(int gameID) {
+        if (!gameSessions.containsKey(gameID)) {
+            gameSessions.put(gameID, new ConcurrentHashMap<>());
         }
-        gameSession.get(username).close();
-        gameSession.remove(username);
-        if (gameSession.isEmpty()) {
-            gameSessions.remove(gameID);
+    }
+
+    public void broadcast(int gameID, String excludedUsername, ServerMessage message) throws DataAccessException {
+        var gameSession = gameSessions.get(gameID);
+        for (String username : gameSession.keySet()) {
+            if (!username.equals(excludedUsername)) {
+                Session session = gameSession.get(username);
+                message(gameID, username, message);
+            }
         }
     }
 
@@ -60,13 +58,15 @@ public class GameSessionManager {
         }
     }
 
-    public void broadcast(int gameID, String excludedUsername, ServerMessage message) throws DataAccessException {
+    public void removeUser(int gameID, String username) throws DataAccessException {
         var gameSession = gameSessions.get(gameID);
-        for (String username : gameSession.keySet()) {
-            if (!username.equals(excludedUsername)) {
-                Session session = gameSession.get(username);
-                message(gameID, username, message);
-            }
+        if (gameSession == null) {
+            throw new DataAccessException("Tried to add user to a GameSession that doesn't exist");
+        }
+        gameSession.get(username).close();
+        gameSession.remove(username);
+        if (gameSession.isEmpty()) {
+            gameSessions.remove(gameID);
         }
     }
 

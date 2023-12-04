@@ -49,6 +49,12 @@ public class UserGameCommandHandler {
         sessionManager.broadcast(gameID, username, notifyMsg);
     }
 
+    private void requireValidAuthString(UserGameCommand gameCommand) throws DataAccessException {
+        if (!authDAO.isValidAuthToken(gameCommand.getAuthString())) {
+            throw new UnauthorizedAccessException("Invalid token provided");
+        }
+    }
+
     public void parseAsJoinPlayer(Session session, String message) throws DataAccessException {
         JoinPlayerGameCommand gameCommand = ChessSerializer.gson().fromJson(message, JoinPlayerGameCommand.class);
         System.out.printf("JOIN_PLAYER | gameID: %d, color: %s%n", gameCommand.getGameID(),
@@ -119,6 +125,21 @@ public class UserGameCommandHandler {
         sessionManager.broadcastAll(gameCommand.getGameID(), serverMessage);
     }
 
+    private ChessGame.TeamColor requireColor(String authString, int gameID) throws DataAccessException {
+        String username = authDAO.getUsername(authString);
+        Game game = gameDAO.findGame(gameID);
+
+        ChessGame.TeamColor playerColor;
+        if (Objects.equals(username, game.whiteUsername())) {
+            playerColor = ChessGame.TeamColor.WHITE;
+        } else if (Objects.equals(username, game.blackUsername())) {
+            playerColor = ChessGame.TeamColor.BLACK;
+        } else {
+            return null;
+        }
+        return playerColor;
+    }
+
     public void parseAsLeave(Session session, String message) throws DataAccessException {
         LeaveGameCommand gameCommand = ChessSerializer.gson().fromJson(message, LeaveGameCommand.class);
         System.out.printf("LEAVE | gameID: %d%n", gameCommand.getGameID());
@@ -149,27 +170,5 @@ public class UserGameCommandHandler {
         String msg = String.format("User %s (%s) has resigned the game.", username, playerColor.name());
         NotificationServerMessage serverMessage = new NotificationServerMessage(msg);
         sessionManager.broadcastAll(gameCommand.getGameID(), serverMessage);
-    }
-
-    private void requireValidAuthString(UserGameCommand gameCommand) throws DataAccessException {
-        if (!authDAO.isValidAuthToken(gameCommand.getAuthString())) {
-            throw new UnauthorizedAccessException("Invalid token provided");
-        }
-    }
-
-    private ChessGame.TeamColor requireColor(String authString, int gameID)
-            throws DataAccessException {
-        String username = authDAO.getUsername(authString);
-        Game game = gameDAO.findGame(gameID);
-
-        ChessGame.TeamColor playerColor;
-        if (Objects.equals(username, game.whiteUsername())) {
-            playerColor = ChessGame.TeamColor.WHITE;
-        } else if (Objects.equals(username, game.blackUsername())) {
-            playerColor = ChessGame.TeamColor.BLACK;
-        } else {
-            return null;
-        }
-        return playerColor;
     }
 }

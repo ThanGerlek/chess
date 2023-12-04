@@ -10,9 +10,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class WebSocketClient extends Endpoint {
+    private final String serverURL;
     private Session session;
     private NotificationHandler notificationHandler;
-    private final String serverURL;
 
     public WebSocketClient(String serverURL) {
         this.session = null;
@@ -33,12 +33,9 @@ public class WebSocketClient extends Endpoint {
         }
     }
 
-    public void closeConnection() throws FailedConnectionException {
-        try {
-            this.session.close();
-        } catch (IOException e) {
-            throw new FailedConnectionException("Threw an error while closing WebSocket connection: " + e.getMessage());
-        }
+    private URI getURI(String serverURL) throws URISyntaxException {
+        String uriString = serverURL.replace("https", "ws").replace("http", "ws") + "/connect";
+        return new URI(uriString);
     }
 
     private void addMessageHandler() {
@@ -50,9 +47,12 @@ public class WebSocketClient extends Endpoint {
         });
     }
 
-    private URI getURI(String serverURL) throws URISyntaxException {
-        String uriString = serverURL.replace("https", "ws").replace("http", "ws") + "/connect";
-        return new URI(uriString);
+    public void closeConnection() throws FailedConnectionException {
+        try {
+            this.session.close();
+        } catch (IOException e) {
+            throw new FailedConnectionException("Threw an error while closing WebSocket connection: " + e.getMessage());
+        }
     }
 
     public void send(UserGameCommand gameCommand) throws FailedConnectionException {

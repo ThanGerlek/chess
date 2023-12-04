@@ -17,6 +17,10 @@ public class ConsoleUI {
         print(EscapeSequences.RESET_TEXT_AND_BG);
     }
 
+    public void print(String string) {
+        printStream.print(string);
+    }
+
     public void println(String string) {
         printStream.println(string);
     }
@@ -28,10 +32,6 @@ public class ConsoleUI {
     public String promptInput(String prompt) {
         print(prompt);
         return sanitize(scanner.nextLine());
-    }
-
-    public void print(String string) {
-        printStream.print(string);
     }
 
     private String sanitize(String input) {

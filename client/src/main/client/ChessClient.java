@@ -42,10 +42,6 @@ public class ChessClient {
         return sessionData;
     }
 
-    public boolean isAuthorizedToRun(Command cmd) {
-        return cmd.canBeRunBy(sessionData.getAuthRole());
-    }
-
     public void rejectAuthorization() {
         ui.println("Woah! You're not allowed to do that right now. Try logging in first.");
     }
@@ -88,6 +84,15 @@ public class ChessClient {
         }
     }
 
+    public boolean isAuthorizedToRun(Command cmd) {
+        return cmd.canBeRunBy(sessionData.getAuthRole());
+    }
+
+    private String getHelpStringForCommand(UICommand cmd) {
+        return String.format("%s - %s", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
+                SET_TEXT_ITALIC + cmd.getDescription() + RESET_TEXT_ITALIC);
+    }
+
     public void quit() {
         ui.println("Goodbye!");
     }
@@ -125,6 +130,35 @@ public class ChessClient {
         serverFacade.createGame(gameName, sessionData.getAuthTokenString());
     }
 
+    public void joinGame() throws FailedConnectionException, FailedResponseException {
+        joinGame(false);
+    }
+
+    private void joinGame(boolean asSpectator) throws FailedConnectionException, FailedResponseException {
+        ArrayList<GameListItem> games = listGames();
+        if (games != null) {
+            try {
+                GameJoiner joiner = new GameJoiner(ui, serverFacade, sessionData, games);
+                joiner.joinGame(asSpectator);
+            } catch (CommandCancelException e) {
+                return;
+            }
+
+            ws.openConnection(notificationHandler);
+
+            String authToken = sessionData.getAuthTokenString();
+            int gameID = sessionData.getGameID();
+            UserGameCommand gameCommand;
+            if (asSpectator) {
+                gameCommand = new JoinObserverGameCommand(authToken, gameID);
+            } else {
+                gameCommand = new JoinPlayerGameCommand(authToken, gameID, sessionData.getPlayerColor());
+            }
+
+            ws.send(gameCommand);
+        }
+    }
+
     public ArrayList<GameListItem> listGames() throws FailedConnectionException, FailedResponseException {
         ArrayList<GameListItem> games = serverFacade.listGames(sessionData.getAuthTokenString());
         printGameList(games);
@@ -153,10 +187,6 @@ public class ChessClient {
         return (username == null || username.isEmpty()) ? "None" : "'" + username + "'";
     }
 
-    public void joinGame() throws FailedConnectionException, FailedResponseException {
-        joinGame(false);
-    }
-
     public void observeGame() throws FailedConnectionException, FailedResponseException {
         joinGame(true);
     }
@@ -169,31 +199,6 @@ public class ChessClient {
         drawer.draw();
         drawer.setViewerTeamColor(ChessGame.TeamColor.BLACK);
         drawer.draw();
-    }
-
-    private void joinGame(boolean asSpectator) throws FailedConnectionException, FailedResponseException {
-        ArrayList<GameListItem> games = listGames();
-        if (games != null) {
-            try {
-                GameJoiner joiner = new GameJoiner(ui, serverFacade, sessionData, games);
-                joiner.joinGame(asSpectator);
-            } catch (CommandCancelException e) {
-                return;
-            }
-
-            ws.openConnection(notificationHandler);
-
-            String authToken = sessionData.getAuthTokenString();
-            int gameID = sessionData.getGameID();
-            UserGameCommand gameCommand;
-            if (asSpectator) {
-                gameCommand = new JoinObserverGameCommand(authToken, gameID);
-            } else {
-                gameCommand = new JoinPlayerGameCommand(authToken, gameID, sessionData.getPlayerColor());
-            }
-
-            ws.send(gameCommand);
-        }
     }
 
     public void leaveGame() throws FailedConnectionException {
@@ -225,10 +230,5 @@ public class ChessClient {
 
     public void highlightMoves() {
         // TODO
-    }
-
-    private String getHelpStringForCommand(UICommand cmd) {
-        return String.format("%s - %s", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
-                SET_TEXT_ITALIC + cmd.getDescription() + RESET_TEXT_ITALIC);
     }
 }

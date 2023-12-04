@@ -12,14 +12,6 @@ public class ForegroundElement {
         this.str = getStrFromPiece(piece);
     }
 
-    public ForegroundElement(char label) {
-        this.str = " " + label + " ";
-    }
-
-    public ForegroundElement() {
-        this.str = EscapeSequences.EMPTY;
-    }
-
     private String getStrFromPiece(ChessPiece piece) {
         if (piece.getTeamColor() == ChessGame.TeamColor.WHITE) {
             return switch (piece.getPieceType()) {
@@ -40,6 +32,14 @@ public class ForegroundElement {
                 case PAWN -> EscapeSequences.BLACK_PAWN;
             };
         }
+    }
+
+    public ForegroundElement(char label) {
+        this.str = " " + label + " ";
+    }
+
+    public ForegroundElement() {
+        this.str = EscapeSequences.EMPTY;
     }
 
     public void appendTo(StringBuilder builder) {

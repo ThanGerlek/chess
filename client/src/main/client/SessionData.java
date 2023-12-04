@@ -28,14 +28,14 @@ public class SessionData {
         this.authRole = authRole;
     }
 
-    public void setUserData(String authTokenString, String username) {
-        this.authTokenString = authTokenString;
-        this.username = username;
-    }
-
     public void clearUserData() {
         setUserData(null, null);
         this.authRole = AuthorizationRole.GUEST;
+    }
+
+    public void setUserData(String authTokenString, String username) {
+        this.authTokenString = authTokenString;
+        this.username = username;
     }
 
     public String getAuthTokenString() {
@@ -63,6 +63,12 @@ public class SessionData {
         return gameID;
     }
 
+    private void requireInGame() {
+        if (!isInGame) {
+            throw new NullPointerException("Tried to get game data when not in a game");
+        }
+    }
+
     public ChessGame.TeamColor getPlayerColor() {
         requireInGame();
         return playerColor;
@@ -70,11 +76,5 @@ public class SessionData {
 
     public boolean isInGame() {
         return isInGame;
-    }
-
-    private void requireInGame() {
-        if (!isInGame) {
-            throw new NullPointerException("Tried to get game data when not in a game");
-        }
     }
 }

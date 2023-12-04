@@ -22,11 +22,6 @@ public class ChessGameImpl implements ChessGame {
         return teamTurn;
     }
 
-    @Override
-    public WinState getWinState() {
-        return winState;
-    }
-
     /**
      * Sets which team's turn it is.
      *
@@ -37,13 +32,14 @@ public class ChessGameImpl implements ChessGame {
         teamTurn = team;
     }
 
-    public void changeTeamTurn() {
-        teamTurn = ChessPieces.not(teamTurn);
-    }
-
     @Override
     public void resign(TeamColor color) {
         winState = (color == TeamColor.BLACK) ? WinState.WHITE_WIN : WinState.BLACK_WIN;
+    }
+
+    @Override
+    public WinState getWinState() {
+        return winState;
     }
 
     /**
@@ -66,14 +62,6 @@ public class ChessGameImpl implements ChessGame {
         }
 
         return validMoves;
-    }
-
-    private boolean wouldLeaveInCheck(ChessMove move) {
-        TeamColor color = board.getPiece(move.getStartPosition()).getTeamColor();
-        ChessPiece capturedPiece = board.forceApplyMove(move);
-        boolean result = isInCheck(color);
-        board.forceRestoreFromMove(move, capturedPiece);
-        return result;
     }
 
     /**
@@ -109,32 +97,6 @@ public class ChessGameImpl implements ChessGame {
         promoteIfValid(move.getEndPosition(), move.getPromotionPiece());
         changeTeamTurn();
         updateGameOver();
-    }
-
-    private void updateGameOver() {
-        if (isInCheckmate(TeamColor.WHITE)) {
-            winState = WinState.BLACK_WIN;
-        } else if (isInCheckmate(TeamColor.BLACK)) {
-            winState = WinState.WHITE_WIN;
-        }
-    }
-
-    private void promoteIfValid(ChessPosition position, ChessPiece.PieceType promotionPiece)
-            throws InvalidMoveException {
-        if (!board.hasPieceAt(position)) {
-            throw new IllegalArgumentException("Tried to promote an empty space");
-        }
-        ChessPiece piece = board.getPiece(position);
-
-        if (piece.getPieceType() == ChessPiece.PieceType.PAWN && promotionPiece != null) {
-            if (ChessPieces.isValidPromotionPiece(promotionPiece)) {
-                ChessPiece newPiece = ChessPieces.promote(piece, promotionPiece);
-                board.removePiece(position);
-                board.addPiece(position, newPiece);
-            } else {
-                throw new InvalidMoveException("Tried to promote to an invalid type: " + promotionPiece);
-            }
-        }
     }
 
     /**
@@ -177,16 +139,6 @@ public class ChessGameImpl implements ChessGame {
         return true;
     }
 
-    private boolean canEscapeCheckWithPiece(ChessPosition position) {
-        ChessPiece piece = board.getPiece(position);
-        for (ChessMove potentialMove : piece.pieceMoves(board, position)) {
-            if (!wouldLeaveInCheck(potentialMove)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Determines if the given team is in stalemate, which here is defined as having no valid moves.
      *
@@ -199,6 +151,30 @@ public class ChessGameImpl implements ChessGame {
             if (!validMoves(position).isEmpty()) return false;
 
         return true;
+    }
+
+    private boolean wouldLeaveInCheck(ChessMove move) {
+        TeamColor color = board.getPiece(move.getStartPosition()).getTeamColor();
+        ChessPiece capturedPiece = board.forceApplyMove(move);
+        boolean result = isInCheck(color);
+        board.forceRestoreFromMove(move, capturedPiece);
+        return result;
+    }
+
+    private boolean isPositionUnderAttackFrom(ChessPosition position, TeamColor attackColor) {
+        // TODO Implement caching?
+
+        for (ChessPosition attackPosition : board.getTeamPieces(attackColor)) {
+
+            ChessPiece attacker = board.getPiece(attackPosition);
+            Collection<ChessMove> attackerMoves = attacker.pieceMoves(board, attackPosition);
+            ChessMove attackMove = new ChessMoveImpl(attackPosition, position);
+            if (attackerMoves.contains(attackMove)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -221,19 +197,43 @@ public class ChessGameImpl implements ChessGame {
         this.board = board;
     }
 
-    private boolean isPositionUnderAttackFrom(ChessPosition position, TeamColor attackColor) {
-        // TODO Implement caching?
+    public void changeTeamTurn() {
+        teamTurn = ChessPieces.not(teamTurn);
+    }
 
-        for (ChessPosition attackPosition : board.getTeamPieces(attackColor)) {
+    private void updateGameOver() {
+        if (isInCheckmate(TeamColor.WHITE)) {
+            winState = WinState.BLACK_WIN;
+        } else if (isInCheckmate(TeamColor.BLACK)) {
+            winState = WinState.WHITE_WIN;
+        }
+    }
 
-            ChessPiece attacker = board.getPiece(attackPosition);
-            Collection<ChessMove> attackerMoves = attacker.pieceMoves(board, attackPosition);
-            ChessMove attackMove = new ChessMoveImpl(attackPosition, position);
-            if (attackerMoves.contains(attackMove)) {
+    private void promoteIfValid(ChessPosition position, ChessPiece.PieceType promotionPiece)
+            throws InvalidMoveException {
+        if (!board.hasPieceAt(position)) {
+            throw new IllegalArgumentException("Tried to promote an empty space");
+        }
+        ChessPiece piece = board.getPiece(position);
+
+        if (piece.getPieceType() == ChessPiece.PieceType.PAWN && promotionPiece != null) {
+            if (ChessPieces.isValidPromotionPiece(promotionPiece)) {
+                ChessPiece newPiece = ChessPieces.promote(piece, promotionPiece);
+                board.removePiece(position);
+                board.addPiece(position, newPiece);
+            } else {
+                throw new InvalidMoveException("Tried to promote to an invalid type: " + promotionPiece);
+            }
+        }
+    }
+
+    private boolean canEscapeCheckWithPiece(ChessPosition position) {
+        ChessPiece piece = board.getPiece(position);
+        for (ChessMove potentialMove : piece.pieceMoves(board, position)) {
+            if (!wouldLeaveInCheck(potentialMove)) {
                 return true;
             }
         }
-
         return false;
     }
 }

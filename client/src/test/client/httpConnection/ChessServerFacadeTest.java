@@ -12,23 +12,23 @@ import java.util.ArrayList;
 
 class ChessServerFacadeTest {
     private static final String DEFAULT_SERVER_URL = "http://localhost:8080"; // TODO. Pull from config file
+    private static ChessServerFacade facade;
     int nextTestUserID = 0;
     int nextTestGameNameID = 0;
-    private static ChessServerFacade facade;
 
     // TODO More thorough testing
     //  More specific Exception types
+
+    @AfterAll
+    static void tearDown() throws FailedConnectionException, FailedResponseException {
+        facade.clearApplication();
+    }
 
     @BeforeEach
     void setUp() throws FailedConnectionException, FailedResponseException {
         facade = new ChessServerFacade(DEFAULT_SERVER_URL);
         facade.clearApplication();
         // TODO Check for race conditions?
-    }
-
-    @AfterAll
-    static void tearDown() throws FailedConnectionException, FailedResponseException {
-        facade.clearApplication();
     }
 
     @Test
@@ -74,6 +74,11 @@ class ChessServerFacadeTest {
     @Test
     void generateTestGameName_twice_returns_different_gameNames() {
         Assertions.assertNotEquals(generateTestGameName(), generateTestGameName());
+    }
+
+    private String generateTestGameName() {
+        nextTestGameNameID++;
+        return String.format("testGameName_%d", nextTestGameNameID);
     }
 
     @Test
@@ -183,11 +188,6 @@ class ChessServerFacadeTest {
         // TODO Race condition?
         ArrayList<GameListItem> gameList = facade.listGames(authTokenString);
         Assertions.assertTrue(containsGameName(gameList, gameName));
-    }
-
-    private String generateTestGameName() {
-        nextTestGameNameID++;
-        return String.format("testGameName_%d", nextTestGameNameID);
     }
 
     private boolean containsGameName(ArrayList<GameListItem> gameList, String gameName) {
