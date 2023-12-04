@@ -1,6 +1,8 @@
 package server.webSocket;
 
 import chess.ChessGame;
+import chess.ChessMove;
+import chess.InvalidMoveException;
 import dataAccess.*;
 import http.ChessSerializer;
 import model.Game;
@@ -83,11 +85,43 @@ public class UserGameCommandHandler {
         sessionManager.broadcast(gameID, username, notifyMsg);
     }
 
-    public void parseAsMakeMove(Session session, String message) {
+    public void parseAsMakeMove(Session session, String message) throws DataAccessException {
         MakeMoveGameCommand gameCommand = ChessSerializer.gson().fromJson(message, MakeMoveGameCommand.class);
         System.out.printf("MAKE_MOVE | gameID: %d, move: %d.%d to %d.%d%n", gameCommand.getGameID(),
                 gameCommand.getMove().getStartPosition().getRow(), gameCommand.getMove().getStartPosition().getColumn(),
                 gameCommand.getMove().getEndPosition().getRow(), gameCommand.getMove().getEndPosition().getColumn());
+
+        requireValidAuthString(gameCommand);
+
+        String username = authDAO.getUsername(gameCommand.getAuthString());
+        Game game = gameDAO.findGame(gameCommand.getGameID());
+
+        ChessGame.TeamColor playerColor;
+        if (Objects.equals(username, game.whiteUsername())) {
+            playerColor = ChessGame.TeamColor.WHITE;
+        } else if (Objects.equals(username, game.blackUsername())) {
+            playerColor = ChessGame.TeamColor.BLACK;
+        } else {
+            wsServer.sendError(session, "Only active players can make moves.");
+            return;
+        }
+
+        ChessGame chessGame = game.chessGame();
+        if (!playerColor.equals(chessGame.getTeamTurn())) {
+            wsServer.sendError(session, "It's the other player's turn right now.");
+        }
+
+        ChessMove move = gameCommand.getMove();
+        try {
+            chessGame.makeMove(move);
+            gameDAO.updateGameState(game);
+        } catch (InvalidMoveException e) {
+            wsServer.sendError(session, e, "Invalid move.");
+            return;
+        }
+
+        LoadGameServerMessage serverMessage = new LoadGameServerMessage(game);
+        sessionManager.broadcastAll(gameCommand.getGameID(), serverMessage);
     }
 
     public void parseAsLeave(Session session, String message) throws DataAccessException {
