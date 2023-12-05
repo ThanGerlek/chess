@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class ConsoleUI {
     private final Scanner scanner;
     private final PrintStream printStream;
+    private String previousPrompt = "";
 
     public ConsoleUI(Scanner scanner, PrintStream printStream) {
         this.scanner = scanner;
@@ -30,6 +31,7 @@ public class ConsoleUI {
     }
 
     public String promptInput(String prompt) {
+        previousPrompt = prompt;
         print(prompt);
         return sanitize(scanner.nextLine());
     }
@@ -39,6 +41,7 @@ public class ConsoleUI {
     }
 
     public Integer promptMaybeInteger(String prompt) {
+        previousPrompt = prompt;
         print(prompt);
         String raw = sanitize(scanner.nextLine());
         if (raw.isEmpty()) {
@@ -46,5 +49,9 @@ public class ConsoleUI {
         } else {
             return Integer.parseInt(raw);
         }
+    }
+
+    public void reprintPrompt() {
+        print(previousPrompt);
     }
 }
