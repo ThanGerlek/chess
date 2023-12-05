@@ -137,29 +137,40 @@ public class UserGameCommandHandler {
         sessionManager.broadcastAll(gameCommand.getGameID(), loadMessage);
 
         String username = authDAO.getUsername(gameCommand.getAuthString());
-        String msg = getMoveNotificationString(chessGame, username);
+        String msg = getMoveNotificationString(game, username, move);
         NotificationServerMessage notifyMessage = new NotificationServerMessage(msg);
         sessionManager.broadcast(gameCommand.getGameID(), username, notifyMessage);
     }
 
-    private String getMoveNotificationString(ChessGame chessGame, String username) {
-        StringBuilder builder = new StringBuilder(String.format("User %s has made a move.", username));
+    private String getMoveNotificationString(Game game, String username, ChessMove move) {
+        String moveString = String.format("User %s has made move %s", username, move.toString());
+        StringBuilder builder = new StringBuilder(moveString);
+        appendGameInfo(builder, game);
+        return builder.toString();
+    }
+
+    private void appendGameInfo(StringBuilder builder, Game game) {
+        ChessGame chessGame = game.chessGame();
+        String whiteUser = game.whiteUsername();
+        String blackUser = game.blackUsername();
+
+
         if (chessGame.isInCheck(ChessGame.TeamColor.WHITE)) {
-            builder.append(" White is in check.");
+            builder.append(String.format(" White (%s) is in check.", whiteUser));
         } else if (chessGame.isInCheck(ChessGame.TeamColor.BLACK)) {
-            builder.append(" Black is in check.");
+            builder.append(String.format(" Black (%s) is in check.", blackUser));
         }
 
         if (chessGame.isInCheckmate(ChessGame.TeamColor.WHITE)) {
-            builder.append(" White is in checkmate.");
+            builder.append(String.format(" White (%s) is in checkmate.", whiteUser));
         } else if (chessGame.isInCheckmate(ChessGame.TeamColor.BLACK)) {
-            builder.append(" Black is in checkmate.");
+            builder.append(String.format(" Black (%s) is in checkmate.", blackUser));
         }
 
         if (chessGame.isInStalemate(ChessGame.TeamColor.WHITE)) {
-            builder.append(" White is in stalemate.");
+            builder.append(String.format(" White (%s) is in stalemate.", whiteUser));
         } else if (chessGame.isInStalemate(ChessGame.TeamColor.BLACK)) {
-            builder.append(" Black is in stalemate.");
+            builder.append(String.format(" Black (%s) is in stalemate.", blackUser));
         }
 
         if (chessGame.getWinState() == WinState.WHITE_WIN) {
@@ -167,8 +178,6 @@ public class UserGameCommandHandler {
         } else if (chessGame.getWinState() == WinState.BLACK_WIN) {
             builder.append("\nGame over: Black has won!");
         }
-
-        return builder.toString();
     }
 
     private ChessGame.TeamColor requireColor(String authString, int gameID) throws DataAccessException {
