@@ -1,8 +1,5 @@
 package client;
 
-import chess.ChessBoard;
-import chess.ChessBoardImpl;
-import chess.ChessGame;
 import client.httpConnection.ChessServerFacade;
 import client.httpConnection.FailedConnectionException;
 import client.httpConnection.FailedResponseException;
@@ -192,12 +189,8 @@ public class ChessClient {
     }
 
     public void drawBoard() {
-        ChessBoard board = new ChessBoardImpl();
-        board.resetBoard();
-        BoardDrawer drawer = new BoardDrawer(ui, board);
-        drawer.setViewerTeamColor(ChessGame.TeamColor.WHITE);
-        drawer.draw();
-        drawer.setViewerTeamColor(ChessGame.TeamColor.BLACK);
+        BoardDrawer drawer = new BoardDrawer(ui, game.chessGame().getBoard());
+        drawer.setViewerTeamColor(sessionData.getPlayerColor());
         drawer.draw();
     }
 
