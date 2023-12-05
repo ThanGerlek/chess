@@ -136,9 +136,38 @@ public class UserGameCommandHandler {
         sessionManager.broadcastAll(gameCommand.getGameID(), loadMessage);
 
         String username = authDAO.getUsername(gameCommand.getAuthString());
-        String msg = String.format("User %s has made a move.", username);
+        String msg = getMoveNotificationString(chessGame, username);
         NotificationServerMessage notifyMessage = new NotificationServerMessage(msg);
         sessionManager.broadcast(gameCommand.getGameID(), username, notifyMessage);
+    }
+
+    private String getMoveNotificationString(ChessGame chessGame, String username) {
+        StringBuilder builder = new StringBuilder(String.format("User %s has made a move.", username));
+        if (chessGame.isInCheck(ChessGame.TeamColor.WHITE)) {
+            builder.append(" White is in check.");
+        } else if (chessGame.isInCheck(ChessGame.TeamColor.BLACK)) {
+            builder.append(" Black is in check.");
+        }
+
+        if (chessGame.isInCheckmate(ChessGame.TeamColor.WHITE)) {
+            builder.append(" White is in checkmate.");
+        } else if (chessGame.isInCheckmate(ChessGame.TeamColor.BLACK)) {
+            builder.append(" Black is in checkmate.");
+        }
+
+        if (chessGame.isInStalemate(ChessGame.TeamColor.WHITE)) {
+            builder.append(" White is in stalemate.");
+        } else if (chessGame.isInStalemate(ChessGame.TeamColor.WHITE)) {
+            builder.append(" Black is in stalemate.");
+        }
+
+        if (chessGame.getWinState() == WinState.WHITE_WIN) {
+            builder.append("\nGame over: White has won!");
+        } else if (chessGame.getWinState() == WinState.BLACK_WIN) {
+            builder.append("\nGame over: Black has won!");
+        }
+
+        return builder.toString();
     }
 
     private ChessGame.TeamColor requireColor(String authString, int gameID) throws DataAccessException {
