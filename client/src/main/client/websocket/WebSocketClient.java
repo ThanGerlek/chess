@@ -62,6 +62,16 @@ public class WebSocketClient extends Endpoint {
         } catch (IOException e) {
             throw new FailedConnectionException(
                     "Client failed to send WebSocket message with error: " + e.getMessage());
+        } catch (IllegalStateException e) {
+            // Connection may have closed; try again
+            openConnection(notificationHandler);
+            try {
+                session.getBasicRemote().sendText(messageJson);
+            } catch (IOException e2) {
+                throw new FailedConnectionException(
+                        "Client failed to send WebSocket message with IllegalStateException, then with error: " +
+                                e2.getMessage() + "\n\tOriginal error: " + e.getMessage());
+            }
         }
     }
 
