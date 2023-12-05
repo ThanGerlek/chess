@@ -1,9 +1,6 @@
 package chess;
 
 public class ChessMoveImpl implements ChessMove {
-
-    private final String type = "ChessMoveImpl";
-
     private final ChessPosition startPosition;
     private final ChessPosition endPosition;
     private final ChessPiece.PieceType promotionPiece;

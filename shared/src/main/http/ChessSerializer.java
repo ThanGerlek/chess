@@ -4,8 +4,14 @@ import chess.*;
 import chess.pieces.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 public class ChessSerializer {
@@ -19,9 +25,6 @@ public class ChessSerializer {
 
         factories.push(RuntimeTypeAdapterFactory.of(ChessGame.class, "type").registerSubtype(ChessGameImpl.class));
         factories.push(RuntimeTypeAdapterFactory.of(ChessBoard.class, "type").registerSubtype(ChessBoardImpl.class));
-        factories.push(RuntimeTypeAdapterFactory.of(ChessMove.class, "type").registerSubtype(ChessMoveImpl.class));
-        factories.push(
-                RuntimeTypeAdapterFactory.of(ChessPosition.class, "type").registerSubtype(ChessPositionImpl.class));
         factories.push(RuntimeTypeAdapterFactory.of(ChessPiece.class, "pieceType")
                 .registerSubtype(King.class)
                 .registerSubtype(Queen.class)
@@ -34,6 +37,84 @@ public class ChessSerializer {
         for (RuntimeTypeAdapterFactory factory : factories) {
             builder.registerTypeAdapterFactory(factory);
         }
+
+        builder.registerTypeAdapter(ChessMove.class, getChessMoveAdapter());
+        builder.registerTypeAdapter(ChessPosition.class, getChessPositionAdapter());
         return builder;
+    }
+
+    private static TypeAdapter<ChessMove> getChessMoveAdapter() {
+        return new TypeAdapter<>() {
+            @Override
+            public void write(JsonWriter jsonWriter, ChessMove move) throws IOException {
+                jsonWriter.value(toJson(move));
+            }
+
+            @Override
+            public ChessMove read(JsonReader jsonReader) throws IOException {
+                jsonReader.beginObject();
+
+                ChessPosition startPosition = readChessPositionField(jsonReader);
+                ChessPosition endPosition = readChessPositionField(jsonReader);
+
+                if (jsonReader.peek() == JsonToken.END_OBJECT) {
+                    jsonReader.endObject();
+                    return new ChessMoveImpl(startPosition, endPosition);
+                } else {
+                    ChessPiece.PieceType promotionPiece = readPieceTypeField(jsonReader);
+                    jsonReader.endObject();
+                    return new ChessMoveImpl(startPosition, endPosition, promotionPiece);
+                }
+            }
+
+            private static ChessPosition readChessPositionField(JsonReader jsonReader) throws IOException {
+                String positionFieldName = jsonReader.nextName();
+                if (jsonReader.peek() == JsonToken.STRING) {
+                    System.out.println("branch 1");
+                    String posJson = jsonReader.nextString();
+                    return getChessPositionAdapter().fromJson(posJson);
+                } else if (jsonReader.peek() == JsonToken.BEGIN_OBJECT) {
+                    System.out.println("branch 2");
+                    return readChessPosition(jsonReader);
+                } else {
+                    throw new RuntimeException("PROBELM");
+                }
+            }
+
+            private ChessPiece.PieceType readPieceTypeField(JsonReader jsonReader) throws IOException {
+                jsonReader.nextName();
+                String pieceTypeString = jsonReader.nextString();
+                try {
+                    return ChessPiece.PieceType.valueOf(pieceTypeString);
+                } catch (IllegalArgumentException e) {
+                    throw new JsonParseException("Failed to parse unrecognized PieceType: '" + pieceTypeString + "'");
+                }
+            }
+        };
+    }
+
+    private static TypeAdapter<ChessPosition> getChessPositionAdapter() {
+        return new TypeAdapter<>() {
+            @Override
+            public void write(JsonWriter jsonWriter, ChessPosition pos) throws IOException {
+                String json = new Gson().toJson(pos);
+                jsonWriter.value(json);
+            }
+
+            @Override
+            public ChessPosition read(JsonReader jsonReader) throws IOException {
+                return readChessPosition(jsonReader);
+            }
+        };
+    }
+
+    private static ChessPosition readChessPosition(JsonReader jsonReader) throws IOException {
+        jsonReader.beginObject();
+        String rowFieldName = jsonReader.nextName();
+        int row = jsonReader.nextInt();
+        String colFieldName = jsonReader.nextName();
+        int col = jsonReader.nextInt();
+        jsonReader.endObject();
+        return new ChessPositionImpl(row, col);
     }
 }
