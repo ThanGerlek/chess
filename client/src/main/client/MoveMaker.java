@@ -30,9 +30,7 @@ public class MoveMaker {
 
         ChessMove move = new ChessMoveImpl(startPosition, endPosition, promotionPiece);
 
-        if (game.chessGame().validMoves(startPosition).contains(move)) {
-            wsClient.send(new MakeMoveGameCommand(sessionData.getAuthTokenString(), sessionData.getGameID(), move));
-        }
+        wsClient.send(new MakeMoveGameCommand(sessionData.getAuthTokenString(), sessionData.getGameID(), move));
     }
 
     private ChessPosition parseToPosition(String positionString) throws CommandCancelException {
