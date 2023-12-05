@@ -132,8 +132,13 @@ public class UserGameCommandHandler {
             return;
         }
 
-        LoadGameServerMessage serverMessage = new LoadGameServerMessage(game);
-        sessionManager.broadcastAll(gameCommand.getGameID(), serverMessage);
+        LoadGameServerMessage loadMessage = new LoadGameServerMessage(game);
+        sessionManager.broadcastAll(gameCommand.getGameID(), loadMessage);
+
+        String username = authDAO.getUsername(gameCommand.getAuthString());
+        String msg = String.format("User %s has made a move.", username);
+        NotificationServerMessage notifyMessage = new NotificationServerMessage(msg);
+        sessionManager.broadcast(gameCommand.getGameID(), username, notifyMessage);
     }
 
     private ChessGame.TeamColor requireColor(String authString, int gameID) throws DataAccessException {
