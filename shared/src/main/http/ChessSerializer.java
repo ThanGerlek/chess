@@ -47,11 +47,17 @@ public class ChessSerializer {
         return new TypeAdapter<>() {
             @Override
             public void write(JsonWriter jsonWriter, ChessMove move) throws IOException {
-                jsonWriter.value(toJson(move));
+                String json = new Gson().toJson(move);
+                jsonWriter.value(json);
             }
 
             @Override
             public ChessMove read(JsonReader jsonReader) throws IOException {
+                if (jsonReader.peek() == JsonToken.STRING) {
+                    String moveJson = jsonReader.nextString();
+                    return getChessMoveAdapter().fromJson(moveJson);
+                }
+
                 jsonReader.beginObject();
 
                 ChessPosition startPosition = readChessPositionField(jsonReader);
