@@ -42,6 +42,10 @@ public class ChessGameImpl implements ChessGame {
         return winState;
     }
 
+    private boolean isGameOver() {
+        return getWinState() == WinState.WHITE_WIN || getWinState() == WinState.BLACK_WIN;
+    }
+
     /**
      * Gets all valid moves for a piece at the given location.
      *
@@ -86,7 +90,7 @@ public class ChessGameImpl implements ChessGame {
             throw new InvalidMoveException("Called makeMove() on an invalid move");
         }
 
-        if (winState != WinState.IN_PROGRESS) {
+        if (isGameOver()) {
             throw new InvalidMoveException("Called makeMove() after the game is over");
         }
 
@@ -202,6 +206,9 @@ public class ChessGameImpl implements ChessGame {
     }
 
     private void updateGameOver() {
+        if (isGameOver()) {
+            return;
+        }
         if (isInCheckmate(TeamColor.WHITE)) {
             winState = WinState.BLACK_WIN;
         } else if (isInCheckmate(TeamColor.BLACK)) {
