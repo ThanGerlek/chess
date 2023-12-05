@@ -55,7 +55,6 @@ public class ChessGameImpl implements ChessGame {
     @Override
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         Collection<ChessMove> validMoves = new HashSet<>();
-        if (winState != WinState.IN_PROGRESS) return validMoves;
 
         ChessPiece piece = board.getPiece(startPosition);
         Collection<ChessMove> potentialMoves = piece.pieceMoves(board, startPosition);
