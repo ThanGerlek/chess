@@ -1,6 +1,9 @@
 package server.webSocket;
 
-import chess.*;
+import chess.ChessGame;
+import chess.ChessMove;
+import chess.InvalidMoveException;
+import chess.WinState;
 import dataAccess.*;
 import http.ChessSerializer;
 import model.Game;
@@ -151,7 +154,7 @@ public class UserGameCommandHandler {
     private void requireUnfinishedGame(int gameID) throws DataAccessException {
         Game game = gameDAO.findGame(gameID);
         ChessGame chessGame = game.chessGame();
-        WinState winState = ((ChessGameImpl) chessGame).getWinState(); // TODO Why do I need to cast?
+        WinState winState = chessGame.getWinState();
         if (winState != WinState.IN_PROGRESS) {
             String msg = String.format("Called requireUnfinishedGame() when winState of game %d was %s", gameID,
                     winState.name());
@@ -187,7 +190,7 @@ public class UserGameCommandHandler {
 
         Game game = gameDAO.findGame(gameCommand.getGameID());
         ChessGame chessGame = game.chessGame();
-        ((ChessGameImpl) chessGame).resign(playerColor); // TODO Why do I need to cast?
+        chessGame.resign(playerColor);
         gameDAO.updateGameState(game);
 
         String username = authDAO.getUsername(gameCommand.getAuthString());
