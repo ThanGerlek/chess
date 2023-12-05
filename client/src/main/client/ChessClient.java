@@ -47,31 +47,6 @@ public class ChessClient {
         this.game = game;
     }
 
-    public void test() throws FailedConnectionException {
-        ui.println("This command is for testing purposes only and is subject to change at any time.");
-
-        String thing = ui.promptInput("? ");
-
-        if ("connect".equals(thing)) {
-            testCreateConnection();
-        } else if ("send".equals(thing)) {
-            testSendMessage();
-        }
-    }
-
-    private void testCreateConnection() throws FailedConnectionException {
-        ui.println("Creating WS connection to server");
-        ws.openConnection(notificationHandler);
-        ui.println("Connection created. Listening");
-    }
-
-    private void testSendMessage() throws FailedConnectionException {
-        ui.println("Sending message");
-        UserGameCommand gameCommand = new LeaveGameCommand("myAuthToken", 3);
-        ws.send(gameCommand);
-
-    }
-
     public void printHelpMenu() {
         ui.println("Available commands:");
         for (UICommand cmd : Commands.UI_COMMANDS) {

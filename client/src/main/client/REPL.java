@@ -47,8 +47,6 @@ public class REPL implements NotificationHandler {
 
         if (Commands.HELP.equals(cmd)) {
             client.printHelpMenu();
-        } else if (Commands.TEST.equals(cmd)) {
-            client.test();
         } else if (Commands.QUIT.equals(cmd)) {
             client.quit();
         } else if (Commands.REGISTER.equals(cmd)) {
