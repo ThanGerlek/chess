@@ -121,6 +121,7 @@ public class UserGameCommandHandler {
         ChessGame chessGame = game.chessGame();
         if (!playerColor.equals(chessGame.getTeamTurn())) {
             wsServer.sendError(session, "It's the other player's turn right now.");
+            return;
         }
 
         ChessMove move = gameCommand.getMove();
