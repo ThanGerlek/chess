@@ -42,28 +42,15 @@ public class ServerMessageHandler {
 //        ui.println(format + notification.getMessage() + reset);
     }
 
-    private void parseAsError(String message) {
+    private void parseAsError(String messageJson) {
         // TODO
-        ui.println("ServerMessageHandler.parseAsError()");
-
-        ErrorServerMessage errorMessage = ChessSerializer.gson().fromJson(message, ErrorServerMessage.class);
-
-        ui.println("ErrorServerMessage | " + errorMessage.getErrorMessage());
-
-//        String format = EscapeSequences.SET_TEXT_ITALIC + EscapeSequences.SET_TEXT_COLOR_RED;
-//        String reset =
-//                EscapeSequences.RESET_TEXT_ITALIC + EscapeSequences.RESET_TEXT_AND_BG; // TODO don't reset background?
-//        ui.println(format + errorMessage.getErrorMessage() + reset);
+        ErrorServerMessage errorMessage = ChessSerializer.gson().fromJson(messageJson, ErrorServerMessage.class);
+        ui.println("ServerMessageHandler.parseAsError(): " + errorMessage.getErrorMessage());
     }
 
     private void parseAsLoadGame(String message) {
         // TODO
-        ui.println("ServerMessageHandler.parseAsLoadGame()");
-
         LoadGameServerMessage loadGameMessage = ChessSerializer.gson().fromJson(message, LoadGameServerMessage.class);
-
-        ui.println("LoadGameServerMessage | ChessGame");
-
         Game game = loadGameMessage.getGame();
         client.drawBoard();
     }
