@@ -27,7 +27,7 @@ public class GameSessionManager {
         gameSession.put(username, session);
     }
 
-    public void createGameIfNeeded(int gameID) {
+    private void createGameIfNeeded(int gameID) {
         if (!gameSessions.containsKey(gameID)) {
             gameSessions.put(gameID, new ConcurrentHashMap<>());
         }
