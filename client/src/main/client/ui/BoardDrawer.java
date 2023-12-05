@@ -15,9 +15,13 @@ public class BoardDrawer {
         this.ui = ui;
         this.parser = new BoardToUIElementParser(board);
         this.reader = parser;
+        setViewerTeamColor(ChessGame.TeamColor.WHITE);
     }
 
     public void setViewerTeamColor(ChessGame.TeamColor color) {
+        if (color == null) {
+            color = ChessGame.TeamColor.WHITE;
+        }
         this.reader = new BoardUIElementRotator(parser, color);
     }
 
