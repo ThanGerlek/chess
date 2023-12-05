@@ -22,8 +22,8 @@ public class WebSocketServer {
 
     @OnWebSocketMessage
     public void onMessage(Session session, String message) {
-        UserGameCommand gameCommand = ChessSerializer.gson().fromJson(message, UserGameCommand.class);
         try {
+            UserGameCommand gameCommand = ChessSerializer.gson().fromJson(message, UserGameCommand.class);
             switch (gameCommand.getCommandType()) {
                 case JOIN_PLAYER -> cmdHandler.parseAsJoinPlayer(session, message);
                 case JOIN_OBSERVER -> cmdHandler.parseAsJoinObserver(session, message);
@@ -37,8 +37,10 @@ public class WebSocketServer {
             sendError(session, e, "Sorry, you can't do that right now.");
         } catch (NoSuchItemException e) {
             sendError(session, e, "Not found. Did you enter everything correctly?");
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             sendError(session, e, "Sorry, there's an unknown problem. Please try again.");
+            System.out.println("Caught generic throwable: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
