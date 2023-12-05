@@ -41,9 +41,10 @@ public class ServerMessageHandler {
     }
 
     private void parseAsLoadGame(String message) {
-        // TODO
         LoadGameServerMessage loadGameMessage = ChessSerializer.gson().fromJson(message, LoadGameServerMessage.class);
         Game game = loadGameMessage.getGame();
+        client.setCurrentGame(game);
         client.drawBoard();
+        ui.reprintPrompt();
     }
 }
