@@ -34,7 +34,7 @@ public class GameSessionManager {
     }
 
     public void broadcast(int gameID, String excludedUsername, ServerMessage message) throws DataAccessException {
-        var gameSession = gameSessions.get(gameID);
+        var gameSession = getGameSession(gameID);
         for (String username : gameSession.keySet()) {
             if (!username.equals(excludedUsername)) {
                 Session session = gameSession.get(username);
@@ -44,7 +44,7 @@ public class GameSessionManager {
     }
 
     public void message(int gameID, String username, ServerMessage message) throws DataAccessException {
-        var gameSession = gameSessions.get(gameID);
+        var gameSession = getGameSession(gameID);
         Session session = gameSession.get(username);
         try {
             wsServer.send(session, message);
@@ -59,7 +59,7 @@ public class GameSessionManager {
     }
 
     public void removeUser(int gameID, String username) throws DataAccessException {
-        var gameSession = gameSessions.get(gameID);
+        var gameSession = getGameSession(gameID);
         if (gameSession == null) {
             throw new DataAccessException("Tried to add user to a GameSession that doesn't exist");
         }
@@ -71,7 +71,7 @@ public class GameSessionManager {
     }
 
     public void broadcastAll(int gameID, ServerMessage message) throws DataAccessException {
-        var gameSession = gameSessions.get(gameID);
+        var gameSession = getGameSession(gameID);
         for (String username : gameSession.keySet()) {
             message(gameID, username, message);
         }
@@ -79,5 +79,14 @@ public class GameSessionManager {
 
     public void clearGameSessions() {
         gameSessions.clear();
+    }
+
+    private ConcurrentHashMap<String, Session> getGameSession(int gameID) {
+        if (!gameSessions.containsKey(gameID)) {
+            throw new IllegalArgumentException(
+                    String.format("Cannot call broadcast() on unrecognized gameID: %d", gameID));
+        } else {
+            return gameSessions.get(gameID);
+        }
     }
 }
