@@ -76,14 +76,10 @@ public class ChessSerializer {
             private static ChessPosition readChessPositionField(JsonReader jsonReader) throws IOException {
                 String positionFieldName = jsonReader.nextName();
                 if (jsonReader.peek() == JsonToken.STRING) {
-                    System.out.println("branch 1");
                     String posJson = jsonReader.nextString();
                     return getChessPositionAdapter().fromJson(posJson);
-                } else if (jsonReader.peek() == JsonToken.BEGIN_OBJECT) {
-                    System.out.println("branch 2");
-                    return readChessPosition(jsonReader);
                 } else {
-                    throw new RuntimeException("PROBELM");
+                    return readChessPosition(jsonReader);
                 }
             }
 
