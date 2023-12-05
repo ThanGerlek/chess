@@ -212,6 +212,8 @@ public class ChessGameImpl implements ChessGame {
             winState = WinState.BLACK_WIN;
         } else if (isInCheckmate(TeamColor.BLACK)) {
             winState = WinState.WHITE_WIN;
+        } else if (isInStalemate(TeamColor.WHITE) || isInStalemate(TeamColor.BLACK)) {
+            winState = WinState.STALEMATE;
         }
     }
 
