@@ -24,6 +24,7 @@ public class GameSessionManager {
         if (gameSession == null) {
             throw new DataAccessException("Tried to add user to a GameSession that doesn't exist");
         }
+        System.out.println("Registering user " + username + " with session " + session.hashCode());
         gameSession.put(username, session);
     }
 
