@@ -30,22 +30,14 @@ public class ServerMessageHandler {
     }
 
     private void parseAsNotification(String message) {
-        // TODO
-
         NotificationServerMessage notification =
                 ChessSerializer.gson().fromJson(message, NotificationServerMessage.class);
-
-        ui.println("NotificationServerMessage | " + notification.getMessage());
-
-//        String format = EscapeSequences.SET_TEXT_ITALIC;
-//        String reset = EscapeSequences.RESET_TEXT_ITALIC;
-//        ui.println(format + notification.getMessage() + reset);
+        ui.println("[Info] " + notification.getMessage());
     }
 
     private void parseAsError(String messageJson) {
-        // TODO
         ErrorServerMessage errorMessage = ChessSerializer.gson().fromJson(messageJson, ErrorServerMessage.class);
-        ui.println("ServerMessageHandler.parseAsError(): " + errorMessage.getErrorMessage());
+        ui.println("ServerMessageHandler.parseAsError(): [Error] " + errorMessage.getErrorMessage());
     }
 
     private void parseAsLoadGame(String message) {
