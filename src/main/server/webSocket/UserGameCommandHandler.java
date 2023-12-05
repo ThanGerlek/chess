@@ -158,7 +158,7 @@ public class UserGameCommandHandler {
 
         if (chessGame.isInStalemate(ChessGame.TeamColor.WHITE)) {
             builder.append(" White is in stalemate.");
-        } else if (chessGame.isInStalemate(ChessGame.TeamColor.WHITE)) {
+        } else if (chessGame.isInStalemate(ChessGame.TeamColor.BLACK)) {
             builder.append(" Black is in stalemate.");
         }
 
