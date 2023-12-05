@@ -37,7 +37,7 @@ public class ServerMessageHandler {
 
     private void parseAsError(String messageJson) {
         ErrorServerMessage errorMessage = ChessSerializer.gson().fromJson(messageJson, ErrorServerMessage.class);
-        ui.println("ServerMessageHandler.parseAsError(): [Error] " + errorMessage.getErrorMessage());
+        ui.println(errorMessage.getErrorMessage());
     }
 
     private void parseAsLoadGame(String message) {
