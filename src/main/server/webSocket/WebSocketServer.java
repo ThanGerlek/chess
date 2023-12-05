@@ -53,6 +53,7 @@ public class WebSocketServer {
     public void send(Session session, ServerMessage serverMessage) {
         String messageJson = ChessSerializer.gson().toJson(serverMessage);
         try {
+            System.out.println("Sending to session " + session.hashCode() + " with message " + messageJson);
             session.getRemote().sendString(messageJson);
         } catch (IOException e) {
             System.err.println("Failed to send WebSocket message with error: " + e.getMessage());
