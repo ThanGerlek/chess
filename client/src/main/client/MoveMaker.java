@@ -40,8 +40,8 @@ public class MoveMaker {
         } else if (positionString.length() != 2) {
             throw cancelOnInvalidInput(positionString, "Invalid positionString: '" + positionString + "'");
         }
-        int row = positionString.charAt(0) - 'a' + 1;
-        int col = positionString.charAt(1) - '1' + 1;
+        int col = positionString.charAt(0) - 'a' + 1;
+        int row = positionString.charAt(1) - '1' + 1;
         if (row < 1 || row > 8 || col < 1 || col > 8) {
             throw cancelOnInvalidInput(positionString, "Invalid positionString: '" + positionString + "'");
         }
