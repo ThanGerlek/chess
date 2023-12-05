@@ -87,7 +87,7 @@ public class REPL implements NotificationHandler {
 
     private void printError(Exception e) {
         // TODO. Better logging
-        ui.println("REPL.printError(): [Error] " + e.getMessage());
+        ui.println(e.getMessage());
     }
 
     private String getCommandPrompt() {
