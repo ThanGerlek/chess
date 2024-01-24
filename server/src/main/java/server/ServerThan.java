@@ -9,7 +9,7 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 
-public class Server {
+public class ServerThan {
     private static final int PORT = 8080;
 
     private final ClearApplicationHandler clearApplicationHandler;
@@ -28,7 +28,7 @@ public class Server {
     private final AuthDAO authDAO;
     private final GameDAO gameDAO;
 
-    public Server() {
+    public ServerThan() {
         // TODO Instead of packing everything into Server, write a database handler or something?
         database = new ChessDatabase();
 
@@ -50,7 +50,7 @@ public class Server {
     }
 
     public static void main(String[] args) throws DataAccessException {
-        new Server().run();
+        new ServerThan().run();
     }
 
     private void run() throws DataAccessException {
