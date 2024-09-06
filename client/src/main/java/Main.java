@@ -1,8 +1,17 @@
-import chess.*;
+import client.REPL;
 
 public class Main {
+    private static final String DEFAULT_SERVER_URL = "http://localhost:8080";
+
     public static void main(String[] args) {
-        var piece = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
-        System.out.println("♕ 240 Chess Client: " + piece);
+        System.out.println("Running chess client");
+
+        String serverUrl = DEFAULT_SERVER_URL;
+        if (args.length > 0) {
+            serverUrl = args[0];
+        }
+
+        new REPL(serverUrl).run();
+        System.out.println("Chess client terminated");
     }
 }

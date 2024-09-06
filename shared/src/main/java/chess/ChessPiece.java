@@ -1,6 +1,9 @@
 package chess;
 
+import chess.movementRules.*;
+
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Represents a single chess piece
@@ -10,7 +13,18 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
-    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+    private final PieceType type;
+    private final ChessGame.TeamColor color;
+    private boolean hasNeverMoved;
+
+    public ChessPiece(ChessGame.TeamColor color, PieceType type) {
+        this(color, type, true);
+    }
+
+    public ChessPiece(ChessGame.TeamColor color, PieceType type, boolean hasNeverMoved) {
+        this.type = type;
+        this.color = color;
+        this.hasNeverMoved = hasNeverMoved;
     }
 
     /**
@@ -26,17 +40,29 @@ public class ChessPiece {
     }
 
     /**
-     * @return Which team this chess piece belongs to
+     * @return which team this chess piece belongs to.
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+        return color;
     }
 
     /**
-     * @return which type of chess piece this piece is
+     * @return which type of chess piece this piece is.
      */
     public PieceType getPieceType() {
-        throw new RuntimeException("Not implemented");
+        return type;
+    }
+
+    public ChessPiece copy() {
+        return ChessPieces.FromType(getPieceType(), getTeamColor(), hasNeverMoved());
+    }
+
+    public void markAsHavingMoved() {
+        hasNeverMoved = false;
+    }
+
+    public boolean hasNeverMoved() {
+        return hasNeverMoved;
     }
 
     /**
@@ -47,6 +73,26 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        return switch(board.getPiece(myPosition).getPieceType()) {
+            case KING -> new KingMovementRule().pieceMoves(board, myPosition);
+            case QUEEN -> new QueenMovementRule().pieceMoves(board, myPosition);
+            case BISHOP -> new BishopMovementRule().pieceMoves(board, myPosition);
+            case KNIGHT -> new KnightMovementRule().pieceMoves(board, myPosition);
+            case ROOK -> new RookMovementRule().pieceMoves(board, myPosition);
+            case PAWN -> new PawnMovementRule().pieceMoves(board, myPosition);
+        };
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessPiece piece = (ChessPiece) o;
+        return type == piece.type && color == piece.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, color, hasNeverMoved);
     }
 }
