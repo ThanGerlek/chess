@@ -1,8 +1,8 @@
 package server.handlers;
 
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
+import dataaccess.AuthDAO;
+import dataaccess.DataAccessException;
+import dataaccess.GameDAO;
 import http.CreateGameRequest;
 import http.CreateGameResponse;
 import server.services.CreateGameService;

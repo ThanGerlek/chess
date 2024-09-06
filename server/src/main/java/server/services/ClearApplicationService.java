@@ -1,9 +1,9 @@
 package server.services;
 
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
-import dataAccess.UserDAO;
+import dataaccess.AuthDAO;
+import dataaccess.DataAccessException;
+import dataaccess.GameDAO;
+import dataaccess.UserDAO;
 import http.MessageResponse;
 import server.webSocket.GameSessionManager;
 

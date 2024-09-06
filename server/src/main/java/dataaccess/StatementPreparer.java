@@ -1,4 +1,4 @@
-package dataAccess;
+package dataaccess;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

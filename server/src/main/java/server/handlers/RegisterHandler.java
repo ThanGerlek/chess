@@ -1,8 +1,8 @@
 package server.handlers;
 
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
-import dataAccess.UserDAO;
+import dataaccess.AuthDAO;
+import dataaccess.DataAccessException;
+import dataaccess.UserDAO;
 import http.AuthResponse;
 import http.RegisterRequest;
 import server.services.RegisterService;

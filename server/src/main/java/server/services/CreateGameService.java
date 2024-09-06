@@ -1,9 +1,9 @@
 package server.services;
 
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
-import dataAccess.UnauthorizedAccessException;
+import dataaccess.AuthDAO;
+import dataaccess.DataAccessException;
+import dataaccess.GameDAO;
+import dataaccess.UnauthorizedAccessException;
 import http.CreateGameRequest;
 import http.CreateGameResponse;
 import model.Game;

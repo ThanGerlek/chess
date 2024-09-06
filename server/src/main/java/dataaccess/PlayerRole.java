@@ -1,4 +1,4 @@
-package dataAccess;
+package dataaccess;
 
 public class PlayerRole {
     public static final PlayerRole WHITE_PLAYER = new PlayerRole("WHITE");
@@ -30,11 +30,4 @@ public class PlayerRole {
     public String toString() {
         return "PlayerRole." + this.roleString;
     }
-
-
-    public void test() {
-        Bob b = Bob.A;
-    }
 }
-
-

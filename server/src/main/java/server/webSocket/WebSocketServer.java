@@ -1,6 +1,6 @@
 package server.webSocket;
 
-import dataAccess.*;
+import dataaccess.*;
 import http.ChessSerializer;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;

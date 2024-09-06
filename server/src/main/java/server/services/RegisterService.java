@@ -1,9 +1,9 @@
 package server.services;
 
-import dataAccess.AuthDAO;
-import dataAccess.BadRequestException;
-import dataAccess.DataAccessException;
-import dataAccess.UserDAO;
+import dataaccess.AuthDAO;
+import dataaccess.BadRequestException;
+import dataaccess.DataAccessException;
+import dataaccess.UserDAO;
 import http.AuthResponse;
 import http.RegisterRequest;
 import model.AuthToken;
