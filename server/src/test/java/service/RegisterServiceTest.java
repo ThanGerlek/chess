@@ -25,9 +25,11 @@ class RegisterServiceTest extends ServiceTest {
 
     // Positive test
     @Test
-    void get_registered_user_returns_user() throws DataAccessException {
-        service.register(new RegisterRequest("user1", "pass1", "mail1"));
-        Assertions.assertEquals(userDAO.getUser("user1"), new User("user1", "pass1", "mail1"));
+    void get_registered_user_returns_user_with_correct_username_and_email() throws DataAccessException {
+        service.register(new RegisterRequest("user1", "pwHash1", "mail1"));
+        User retrievedUser = userDAO.getUser("user1");
+        Assertions.assertEquals(retrievedUser.username(), "user1");
+        Assertions.assertEquals(retrievedUser.email(), "email1");
     }
 
     // Negative test
@@ -58,6 +60,8 @@ class RegisterServiceTest extends ServiceTest {
     @Test
     void register_with_null_email_returns_user() throws DataAccessException {
         service.register(new RegisterRequest("user1", "pass1", null));
-        Assertions.assertEquals(userDAO.getUser("user1"), new User("user1", "pass1", null));
+        User retrievedUser = userDAO.getUser("user1");
+        Assertions.assertEquals(retrievedUser.username(), "user1");
+        Assertions.assertNull(retrievedUser.email());
     }
 }
