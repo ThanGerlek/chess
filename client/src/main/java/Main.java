@@ -1,7 +1,7 @@
 import client.REPL;
 
 public class Main {
-    private static final String DEFAULT_SERVER_URL = "http://localhost:8080";
+    private static final String DEFAULT_SERVER_URL = "http://localhost:8081";
 
     public static void main(String[] args) {
         System.out.println("Running chess client");
