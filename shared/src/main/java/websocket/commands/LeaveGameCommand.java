@@ -1,15 +1,7 @@
 package websocket.commands;
 
 public class LeaveGameCommand extends UserGameCommand {
-    private final int gameID;
-
-    public LeaveGameCommand(String authToken, int gameID) {
-        super(authToken);
-        this.gameID = gameID;
-        this.commandType = CommandType.LEAVE;
-    }
-
-    public int getGameID() {
-        return gameID;
+    public LeaveGameCommand(String authToken, Integer gameID) {
+        super(CommandType.LEAVE, authToken, gameID);
     }
 }

@@ -127,9 +127,9 @@ public class ChessClient {
             int gameID = sessionData.getGameID();
             UserGameCommand gameCommand;
             if (asSpectator) {
-                gameCommand = new JoinObserverGameCommand(authToken, gameID);
+                gameCommand = new ConnectGameCommand(authToken, gameID, null);
             } else {
-                gameCommand = new JoinPlayerGameCommand(authToken, gameID, sessionData.getPlayerColor());
+                gameCommand = new ConnectGameCommand(authToken, gameID, sessionData.getPlayerColor());
             }
 
             ws.send(gameCommand);

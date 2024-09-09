@@ -1,6 +1,7 @@
 package client;
 
 public class AuthorizationRole {
+    // TODO? Convert to proper enum?
     // ANY < GUEST
     // ANY < USER < CONSOLE < SUPERUSER
     // ANY < OBSERVER < PLAYER

@@ -28,29 +28,8 @@ public class UserGameCommandHandler {
         this.wsServer = wsServer;
     }
 
-    public void parseAsJoinObserver(Session session, String message) throws DataAccessException {
-        JoinObserverGameCommand gameCommand = ChessSerializer.gson().fromJson(message, JoinObserverGameCommand.class);
-        System.out.printf("JOIN_OBSERVER | gameID: %d%n", gameCommand.getGameID());
-
-        requireValidAuthString(gameCommand);
-
-        String username = authDAO.getUsername(gameCommand.getAuthString());
-        int gameID = gameCommand.getGameID();
-        Game game = gameDAO.findGame(gameID);
-
-        gameDAO.assignPlayerRole(gameID, username, PlayerRole.SPECTATOR);
-        sessionManager.addUser(gameID, username, session);
-
-        LoadGameServerMessage loadGameMsg = new LoadGameServerMessage(game);
-        wsServer.send(session, loadGameMsg);
-
-        String notifyStr = String.format("User %s has joined the game as an observer", username);
-        NotificationServerMessage notifyMsg = new NotificationServerMessage(notifyStr);
-        sessionManager.broadcast(gameID, username, notifyMsg);
-    }
-
     private void requireValidAuthString(UserGameCommand gameCommand) throws DataAccessException {
-        if (!authDAO.isValidAuthToken(gameCommand.getAuthString())) {
+        if (!authDAO.isValidAuthToken(gameCommand.getAuthToken())) {
             throw new UnauthorizedAccessException("Invalid token provided");
         }
     }
@@ -67,30 +46,34 @@ public class UserGameCommandHandler {
         }
     }
 
-    public void parseAsJoinPlayer(Session session, String message) throws DataAccessException {
-        JoinPlayerGameCommand gameCommand = ChessSerializer.gson().fromJson(message, JoinPlayerGameCommand.class);
-        System.out.printf("JOIN_PLAYER | gameID: %d, color: %s%n", gameCommand.getGameID(),
-                gameCommand.getPlayerColor().name());
+    public void parseAsConnect(Session session, String message) throws DataAccessException {
+        ConnectGameCommand gameCommand = ChessSerializer.gson().fromJson(message, ConnectGameCommand.class);
+        String colorString = (gameCommand.getPlayerColor() == null) ? "NULL" : gameCommand.getPlayerColor().name();
+        System.out.printf("CONNECT | gameID: %d, color: %s%n", gameCommand.getGameID(), colorString);
 
         requireValidAuthString(gameCommand);
 
-        String username = authDAO.getUsername(gameCommand.getAuthString());
+        String username = authDAO.getUsername(gameCommand.getAuthToken());
         int gameID = gameCommand.getGameID();
         Game game = gameDAO.findGame(gameID);
 
         PlayerRole role;
-        String assignedUsername;
-        if (gameCommand.getPlayerColor() == ChessGame.TeamColor.WHITE) {
-            role = PlayerRole.WHITE_PLAYER;
-            assignedUsername = game.whiteUsername();
-        } else {
-            role = PlayerRole.BLACK_PLAYER;
-            assignedUsername = game.blackUsername();
-        }
 
-        if (!Objects.equals(username, assignedUsername)) {
-            wsServer.sendError(session, "Sorry, that role is already taken.");
-            return;
+        if (gameCommand.getPlayerColor() == null) {
+            role = PlayerRole.SPECTATOR;
+        } else {
+            String assignedUsername;
+            if (gameCommand.getPlayerColor() == ChessGame.TeamColor.WHITE) {
+                role = PlayerRole.WHITE_PLAYER;
+                assignedUsername = game.whiteUsername();
+            } else {
+                role = PlayerRole.BLACK_PLAYER;
+                assignedUsername = game.blackUsername();
+            }
+            if (!Objects.equals(username, assignedUsername)) {
+                wsServer.sendError(session, "Sorry, that role is already taken.");
+                return;
+            }
         }
 
         sessionManager.addUser(gameID, username, session);
@@ -113,7 +96,7 @@ public class UserGameCommandHandler {
 
         requireValidAuthString(gameCommand);
         requireUnfinishedGame(gameCommand.getGameID());
-        ChessGame.TeamColor playerColor = requireColor(gameCommand.getAuthString(), gameCommand.getGameID());
+        ChessGame.TeamColor playerColor = requireColor(gameCommand.getAuthToken(), gameCommand.getGameID());
 
         Game game = gameDAO.findGame(gameCommand.getGameID());
         ChessGame chessGame = game.chessGame();
@@ -134,7 +117,7 @@ public class UserGameCommandHandler {
         LoadGameServerMessage loadMessage = new LoadGameServerMessage(game);
         sessionManager.broadcastAll(gameCommand.getGameID(), loadMessage);
 
-        String username = authDAO.getUsername(gameCommand.getAuthString());
+        String username = authDAO.getUsername(gameCommand.getAuthToken());
         String msg = getMoveNotificationString(game, username, move);
         NotificationServerMessage notifyMessage = new NotificationServerMessage(msg);
         sessionManager.broadcast(gameCommand.getGameID(), username, notifyMessage);
@@ -209,9 +192,9 @@ public class UserGameCommandHandler {
         System.out.printf("LEAVE | gameID: %d%n", gameCommand.getGameID());
 
         requireValidAuthString(gameCommand);
-        requireHasRoleInGame(gameCommand.getAuthString(), gameCommand.getGameID());
+        requireHasRoleInGame(gameCommand.getAuthToken(), gameCommand.getGameID());
 
-        String username = authDAO.getUsername(gameCommand.getAuthString());
+        String username = authDAO.getUsername(gameCommand.getAuthToken());
         String msg = String.format("User %s left the game", username);
         sessionManager.removeUser(gameCommand.getGameID(), username);
         sessionManager.broadcast(gameCommand.getGameID(), username, new NotificationServerMessage(msg));
@@ -224,7 +207,7 @@ public class UserGameCommandHandler {
         requireValidAuthString(gameCommand);
         requireUnfinishedGame(gameCommand.getGameID());
 
-        ChessGame.TeamColor playerColor = requireColor(gameCommand.getAuthString(), gameCommand.getGameID());
+        ChessGame.TeamColor playerColor = requireColor(gameCommand.getAuthToken(), gameCommand.getGameID());
         if (playerColor == null) {
             wsServer.sendError(session, "Only active players can resign.");
             return;
@@ -235,7 +218,7 @@ public class UserGameCommandHandler {
         chessGame.resign(playerColor);
         gameDAO.updateGameState(game);
 
-        String username = authDAO.getUsername(gameCommand.getAuthString());
+        String username = authDAO.getUsername(gameCommand.getAuthToken());
         String msg = String.format("User %s (%s) has resigned the game.", username, playerColor.name());
         NotificationServerMessage serverMessage = new NotificationServerMessage(msg);
         sessionManager.broadcastAll(gameCommand.getGameID(), serverMessage);

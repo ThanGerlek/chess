@@ -25,8 +25,7 @@ public class WebSocketServer {
         try {
             UserGameCommand gameCommand = ChessSerializer.gson().fromJson(message, UserGameCommand.class);
             switch (gameCommand.getCommandType()) {
-                case JOIN_PLAYER -> cmdHandler.parseAsJoinPlayer(session, message);
-                case JOIN_OBSERVER -> cmdHandler.parseAsJoinObserver(session, message);
+                case CONNECT -> cmdHandler.parseAsConnect(session, message);
                 case MAKE_MOVE -> cmdHandler.parseAsMakeMove(session, message);
                 case LEAVE -> cmdHandler.parseAsLeave(session, message);
                 case RESIGN -> cmdHandler.parseAsResign(session, message);
