@@ -10,8 +10,16 @@ import java.util.Objects;
  */
 public class UserGameCommand {
 
-    public UserGameCommand(String authToken) {
+    private final CommandType commandType;
+
+    private final String authToken;
+
+    private final Integer gameID;
+
+    public UserGameCommand(CommandType commandType, String authToken, Integer gameID) {
+        this.commandType = commandType;
         this.authToken = authToken;
+        this.gameID = gameID;
     }
 
     public enum CommandType {
@@ -21,16 +29,16 @@ public class UserGameCommand {
         RESIGN
     }
 
-    protected CommandType commandType;
+    public CommandType getCommandType() {
+        return commandType;
+    }
 
-    private final String authToken;
-
-    public String getAuthString() {
+    public String getAuthToken() {
         return authToken;
     }
 
-    public CommandType getCommandType() {
-        return this.commandType;
+    public Integer getGameID() {
+        return gameID;
     }
 
     @Override
@@ -42,11 +50,13 @@ public class UserGameCommand {
             return false;
         }
         UserGameCommand that = (UserGameCommand) o;
-        return getCommandType() == that.getCommandType() && Objects.equals(getAuthString(), that.getAuthString());
+        return getCommandType() == that.getCommandType() &&
+                Objects.equals(getAuthToken(), that.getAuthToken()) &&
+                Objects.equals(getGameID(), that.getGameID());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCommandType(), getAuthString());
+        return Objects.hash(getCommandType(), getAuthToken(), getGameID());
     }
 }
