@@ -6,9 +6,9 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import webSocketMessages.serverMessages.ErrorServerMessage;
-import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.UserGameCommand;
+import websocket.messages.ErrorServerMessage;
+import websocket.messages.ServerMessage;
+import websocket.commands.UserGameCommand;
 
 import java.io.IOException;
 

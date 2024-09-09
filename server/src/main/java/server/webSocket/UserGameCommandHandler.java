@@ -8,9 +8,9 @@ import dataaccess.*;
 import http.ChessSerializer;
 import model.Game;
 import org.eclipse.jetty.websocket.api.Session;
-import webSocketMessages.serverMessages.LoadGameServerMessage;
-import webSocketMessages.serverMessages.NotificationServerMessage;
-import webSocketMessages.userCommands.*;
+import websocket.commands.*;
+import websocket.messages.LoadGameServerMessage;
+import websocket.messages.NotificationServerMessage;
 
 import java.util.ArrayList;
 import java.util.Objects;

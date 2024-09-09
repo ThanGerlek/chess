@@ -14,9 +14,9 @@ import ui.InvalidUserInputException;
 import ui.command.Command;
 import ui.command.Commands;
 import ui.command.UICommand;
-import webSocketMessages.userCommands.*;
 import websocket.NotificationHandler;
 import websocket.WebSocketClient;
+import websocket.commands.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

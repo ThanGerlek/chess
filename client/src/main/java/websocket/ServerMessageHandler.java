@@ -4,10 +4,10 @@ import client.ChessClient;
 import http.ChessSerializer;
 import model.Game;
 import ui.ConsoleUI;
-import webSocketMessages.serverMessages.ErrorServerMessage;
-import webSocketMessages.serverMessages.LoadGameServerMessage;
-import webSocketMessages.serverMessages.NotificationServerMessage;
-import webSocketMessages.serverMessages.ServerMessage;
+import websocket.messages.ErrorServerMessage;
+import websocket.messages.LoadGameServerMessage;
+import websocket.messages.NotificationServerMessage;
+import websocket.messages.ServerMessage;
 
 public class ServerMessageHandler {
     private final ConsoleUI ui;

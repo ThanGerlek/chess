@@ -3,7 +3,7 @@ package server.webSocket;
 import dataaccess.DataAccessException;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketException;
-import webSocketMessages.serverMessages.ServerMessage;
+import websocket.messages.ServerMessage;
 
 import java.util.concurrent.ConcurrentHashMap;
 
