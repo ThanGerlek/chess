@@ -66,4 +66,17 @@ public class EscapeSequences {
     // my code
     public static final String RESET_TEXT_AND_BG = UNICODE_ESCAPE + "[0m";
 
+    public static final String WHITE_KING_L = " K ";
+    public static final String WHITE_QUEEN_L = " Q ";
+    public static final String WHITE_BISHOP_L = " B ";
+    public static final String WHITE_KNIGHT_L = " N ";
+    public static final String WHITE_ROOK_L = " R ";
+    public static final String WHITE_PAWN_L = " P ";
+    public static final String BLACK_KING_L = " k ";
+    public static final String BLACK_QUEEN_L = " q ";
+    public static final String BLACK_BISHOP_L = " b ";
+    public static final String BLACK_KNIGHT_L = " n ";
+    public static final String BLACK_ROOK_L = " r ";
+    public static final String BLACK_PAWN_L = " p ";
+    public static final String EMPTY_L = "   ";
 }

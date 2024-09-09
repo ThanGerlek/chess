@@ -15,21 +15,21 @@ public class ForegroundElement {
     private String getStrFromPiece(ChessPiece piece) {
         if (piece.getTeamColor() == ChessGame.TeamColor.WHITE) {
             return switch (piece.getPieceType()) {
-                case KING -> EscapeSequences.WHITE_KING;
-                case QUEEN -> EscapeSequences.WHITE_QUEEN;
-                case BISHOP -> EscapeSequences.WHITE_BISHOP;
-                case KNIGHT -> EscapeSequences.WHITE_KNIGHT;
-                case ROOK -> EscapeSequences.WHITE_ROOK;
-                case PAWN -> EscapeSequences.WHITE_PAWN;
+                case KING -> EscapeSequences.WHITE_KING_L;
+                case QUEEN -> EscapeSequences.WHITE_QUEEN_L;
+                case BISHOP -> EscapeSequences.WHITE_BISHOP_L;
+                case KNIGHT -> EscapeSequences.WHITE_KNIGHT_L;
+                case ROOK -> EscapeSequences.WHITE_ROOK_L;
+                case PAWN -> EscapeSequences.WHITE_PAWN_L;
             };
         } else {
             return switch (piece.getPieceType()) {
-                case KING -> EscapeSequences.BLACK_KING;
-                case QUEEN -> EscapeSequences.BLACK_QUEEN;
-                case BISHOP -> EscapeSequences.BLACK_BISHOP;
-                case KNIGHT -> EscapeSequences.BLACK_KNIGHT;
-                case ROOK -> EscapeSequences.BLACK_ROOK;
-                case PAWN -> EscapeSequences.BLACK_PAWN;
+                case KING -> EscapeSequences.BLACK_KING_L;
+                case QUEEN -> EscapeSequences.BLACK_QUEEN_L;
+                case BISHOP -> EscapeSequences.BLACK_BISHOP_L;
+                case KNIGHT -> EscapeSequences.BLACK_KNIGHT_L;
+                case ROOK -> EscapeSequences.BLACK_ROOK_L;
+                case PAWN -> EscapeSequences.BLACK_PAWN_L;
             };
         }
     }
@@ -39,7 +39,7 @@ public class ForegroundElement {
     }
 
     public ForegroundElement() {
-        this.str = EscapeSequences.EMPTY;
+        this.str = EscapeSequences.EMPTY_L;
     }
 
     public void appendTo(StringBuilder builder) {
