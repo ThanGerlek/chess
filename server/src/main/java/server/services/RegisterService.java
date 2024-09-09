@@ -8,6 +8,7 @@ import http.AuthResponse;
 import http.RegisterRequest;
 import model.AuthToken;
 import model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.UUID;
 
@@ -34,7 +35,8 @@ public class RegisterService {
                 request.password().isEmpty()) {
             throw new BadRequestException("Please provide a username and password");
         }
-        User user = new User(request.username(), request.password(), request.email());
+        String pwHash = BCrypt.hashpw(request.password(), BCrypt.gensalt());
+        User user = new User(request.username(), pwHash, request.email());
         userDAO.insertNewUser(user);
         AuthToken authToken = registerNewAuthToken(request.username());
         return new AuthResponse(authToken.authToken(), request.username(), "Okay!");

@@ -12,7 +12,7 @@ public class DatabaseUserDAO implements UserDAO {
             CREATE TABLE IF NOT EXISTS users (
                 id INT NOT NULL AUTO_INCREMENT,
                 username VARCHAR(128) NOT NULL,
-                password VARCHAR(128) NOT NULL,
+                passwordHash VARCHAR(128) NOT NULL,
                 email VARCHAR(128),
                 PRIMARY KEY (id),
                 UNIQUE INDEX (username)
@@ -44,9 +44,9 @@ public class DatabaseUserDAO implements UserDAO {
             throw new ValueAlreadyTakenException("Tried to insert a user with an already-taken username");
         }
 
-        ChessDatabaseManager.update("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", preparedStatement -> {
+        ChessDatabaseManager.update("INSERT INTO users (username, passwordHash, email) VALUES (?, ?, ?)", preparedStatement -> {
             preparedStatement.setString(1, user.username());
-            preparedStatement.setString(2, user.password());
+            preparedStatement.setString(2, user.pwHash());
             if (user.email() == null || user.email().isEmpty()) {
                 preparedStatement.setNull(3, Types.VARCHAR);
             } else {
@@ -65,7 +65,7 @@ public class DatabaseUserDAO implements UserDAO {
     @Override
     public User getUser(String username) throws DataAccessException {
         // Failures: user not found
-        String sqlString = "SELECT password, email FROM users WHERE username=?";
+        String sqlString = "SELECT passwordHash, email FROM users WHERE username=?";
         User user;
 
         Connection conn = DatabaseManager.getConnection();
@@ -77,9 +77,9 @@ public class DatabaseUserDAO implements UserDAO {
                     String msg = String.format("Unrecognized username: '%s'", username);
                     throw new NoSuchItemException(msg);
                 }
-                String password = rs.getString(1);
+                String pwHash = rs.getString(1);
                 String email = rs.getString(2);
-                user = new User(username, password, email);
+                user = new User(username, pwHash, email);
             }
 
         } catch (SQLException e) {

@@ -32,7 +32,7 @@ public class ChessDatabaseManager extends DatabaseManager {
             CREATE TABLE IF NOT EXISTS users (
                 id INT NOT NULL AUTO_INCREMENT,
                 username VARCHAR(128) NOT NULL,
-                password VARCHAR(128) NOT NULL,
+                passwordHash VARCHAR(128) NOT NULL,
                 email VARCHAR(128),
                 PRIMARY KEY (id),
                 UNIQUE INDEX (username)

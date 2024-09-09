@@ -5,6 +5,7 @@ import http.AuthResponse;
 import http.LoginRequest;
 import model.AuthToken;
 import model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.UUID;
 
@@ -38,10 +39,11 @@ public class LoginService {
     }
 
     private AuthToken authenticate(User user, String password) throws DataAccessException {
-        if (!user.password().equals(password)) {
+        if (BCrypt.checkpw(password, user.pwHash())) {
+            return registerNewAuthToken(user.username());
+        } else {
             throw new UnauthorizedAccessException("Invalid credentials.");
         }
-        return registerNewAuthToken(user.username());
     }
 
     // TODO Consolidate with RegisterService's registerNewAuthToken() method
