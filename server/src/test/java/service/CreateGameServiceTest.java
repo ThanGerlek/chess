@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import server.services.CreateGameService;
 
 class CreateGameServiceTest extends ServiceTest {
-    private final User user = new User("user1", "pass1", "mail1");
+    private final User user = createTestUser("user1", "pass1", "mail1");
     private final AuthToken token = new AuthToken("1234", "user1");
     private final CreateGameRequest request = new CreateGameRequest("game1");
     private CreateGameService service;

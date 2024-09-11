@@ -18,7 +18,7 @@ class LoginServiceTest extends ServiceTest {
     @BeforeEach
     void setUp() throws DataAccessException {
         initDAOs();
-        userDAO.insertNewUser(new User("user1", "pass1", "mail1"));
+        userDAO.insertNewUser(createTestUser("user1", "pass1", "mail1"));
         service = new LoginService(authDAO, userDAO);
     }
 

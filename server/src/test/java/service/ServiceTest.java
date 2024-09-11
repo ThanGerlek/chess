@@ -1,6 +1,8 @@
 package service;
 
 import dataaccess.*;
+import model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 abstract class ServiceTest {
     protected AuthDAO authDAO;
@@ -11,6 +13,11 @@ abstract class ServiceTest {
         userDAO = new MemoryUserDAO();
         authDAO = new MemoryAuthDAO(userDAO);
         gameDAO = new MemoryGameDAO(userDAO);
+    }
+
+    User createTestUser(String username, String password, String email) {
+        String pwHash = BCrypt.hashpw(password, BCrypt.gensalt());
+        return new User(username, pwHash, email);
     }
 
 }

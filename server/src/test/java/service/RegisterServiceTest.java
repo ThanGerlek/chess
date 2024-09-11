@@ -19,14 +19,14 @@ class RegisterServiceTest extends ServiceTest {
     @BeforeEach
     void setUp() throws DataAccessException {
         initDAOs();
-        userDAO.insertNewUser(new User("existingUser", "existingPass", "existingMail"));
+        userDAO.insertNewUser(createTestUser("existingUser", "existingPass", "existingMail"));
         service = new RegisterService(authDAO, userDAO);
     }
 
     // Positive test
     @Test
     void get_registered_user_returns_user_with_correct_username_and_email() throws DataAccessException {
-        service.register(new RegisterRequest("user1", "pwHash1", "mail1"));
+        service.register(new RegisterRequest("user1", "pass1", "email1"));
         User retrievedUser = userDAO.getUser("user1");
         Assertions.assertEquals(retrievedUser.username(), "user1");
         Assertions.assertEquals(retrievedUser.email(), "email1");

@@ -18,7 +18,7 @@ import server.services.ListGamesService;
 import java.util.ArrayList;
 
 class ListGamesServiceTest extends ServiceTest {
-    private final User user = new User("user1", "pass1", "mail1");
+    private final User user = createTestUser("user1", "pass1", "mail1");
     private final AuthToken token = new AuthToken("1234", "user1");
     private final Game game1 = new Game(1, "game1");
     private final Game game2 = new Game(2, "game2");

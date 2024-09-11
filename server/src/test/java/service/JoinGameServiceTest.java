@@ -13,8 +13,8 @@ import server.services.JoinGameService;
 
 class JoinGameServiceTest extends ServiceTest {
     private static final int INVALID_GAME_ID = 42;
-    private final User user1 = new User("user1", "pass1", "mail1");
-    private final User user2 = new User("user2", "pass2", "mail2");
+    private final User user1 = createTestUser("user1", "pass1", "mail1");
+    private final User user2 = createTestUser("user2", "pass2", "mail2");
     private final AuthToken token1 = new AuthToken("1234", "user1");
     private final AuthToken token2 = new AuthToken("5678", "user2");
     private final JoinGameRequest requestW = new JoinGameRequest(PlayerRole.roleToString(PlayerRole.WHITE_PLAYER), 1);
