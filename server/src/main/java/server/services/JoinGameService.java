@@ -5,7 +5,7 @@ import http.JoinGameRequest;
 import http.MessageResponse;
 
 /**
- * Provides the Join Game service, which connects a user to an existing game as either a player or spectator. This
+ * Provides the Join Game service, which connects a user to an existing game as a player. This
  * request is idempotent.
  */
 public class JoinGameService {
@@ -18,30 +18,28 @@ public class JoinGameService {
     }
 
     /**
-     * Connect a user to an existing game as either a player or spectator. Verifies that the specified game exists, and,
-     * if a color is specified, adds the caller as the requested color to the game. If no color is specified the user is
-     * joined as an observer. This request is idempotent.
+     * Connect a user to an existing game as a player. Verifies that the specified game exists and adds the caller
+     * as the requested color to the game. This request is idempotent.
      *
      * @param request   a JoinGameRequest representing the HTTP request.
      * @param authToken the AuthToken representing the user to assign.
      * @return a MessageResponse representing the resulting HTTP response.
      */
     public MessageResponse joinGame(JoinGameRequest request, String authToken) throws DataAccessException {
-        if (authDAO.isValidAuthToken(authToken)) {
+        if (request.playerColor() == null) {
+            throw new BadRequestException("Could not join game: player color was null");
+        }
 
-            PlayerRole role = request.playerColor() == null
-                    ? PlayerRole.SPECTATOR
-                    : PlayerRole.stringToRole(request.playerColor());
-
-            int gameID = request.gameID();
-            String username = authDAO.getUsername(authToken);
-            gameDAO.assignPlayerRole(gameID, username, role);
-
-            return new MessageResponse("Okay!");
-        } else {
+        if (!authDAO.isValidAuthToken(authToken)) {
             throw new UnauthorizedAccessException("Could not join game: provided token was invalid");
         }
 
+        int gameID = request.gameID();
+        String username = authDAO.getUsername(authToken);
+        PlayerRole role = PlayerRole.stringToRole(request.playerColor());
+        gameDAO.assignPlayerRole(gameID, username, role);
+
+        return new MessageResponse("Okay!");
     }
 
 /*

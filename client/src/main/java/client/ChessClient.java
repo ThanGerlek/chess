@@ -108,35 +108,31 @@ public class ChessClient {
     }
 
     public void joinGame() throws FailedConnectionException, FailedResponseException {
-        joinGame(false);
+        ArrayList<GameListItem> games = listGames();
+        ConnectGameCommand gameCommand;
+        try {
+            gameCommand = new GameJoiner(ui, serverFacade, sessionData, games).joinGame();
+        } catch (CommandCancelException e) {
+            return;
+        }
+        ws.openConnection(notificationHandler);
+        ws.send(gameCommand);
     }
 
-    private void joinGame(boolean asSpectator) throws FailedConnectionException, FailedResponseException {
+    public void observeGame() throws FailedConnectionException, FailedResponseException {
         ArrayList<GameListItem> games = listGames();
-        if (games != null) {
-            try {
-                GameJoiner joiner = new GameJoiner(ui, serverFacade, sessionData, games);
-                joiner.joinGame(asSpectator);
-            } catch (CommandCancelException e) {
-                return;
-            }
-
-            ws.openConnection(notificationHandler);
-
-            String authToken = sessionData.getAuthTokenString();
-            int gameID = sessionData.getGameID();
-            UserGameCommand gameCommand;
-            if (asSpectator) {
-                gameCommand = new ConnectGameCommand(authToken, gameID, null);
-            } else {
-                gameCommand = new ConnectGameCommand(authToken, gameID, sessionData.getPlayerColor());
-            }
-
-            ws.send(gameCommand);
+        ConnectGameCommand gameCommand;
+        try {
+            gameCommand = new GameJoiner(ui, serverFacade, sessionData, games).observeGame();
+        } catch (CommandCancelException e) {
+            return;
         }
+        ws.openConnection(notificationHandler);
+        ws.send(gameCommand);
     }
 
     public ArrayList<GameListItem> listGames() throws FailedConnectionException, FailedResponseException {
+        // TODO make sure this never returns null
         ArrayList<GameListItem> games = serverFacade.listGames(sessionData.getAuthTokenString());
         printGameList(games);
         return games;
@@ -162,10 +158,6 @@ public class ChessClient {
 
     private String formatUsernameOutput(String username) {
         return (username == null || username.isEmpty()) ? "None" : "'" + username + "'";
-    }
-
-    public void observeGame() throws FailedConnectionException, FailedResponseException {
-        joinGame(true);
     }
 
     public void drawBoard() {

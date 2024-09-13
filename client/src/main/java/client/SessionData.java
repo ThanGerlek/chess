@@ -7,7 +7,7 @@ public class SessionData {
     private String authTokenString;
     private String username;
     private int gameID;
-    private ChessGame.TeamColor playerColor;
+    private ChessGame.TeamColor playerColor; // TODO replace with PlayerRole (presently, can be null)
     private boolean isInGame;
 
     public SessionData() {

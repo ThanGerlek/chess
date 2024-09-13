@@ -6,6 +6,7 @@ import httpConnection.ChessServerFacade;
 import httpConnection.FailedConnectionException;
 import httpConnection.FailedResponseException;
 import ui.ConsoleUI;
+import websocket.commands.ConnectGameCommand;
 
 import java.util.ArrayList;
 
@@ -23,20 +24,37 @@ public class GameJoiner {
         this.games = games;
     }
 
-    public void joinGame(boolean asSpectator)
-            throws FailedResponseException, FailedConnectionException, CommandCancelException {
+    public ConnectGameCommand joinGame()
+        throws FailedResponseException, FailedConnectionException, CommandCancelException {
         ui.println("Enter the number for the game you would like to play.");
         int gameID = selectGame();
-        ChessGame.TeamColor color = asSpectator ? null : selectColor();
+        ChessGame.TeamColor color = selectColor();
 
         serverFacade.joinGame(color, gameID, sessionData.getAuthTokenString());
 
         sessionData.setGameData(gameID, color);
-        sessionData.setAuthRole(asSpectator ? AuthorizationRole.OBSERVER : AuthorizationRole.PLAYER);
+        sessionData.setAuthRole(AuthorizationRole.PLAYER);
+
+        ChessGame.TeamColor playerColor = sessionData.getPlayerColor();
+        return buildConnectGameCommand(playerColor);
+    }
+
+    public ConnectGameCommand observeGame() throws CommandCancelException {
+        ui.println("Enter the number for the game you would like to observe.");
+        int gameID = selectGame();
+
+        sessionData.setGameData(gameID, null);
+        sessionData.setAuthRole(AuthorizationRole.OBSERVER);
+
+        return buildConnectGameCommand(null);
+    }
+
+    private ConnectGameCommand buildConnectGameCommand(ChessGame.TeamColor playerColor) {
+        return new ConnectGameCommand(sessionData.getAuthTokenString(), sessionData.getGameID(), playerColor);
     }
 
     private int selectGame() throws CommandCancelException {
-        try {
+        try { // TODO rmv unneeded try/catch
             Integer gameNumber = ui.promptMaybeInteger("Enter a game number: ");
             if (gameNumber == null) {
                 throw new CommandCancelException("Cancelled by player");
