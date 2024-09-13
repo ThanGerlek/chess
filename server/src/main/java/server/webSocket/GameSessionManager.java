@@ -83,8 +83,8 @@ public class GameSessionManager {
 
     private ConcurrentHashMap<String, Session> getGameSession(int gameID) {
         if (!gameSessions.containsKey(gameID)) {
-            throw new IllegalArgumentException(
-                    String.format("Cannot call broadcast() on unrecognized gameID: %d", gameID));
+            throw new IllegalArgumentException(String.format("Cannot call broadcast() on unrecognized gameID: %d",
+                    gameID));
         } else {
             return gameSessions.get(gameID);
         }

@@ -60,11 +60,12 @@ public class DatabaseGameDAO implements GameDAO {
 
         String chessGameStr = ChessSerializer.gson().toJson(game.chessGame());
 
-        ChessDatabaseManager.update("INSERT INTO games (gameId, gameName, game) VALUES (?, ?, ?)", preparedStatement -> {
-            preparedStatement.setInt(1, game.gameID());
-            preparedStatement.setString(2, game.gameName());
-            preparedStatement.setString(3, chessGameStr);
-        });
+        ChessDatabaseManager.update("INSERT INTO games (gameId, gameName, game) VALUES (?, ?, ?)",
+                preparedStatement -> {
+                    preparedStatement.setInt(1, game.gameID());
+                    preparedStatement.setString(2, game.gameName());
+                    preparedStatement.setString(3, chessGameStr);
+                });
     }
 
     /**
@@ -146,11 +147,12 @@ public class DatabaseGameDAO implements GameDAO {
         }
 
         String roleString = PlayerRole.roleToString(role);
-        ChessDatabaseManager.update("INSERT INTO roles (username, role, gameId) VALUES (?, ?, ?)", preparedStatement -> {
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, roleString);
-            preparedStatement.setInt(3, gameID);
-        });
+        ChessDatabaseManager.update("INSERT INTO roles (username, role, gameId) VALUES (?, ?, ?)",
+                preparedStatement -> {
+                    preparedStatement.setString(1, username);
+                    preparedStatement.setString(2, roleString);
+                    preparedStatement.setInt(3, gameID);
+                });
     }
 
     private void assertIDExists(int gameID) throws DataAccessException {
@@ -162,11 +164,9 @@ public class DatabaseGameDAO implements GameDAO {
 
     private boolean isRoleTakenForUser(Game game, String username, PlayerRole role) {
         if (PlayerRole.WHITE_PLAYER.equals(role)) {
-            return game.whiteUsername() != null && !game.whiteUsername().isEmpty() &&
-                    !game.whiteUsername().equals(username);
+            return game.whiteUsername() != null && !game.whiteUsername().isEmpty() && !game.whiteUsername().equals(username);
         } else if (PlayerRole.BLACK_PLAYER.equals(role)) {
-            return game.blackUsername() != null && !game.blackUsername().isEmpty() &&
-                    !game.blackUsername().equals(username);
+            return game.blackUsername() != null && !game.blackUsername().isEmpty() && !game.blackUsername().equals(username);
         } else if (PlayerRole.SPECTATOR.equals(role)) {
             return false;
         } else {
@@ -234,15 +234,16 @@ public class DatabaseGameDAO implements GameDAO {
             ResultSet rs = preparedStatement.getGeneratedKeys();
 
             if (!rs.next()) {
-                throw new SQLException(
-                        "Failed to generateNewGameID: inserted with no errors but no generated keys were returned.");
+                throw new SQLException("Failed to generateNewGameID: inserted with no errors but no generated keys " +
+                        "were returned.");
             } else {
                 return rs.getInt(1);
             }
 
         } catch (SQLException e) {
-            System.out.println(
-                    "Failed to run executeUpdate() (with generated keys) on SQL String: `" + sqlString + "`");
+            String msg = String.format("Failed to run executeUpdate() (with generated keys) on SQL String `%s`",
+                    sqlString);
+            System.out.println(msg);
             throw new DataAccessException(e.getMessage());
             // TODO return connection?
 //        } finally {

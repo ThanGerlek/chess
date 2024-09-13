@@ -60,8 +60,7 @@ public class WebSocketClient extends Endpoint {
         try {
             session.getBasicRemote().sendText(messageJson);
         } catch (IOException e) {
-            throw new FailedConnectionException(
-                    "Client failed to send WebSocket message with error: " + e.getMessage());
+            throw new FailedConnectionException("Client failed to send WebSocket message with error: " + e.getMessage());
         } catch (IllegalStateException e) {
             // Connection may have closed; try again
             openConnection(notificationHandler);

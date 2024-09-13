@@ -38,8 +38,7 @@ public class UserGameCommandHandler {
         String username = authDAO.getUsername(authString);
         Game game = gameDAO.findGame(gameID);
         ArrayList<String> observers = game.getSpectators();
-        if (!Objects.equals(username, game.blackUsername()) && !Objects.equals(username, game.whiteUsername()) &&
-                !observers.contains(username)) {
+        if (!Objects.equals(username, game.blackUsername()) && !Objects.equals(username, game.whiteUsername()) && !observers.contains(username)) {
             String msg = String.format("Call to requireUserInGame() failed to find a role for user '%s' in game %d",
                     username, gameID);
             throw new BadRequestException(msg);

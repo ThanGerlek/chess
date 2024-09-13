@@ -9,6 +9,18 @@ import spark.Response;
 public abstract class HttpHandler {
     protected Gson gson = new Gson();
 
+    public static String parseToBody(Response res, Object response, int status) {
+        res.status(status);
+        return parseToBody(res, response);
+    }
+
+    public static String parseToBody(Response res, Object response) {
+        String bodyStr = (new Gson()).toJson(response);
+        res.type("application/json");
+        res.body(bodyStr);
+        return bodyStr;
+    }
+
     public Object handleRequest(Request req, Response res) {
         return defaultErrorHandler(req, res);
     }
@@ -33,18 +45,6 @@ public abstract class HttpHandler {
     protected String handleError(Response res, int status, String errMsg) {
         MessageResponse response = new MessageResponse(String.format("Error: %s", errMsg));
         return parseToBody(res, response, status);
-    }
-
-    public static String parseToBody(Response res, Object response, int status) {
-        res.status(status);
-        return parseToBody(res, response);
-    }
-
-    public static String parseToBody(Response res, Object response) {
-        String bodyStr = (new Gson()).toJson(response);
-        res.type("application/json");
-        res.body(bodyStr);
-        return bodyStr;
     }
 
 }

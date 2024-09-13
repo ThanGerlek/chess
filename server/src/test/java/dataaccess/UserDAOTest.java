@@ -9,19 +9,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserDAOTest {
     private static final boolean IS_SQL_DAO = true;
-
+    private static final User user = new User("validUser", "password", "email");
     private static UserDAO userDAO;
 
-    private static final User user = new User("validUser", "password", "email");
+    @AfterAll
+    static void deInit() throws DataAccessException {
+        userDAO.clearUsers();
+    }
 
     @BeforeEach
     void setUp() throws DataAccessException {
         userDAO = IS_SQL_DAO ? new DatabaseUserDAO() : new MemoryUserDAO();
-        userDAO.clearUsers();
-    }
-
-    @AfterAll
-    static void deInit() throws DataAccessException {
         userDAO.clearUsers();
     }
 

@@ -24,14 +24,14 @@ public class ServerFacadeTests {
         System.out.println("Started test HTTP server on " + port);
     }
 
-    @BeforeEach
-    public void setUp() throws FailedConnectionException, FailedResponseException {
-        facade.clearApplication();
-    }
-
     @AfterAll
     static void stopServer() {
         server.stop();
+    }
+
+    @BeforeEach
+    public void setUp() throws FailedConnectionException, FailedResponseException {
+        facade.clearApplication();
     }
 
     @Test

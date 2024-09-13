@@ -45,6 +45,16 @@ public class ChessSerializer {
 
     private static TypeAdapter<ChessMove> getChessMoveAdapter() {
         return new TypeAdapter<>() {
+            private static ChessPosition readChessPositionField(JsonReader jsonReader) throws IOException {
+                String positionFieldName = jsonReader.nextName();
+                if (jsonReader.peek() == JsonToken.STRING) {
+                    String posJson = jsonReader.nextString();
+                    return getChessPositionAdapter().fromJson(posJson);
+                } else {
+                    return readChessPosition(jsonReader);
+                }
+            }
+
             @Override
             public void write(JsonWriter jsonWriter, ChessMove move) throws IOException {
                 String json = new Gson().toJson(move);
@@ -70,16 +80,6 @@ public class ChessSerializer {
                     ChessPiece.PieceType promotionPiece = readPieceTypeField(jsonReader);
                     jsonReader.endObject();
                     return new ChessMove(startPosition, endPosition, promotionPiece);
-                }
-            }
-
-            private static ChessPosition readChessPositionField(JsonReader jsonReader) throws IOException {
-                String positionFieldName = jsonReader.nextName();
-                if (jsonReader.peek() == JsonToken.STRING) {
-                    String posJson = jsonReader.nextString();
-                    return getChessPositionAdapter().fromJson(posJson);
-                } else {
-                    return readChessPosition(jsonReader);
                 }
             }
 

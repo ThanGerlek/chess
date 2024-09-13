@@ -16,7 +16,10 @@ import ui.command.Commands;
 import ui.command.UICommand;
 import websocket.NotificationHandler;
 import websocket.WebSocketClient;
-import websocket.commands.*;
+import websocket.commands.ConnectGameCommand;
+import websocket.commands.LeaveGameCommand;
+import websocket.commands.MakeMoveGameCommand;
+import websocket.commands.ResignGameCommand;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,9 +79,8 @@ public class ChessClient {
 
     public void register() throws FailedConnectionException, FailedResponseException {
         ui.println("Please enter a username and password.");
-        ui.println(String.format(
-                "%sWARNING: DO NOT USE A REAL PASSWORD.%s This program was built by a college undergrad, not a " +
-                        "security" + " professional. It is NOT secure.", SET_TEXT_BOLD, RESET_TEXT_BOLD_FAINT));
+        ui.println(String.format("%sWARNING: DO NOT USE A REAL PASSWORD.%s This program was built by a college "
+                + "undergrad, not a security professional. It is NOT secure.", SET_TEXT_BOLD, RESET_TEXT_BOLD_FAINT));
         String username = ui.promptInput("Username: ");
         String password = ui.promptInput("Password: ");
         String email = ui.promptInput("Email (optional): ");
@@ -152,8 +154,8 @@ public class ChessClient {
     private String formatGameInfoString(int gameNumber, GameListItem game) {
         String whitePlayer = formatUsernameOutput(game.whiteUsername());
         String blackPlayer = formatUsernameOutput(game.blackUsername());
-        return String.format("\t[%d] Game name: '%s', white player: %s, black player: %s", gameNumber, game.gameName(),
-                whitePlayer, blackPlayer);
+        return String.format("\t[%d] Game name: '%s', white player: %s, black player: %s",
+                gameNumber, game.gameName(), whitePlayer, blackPlayer);
     }
 
     private String formatUsernameOutput(String username) {
@@ -217,9 +219,8 @@ public class ChessClient {
     }
 
     public void resign() throws FailedConnectionException {
-        String input = ui.promptInput(
-                "Are you sure you want to resign? This cannot be undone. Enter 'confirm' if so, or anything else to " +
-                        "cancel: ");
+        String input = ui.promptInput("Are you sure you want to resign? This cannot be undone. "
+                + "Enter 'confirm' if so, or anything else to " + "cancel: ");
         if ("confirm".equals(input)) {
             ws.send(new ResignGameCommand(sessionData.getAuthTokenString(), sessionData.getGameID()));
             sessionData.setAuthRole(AuthorizationRole.OBSERVER);

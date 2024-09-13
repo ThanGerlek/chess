@@ -11,12 +11,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AuthDAOTest {
     private static final boolean IS_SQL_DAO = true;
-
-    private static UserDAO userDAO;
-    private static AuthDAO authDAO;
-
     private static final User validUser = new User("validUser", "password", "email");
     private static final AuthToken validToken = new AuthToken("validTokenString", validUser.username());
+    private static UserDAO userDAO;
+    private static AuthDAO authDAO;
 
     @BeforeAll
     static void init() throws DataAccessException {
@@ -25,15 +23,15 @@ class AuthDAOTest {
         userDAO.insertNewUser(validUser);
     }
 
-    @BeforeEach
-    void setUp() throws DataAccessException {
-        authDAO = IS_SQL_DAO ? new DatabaseAuthDAO(userDAO) : new MemoryAuthDAO(userDAO);
-        authDAO.clearAuthTokens();
-    }
-
     @AfterAll
     static void deInit() throws DataAccessException {
         userDAO.clearUsers();
+        authDAO.clearAuthTokens();
+    }
+
+    @BeforeEach
+    void setUp() throws DataAccessException {
+        authDAO = IS_SQL_DAO ? new DatabaseAuthDAO(userDAO) : new MemoryAuthDAO(userDAO);
         authDAO.clearAuthTokens();
     }
 

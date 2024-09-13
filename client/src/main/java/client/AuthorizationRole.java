@@ -46,12 +46,6 @@ public class AuthorizationRole {
     }
 
     private enum Role {
-        ANY,
-        GUEST,
-        USER,
-        PLAYER,
-        OBSERVER,
-        CONSOLE,
-        SUPERUSER
+        ANY, GUEST, USER, PLAYER, OBSERVER, CONSOLE, SUPERUSER
     }
 }

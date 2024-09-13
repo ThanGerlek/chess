@@ -12,16 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameDAOTest {
     private static final boolean IS_SQL_DAO = false;
-
-    private static UserDAO userDAO;
-    private static GameDAO gameDAO;
-
     private static final User user = new User("user1", "pass1", "email1");
     private static final User user2 = new User("user2", "pass2", "email2");
-    private static Game game = new Game(1, "GameDAOTest Game");
     private static final Game game2 = new Game(2, "GameDAOTest Game 2");
-
     private static final int invalidGameID = 42;
+    private static UserDAO userDAO;
+    private static GameDAO gameDAO;
+    private static Game game = new Game(1, "GameDAOTest Game");
 
     @BeforeAll
     static void init() throws DataAccessException {
@@ -31,17 +28,17 @@ class GameDAOTest {
         userDAO.insertNewUser(user2);
     }
 
+    @AfterAll
+    static void deInit() throws DataAccessException {
+        userDAO.clearUsers();
+        gameDAO.clearGames();
+    }
+
     @BeforeEach
     void setUp() throws DataAccessException {
         gameDAO = IS_SQL_DAO ? new DatabaseGameDAO(userDAO) : new MemoryGameDAO(userDAO);
         gameDAO.clearGames();
         game = new Game(1, "GameDAOTest Game");
-    }
-
-    @AfterAll
-    static void deInit() throws DataAccessException {
-        userDAO.clearUsers();
-        gameDAO.clearGames();
     }
 
     @Test

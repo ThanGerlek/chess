@@ -19,18 +19,6 @@ public class ServerFacade {
         this.serverURL = serverURL;
     }
 
-    public void makeRequest(RequestData reqData) throws FailedResponseException, FailedConnectionException {
-        makeRequest(reqData, null);
-    }
-
-    public <T> T makeRequest(RequestData reqData, Class<T> responseClass)
-            throws FailedResponseException, FailedConnectionException {
-        HttpURLConnection http = setUpConnection(reqData.method(), serverURL + reqData.path());
-        writeRequest(reqData.request(), http, reqData.authTokenString());
-        connect(http);
-        return readResponse(http, responseClass);
-    }
-
     private static HttpURLConnection setUpConnection(String method, String urlString) throws FailedConnectionException {
         try {
             URL url = (new URI(urlString)).toURL();
@@ -43,8 +31,7 @@ public class ServerFacade {
         }
     }
 
-    private static void writeRequest(Object request, HttpURLConnection http, String authTokenString)
-            throws FailedConnectionException {
+    private static void writeRequest(Object request, HttpURLConnection http, String authTokenString) throws FailedConnectionException {
         try {
             writeHeaders(http, authTokenString);
             writeRequestBody(request, http);
@@ -109,8 +96,7 @@ public class ServerFacade {
         }
     }
 
-    private static <T> T readResponseBody(HttpURLConnection http, Class<T> responseClass)
-            throws FailedResponseException {
+    private static <T> T readResponseBody(HttpURLConnection http, Class<T> responseClass) throws FailedResponseException {
         if (responseClass == null) {
             return null;
         }
@@ -123,5 +109,17 @@ public class ServerFacade {
             throw new FailedResponseException("Failed to read response body: " + e.getMessage());
         }
         return response;
+    }
+
+    public void makeRequest(RequestData reqData) throws FailedResponseException, FailedConnectionException {
+        makeRequest(reqData, null);
+    }
+
+    public <T> T makeRequest(RequestData reqData, Class<T> responseClass) throws FailedResponseException,
+            FailedConnectionException {
+        HttpURLConnection http = setUpConnection(reqData.method(), serverURL + reqData.path());
+        writeRequest(reqData.request(), http, reqData.authTokenString());
+        connect(http);
+        return readResponse(http, responseClass);
     }
 }

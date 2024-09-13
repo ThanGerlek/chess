@@ -44,7 +44,8 @@ public class DatabaseUserDAO implements UserDAO {
             throw new ValueAlreadyTakenException("Tried to insert a user with an already-taken username");
         }
 
-        ChessDatabaseManager.update("INSERT INTO users (username, passwordHash, email) VALUES (?, ?, ?)", preparedStatement -> {
+        ChessDatabaseManager.update("INSERT INTO users (username, passwordHash, email) VALUES (?, ?, ?)",
+                preparedStatement -> {
             preparedStatement.setString(1, user.username());
             preparedStatement.setString(2, user.pwHash());
             if (user.email() == null || user.email().isEmpty()) {

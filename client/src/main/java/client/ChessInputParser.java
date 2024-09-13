@@ -35,7 +35,8 @@ public class ChessInputParser {
             case "b" -> ChessPiece.PieceType.BISHOP;
             case "r" -> ChessPiece.PieceType.ROOK;
             case "n" -> ChessPiece.PieceType.KNIGHT;
-            default -> throw new InvalidUserInputException(promotionString, "Invalid promotionString: '" + promotionString + "'");
+            default -> throw new InvalidUserInputException(promotionString,
+                    "Invalid promotionString: '" + promotionString + "'");
         };
     }
 

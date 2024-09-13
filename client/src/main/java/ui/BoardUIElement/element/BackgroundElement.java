@@ -25,9 +25,6 @@ public class BackgroundElement {
     }
 
     private enum ElemType {
-        BORDER,
-        BLACK_SQUARE,
-        WHITE_SQUARE,
-        HIGHLIGHTED_SQUARE
+        BORDER, BLACK_SQUARE, WHITE_SQUARE, HIGHLIGHTED_SQUARE
     }
 }

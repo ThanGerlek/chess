@@ -28,18 +28,6 @@ public class ChessPiece {
     }
 
     /**
-     * The various different chess piece options
-     */
-    public enum PieceType {
-        KING,
-        QUEEN,
-        BISHOP,
-        KNIGHT,
-        ROOK,
-        PAWN
-    }
-
-    /**
      * @return which team this chess piece belongs to.
      */
     public ChessGame.TeamColor getTeamColor() {
@@ -73,7 +61,7 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return switch(board.getPiece(myPosition).getPieceType()) {
+        return switch (board.getPiece(myPosition).getPieceType()) {
             case KING -> new KingMovementRule().pieceMoves(board, myPosition);
             case QUEEN -> new QueenMovementRule().pieceMoves(board, myPosition);
             case BISHOP -> new BishopMovementRule().pieceMoves(board, myPosition);
@@ -94,5 +82,17 @@ public class ChessPiece {
     @Override
     public int hashCode() {
         return Objects.hash(type, color, hasNeverMoved);
+    }
+
+    /**
+     * The various different chess piece options
+     */
+    public enum PieceType {
+        KING,
+        QUEEN,
+        BISHOP,
+        KNIGHT,
+        ROOK,
+        PAWN
     }
 }

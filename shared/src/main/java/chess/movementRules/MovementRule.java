@@ -7,27 +7,6 @@ import java.util.LinkedList;
 
 public abstract class MovementRule {
 
-    public abstract Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition);
-
-    /**
-     * Returns a version of the given ChessPosition shifted by the given amounts towards the opposing side. Positive
-     * values shift up and right relative to the player who owns the piece.
-     *
-     * @param position the starting ChessPosition.
-     * @param color the color of the player who owns the piece.
-     * @param deltaRow the amount to shift the row.
-     * @param deltaCol the amount to shift the column.
-     * @return a shifted ChessPosition.
-     */
-    protected ChessPosition shiftRelative(ChessPosition position, ChessGame.TeamColor color, int deltaRow,
-            int deltaCol) {
-        if (color == ChessGame.TeamColor.WHITE) {
-            return shift(position, deltaRow, deltaCol);
-        } else {
-            return shift(position, -deltaRow, -deltaCol);
-        }
-    }
-
     /**
      * Returns a version of the given ChessPosition shifted by the given amounts. Positive values shift up and right
      * relative to the white player.
@@ -39,6 +18,27 @@ public abstract class MovementRule {
      */
     protected static ChessPosition shift(ChessPosition position, int deltaRow, int deltaCol) {
         return new ChessPosition(position.getRow() + deltaRow, position.getColumn() + deltaCol);
+    }
+
+    public abstract Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition);
+
+    /**
+     * Returns a version of the given ChessPosition shifted by the given amounts towards the opposing side. Positive
+     * values shift up and right relative to the player who owns the piece.
+     *
+     * @param position the starting ChessPosition.
+     * @param color    the color of the player who owns the piece.
+     * @param deltaRow the amount to shift the row.
+     * @param deltaCol the amount to shift the column.
+     * @return a shifted ChessPosition.
+     */
+    protected ChessPosition shiftRelative(ChessPosition position, ChessGame.TeamColor color, int deltaRow,
+            int deltaCol) {
+        if (color == ChessGame.TeamColor.WHITE) {
+            return shift(position, deltaRow, deltaCol);
+        } else {
+            return shift(position, -deltaRow, -deltaCol);
+        }
     }
 
     /**
@@ -54,7 +54,8 @@ public abstract class MovementRule {
      * @param relativeMove  the RelativeChessMove to apply to the startPosition.
      * @return a Collection of ChessMoves made by repeatedly applying relativeMove.
      */
-    protected Collection<ChessMove> getMovesFromRepeatedRelativeMove(ChessBoard board, ChessPosition startPosition, RelativeChessMove relativeMove) {
+    protected Collection<ChessMove> getMovesFromRepeatedRelativeMove(ChessBoard board, ChessPosition startPosition,
+            RelativeChessMove relativeMove) {
         Collection<ChessMove> moves = new LinkedList<>();
 
         ChessPosition currentEndPosition = relativeMove.apply(startPosition);
@@ -77,7 +78,8 @@ public abstract class MovementRule {
         return position.isValidPosition() && board.getPiece(position) == null;
     }
 
-    protected boolean isValidCapturingSpace(ChessBoard board, ChessGame.TeamColor movingPieceColor, ChessPosition position) {
+    protected boolean isValidCapturingSpace(ChessBoard board, ChessGame.TeamColor movingPieceColor,
+            ChessPosition position) {
         return position.isValidPosition()
                 && board.getPiece(position) != null
                 && board.getPiece(position).getTeamColor() != movingPieceColor;

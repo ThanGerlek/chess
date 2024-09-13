@@ -30,8 +30,8 @@ public class ServerMessageHandler {
     }
 
     private void parseAsNotification(String message) {
-        NotificationServerMessage notification =
-                ChessSerializer.gson().fromJson(message, NotificationServerMessage.class);
+        NotificationServerMessage notification = ChessSerializer.gson().fromJson(message,
+                NotificationServerMessage.class);
         ui.println("[Info] " + notification.getMessage());
     }
 

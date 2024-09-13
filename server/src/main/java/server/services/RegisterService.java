@@ -31,8 +31,7 @@ public class RegisterService {
      * @return an AuthResponse representing the resulting HTTP response.
      */
     public AuthResponse register(RegisterRequest request) throws DataAccessException {
-        if (request.username() == null || request.password() == null || request.username().isEmpty() ||
-                request.password().isEmpty()) {
+        if (request.username() == null || request.password() == null || request.username().isEmpty() || request.password().isEmpty()) {
             throw new BadRequestException("Please provide a username and password");
         }
         String pwHash = BCrypt.hashpw(request.password(), BCrypt.gensalt());

@@ -30,8 +30,8 @@ public class MemoryGameDAO implements GameDAO {
         // Failures: can't access database; game already exists (same gameID)
         Integer id = game.gameID();
         if (gameDatabase.containsKey(id)) {
-            throw new ValueAlreadyTakenException(
-                    "Tried to insert a new Game with a gameID that already exists in the database");
+            throw new ValueAlreadyTakenException("Tried to insert a new Game with a gameID that already exists in the" +
+                    " database");
         }
         gameDatabase.put(id, game);
         maxUsedGameID = Math.max(maxUsedGameID, game.gameID());

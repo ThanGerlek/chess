@@ -24,8 +24,8 @@ public class GameJoiner {
         this.games = games;
     }
 
-    public ConnectGameCommand joinGame()
-        throws FailedResponseException, FailedConnectionException, CommandCancelException {
+    public ConnectGameCommand joinGame() throws FailedResponseException, FailedConnectionException,
+            CommandCancelException {
         ui.println("Enter the number for the game you would like to play.");
         int gameID = selectGame();
         ChessGame.TeamColor color = selectColor();

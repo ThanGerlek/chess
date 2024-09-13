@@ -35,8 +35,10 @@ class ListGamesServiceTest extends ServiceTest {
 
         game1.chessGame().getBoard().resetBoard();
         game2.chessGame().getBoard().resetBoard();
-        game1.chessGame().getBoard().addPiece(new ChessPosition(3, 3), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KING));
-        game2.chessGame().getBoard().addPiece(new ChessPosition(3, 3), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN));
+        game1.chessGame().getBoard().addPiece(new ChessPosition(3, 3), new ChessPiece(ChessGame.TeamColor.WHITE,
+                ChessPiece.PieceType.KING));
+        game2.chessGame().getBoard().addPiece(new ChessPosition(3, 3), new ChessPiece(ChessGame.TeamColor.BLACK,
+                ChessPiece.PieceType.QUEEN));
 
         gameDAO.insertNewGame(game1);
         gameDAO.insertNewGame(game2);

@@ -6,9 +6,9 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorServerMessage;
 import websocket.messages.ServerMessage;
-import websocket.commands.UserGameCommand;
 
 import java.io.IOException;
 
@@ -44,8 +44,7 @@ public class WebSocketServer {
     }
 
     public void sendError(Session session, Throwable e, String errMsg) {
-        System.err.println("Server sent an error while parsing UserGameCommand: '" + errMsg + "'\n\tOriginal error: " +
-                e.getMessage());
+        System.err.println("Server sent an error while parsing UserGameCommand: '" + errMsg + "'\n\tOriginal error: " + e.getMessage());
         send(session, new ErrorServerMessage(errMsg));
     }
 

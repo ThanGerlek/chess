@@ -80,8 +80,8 @@ public class BoardToUIElementParser implements BoardUIElementReader {
         } else if (isOnTopOrBottomBorder(row, col)) {
             return new ForegroundElement(getFileCharFromColIndex(col));
         } else {
-            throw new IllegalArgumentException(
-                    "Called generateBorderFGElement() on a position that is not on the border");
+            throw new IllegalArgumentException("Called generateBorderFGElement() on a position that is not on the " +
+                    "border");
         }
     }
 
