@@ -28,8 +28,7 @@ public class GameJoiner {
     public ConnectGameCommand joinGame() throws FailedResponseException, FailedConnectionException,
             CommandCancelException {
         if (!games.isEmpty()) {
-            ui.println("Enter the number for the game you would like to play.");
-            int gameID = selectGame();
+            int gameID = selectGame("Enter the number for the game you would like to play.");
             ChessGame.TeamColor color = selectColor();
 
             serverFacade.joinGame(color, gameID, sessionData.getAuthTokenString());
@@ -46,8 +45,7 @@ public class GameJoiner {
 
     public ConnectGameCommand observeGame() throws CommandCancelException {
         if (!games.isEmpty()) {
-            ui.println("Enter the number for the game you would like to observe.");
-            int gameID = selectGame();
+            int gameID = selectGame("Enter the number for the game you would like to observe.");
 
             sessionData.setGameData(gameID, null);
             sessionData.setAuthRole(AuthorizationRole.OBSERVER);
@@ -62,18 +60,15 @@ public class GameJoiner {
         return new ConnectGameCommand(sessionData.getAuthTokenString(), sessionData.getGameID(), playerColor);
     }
 
-    private int selectGame() throws CommandCancelException {
-        try { // TODO rmv unneeded try/catch
-            Integer gameNumber = ui.promptMaybeInteger("Enter a game number: ");
-            if (gameNumber == null) {
-                throw new CommandCancelException("Cancelled by player");
-            } else if (gameNumber < 0 || gameNumber > games.size()) {
-                throw cancelOnInvalidInput(String.format("gameNumber '%d' is out of range", gameNumber));
-            } else {
-                return games.get(gameNumber).gameID();
-            }
-        } catch (NumberFormatException e) {
-            throw cancelOnInvalidInput(e.getMessage());
+    private int selectGame(String instructions) throws CommandCancelException {
+        ui.println(instructions);
+        Integer gameNumber = ui.promptMaybeInteger("Enter a game number: ");
+        if (gameNumber == null) {
+            throw new CommandCancelException("Cancelled by player");
+        } else if (gameNumber < 0 || gameNumber > games.size()) {
+            throw cancelOnInvalidInput(String.format("gameNumber '%d' is out of range", gameNumber));
+        } else {
+            return games.get(gameNumber).gameID();
         }
     }
 
