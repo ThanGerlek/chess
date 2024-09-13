@@ -1,6 +1,8 @@
 package ui;
 
-public class InvalidUserInputException extends Exception {
+import client.CommandCancelException;
+
+public class InvalidUserInputException extends CommandCancelException {
     String invalidInputString;
 
     public InvalidUserInputException(String invalidInputString, String msg) {

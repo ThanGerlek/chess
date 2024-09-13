@@ -10,6 +10,7 @@ import httpConnection.FailedResponseException;
 import model.Game;
 import ui.BoardDrawer;
 import ui.ConsoleUI;
+import ui.IllegalCommandException;
 import ui.InvalidUserInputException;
 import ui.command.Command;
 import ui.command.Commands;
@@ -114,7 +115,10 @@ public class ChessClient {
         ConnectGameCommand gameCommand;
         try {
             gameCommand = new GameJoiner(ui, serverFacade, sessionData, games).joinGame();
-        } catch (CommandCancelException e) {
+        } catch (IllegalCommandException | InvalidUserInputException e) {
+            ui.println(e.getMessage());
+            return;
+        } catch (UserCancelException e) {
             return;
         }
         ws.openConnection(notificationHandler);
@@ -126,9 +130,13 @@ public class ChessClient {
         ConnectGameCommand gameCommand;
         try {
             gameCommand = new GameJoiner(ui, serverFacade, sessionData, games).observeGame();
-        } catch (CommandCancelException e) {
+        } catch (IllegalCommandException | InvalidUserInputException e) {
+            ui.println(e.getMessage());
+            return;
+        } catch (UserCancelException e) {
             return;
         }
+
         ws.openConnection(notificationHandler);
         ws.send(gameCommand);
     }
@@ -174,7 +182,7 @@ public class ChessClient {
         } catch (InvalidUserInputException e) {
             ui.println(String.format("Unrecognized value '%s'. Cancelling", e.getInvalidInputString()));
             return;
-        } catch (CommandCancelException e) {
+        } catch (UserCancelException e) {
             return;
         }
 
@@ -212,9 +220,10 @@ public class ChessClient {
         } catch (InvalidUserInputException e) {
             ui.println(String.format("Unrecognized value '%s'. Cancelling", e.getInvalidInputString()));
             return;
-        } catch (CommandCancelException e) {
+        } catch (UserCancelException e) {
             return;
         }
+
         ws.send(new MakeMoveGameCommand(sessionData.getAuthTokenString(), sessionData.getGameID(), move));
     }
 

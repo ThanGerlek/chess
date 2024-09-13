@@ -4,7 +4,7 @@ import chess.ChessMove;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import client.ChessInputParser;
-import client.CommandCancelException;
+import client.UserCancelException;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -53,16 +53,16 @@ public class ConsoleUI {
         }
     }
 
-    public ChessPosition promptChessPosition(String prompt) throws InvalidUserInputException, CommandCancelException {
+    public ChessPosition promptChessPosition(String prompt) throws InvalidUserInputException, UserCancelException {
         String startString = promptInput(prompt);
         return ChessInputParser.parseToPosition(startString);
     }
 
-    public ChessMove promptChessMove() throws InvalidUserInputException, CommandCancelException {
+    public ChessMove promptChessMove() throws InvalidUserInputException, UserCancelException {
         return promptChessMove("");
     }
 
-    public ChessMove promptChessMove(String prompt) throws InvalidUserInputException, CommandCancelException {
+    public ChessMove promptChessMove(String prompt) throws InvalidUserInputException, UserCancelException {
         if (!"".equals(prompt)) {
             println(prompt);
         }

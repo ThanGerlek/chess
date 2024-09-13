@@ -7,6 +7,7 @@ import httpConnection.FailedConnectionException;
 import httpConnection.FailedResponseException;
 import ui.ConsoleUI;
 import ui.IllegalCommandException;
+import ui.InvalidUserInputException;
 import websocket.commands.ConnectGameCommand;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class GameJoiner {
     }
 
     public ConnectGameCommand joinGame() throws FailedResponseException, FailedConnectionException,
-            CommandCancelException {
+            IllegalCommandException, InvalidUserInputException, UserCancelException {
         if (!games.isEmpty()) {
             int gameID = selectGame("Enter the number for the game you would like to play.");
             ChessGame.TeamColor color = selectColor();
@@ -43,7 +44,8 @@ public class GameJoiner {
         }
     }
 
-    public ConnectGameCommand observeGame() throws CommandCancelException {
+    public ConnectGameCommand observeGame() throws UserCancelException, IllegalCommandException,
+            InvalidUserInputException {
         if (!games.isEmpty()) {
             int gameID = selectGame("Enter the number for the game you would like to observe.");
 
@@ -60,33 +62,29 @@ public class GameJoiner {
         return new ConnectGameCommand(sessionData.getAuthTokenString(), sessionData.getGameID(), playerColor);
     }
 
-    private int selectGame(String instructions) throws CommandCancelException {
+    private int selectGame(String instructions) throws UserCancelException, InvalidUserInputException {
         ui.println(instructions);
         Integer gameNumber = ui.promptMaybeInteger("Enter a game number: ");
         if (gameNumber == null) {
-            throw new CommandCancelException("Cancelled by player");
+            throw new UserCancelException();
         } else if (gameNumber < 0 || gameNumber > games.size()) {
-            throw cancelOnInvalidInput(String.format("gameNumber '%d' is out of range", gameNumber));
+            throw new InvalidUserInputException(gameNumber.toString(), String.format("gameNumber '%d' is out of range",
+                    gameNumber));
         } else {
             return games.get(gameNumber).gameID();
         }
     }
 
-    private ChessGame.TeamColor selectColor() throws CommandCancelException {
+    private ChessGame.TeamColor selectColor() throws InvalidUserInputException {
         String colorString = ui.promptInput("What color would you like to play? Enter 'white' or 'black': ");
         if ("white".equals(colorString) || "w".equals(colorString)) {
             return ChessGame.TeamColor.WHITE;
         } else if ("black".equals(colorString) || "b".equals(colorString)) {
             return ChessGame.TeamColor.BLACK;
         } else {
-            throw cancelOnInvalidInput(String.format("Invalid team color string: '%s'", colorString));
+            throw new InvalidUserInputException(colorString, String.format("Invalid team color string: '%s'",
+                    colorString));
         }
     }
 
-    private CommandCancelException cancelOnInvalidInput(String msg) {
-        // TODO? Restructure select methods: don't use exceptions for cancelling
-        ui.println("Unrecognized value. Cancelling");
-        // TODO log this error
-        return new CommandCancelException(msg);
-    }
 }

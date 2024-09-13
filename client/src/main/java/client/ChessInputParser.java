@@ -6,10 +6,10 @@ import ui.InvalidUserInputException;
 
 public class ChessInputParser {
     public static ChessPosition parseToPosition(String rawPositionString)
-            throws InvalidUserInputException, CommandCancelException {
+            throws InvalidUserInputException, UserCancelException {
         String positionString = rawPositionString.strip().toLowerCase();
         if (positionString.isEmpty()) {
-            throw new CommandCancelException("Cancelled by player");
+            throw new UserCancelException();
         } else if (positionString.length() != 2) {
             throw new InvalidUserInputException(positionString, "Invalid positionString: '" + positionString + "'");
         }
