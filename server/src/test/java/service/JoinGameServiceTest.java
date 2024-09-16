@@ -64,8 +64,10 @@ class JoinGameServiceTest extends ServiceTest {
     }
 
     @Test
-    void join_Game_without_color_returns_okay() throws DataAccessException {
-        service.joinGame(new JoinGameRequest(null, 1), token1.authToken());
+    void join_Game_without_color_throws_BadRequestException() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            service.joinGame(new JoinGameRequest(null, 1), token1.authToken());
+        });
     }
 
     @Test
