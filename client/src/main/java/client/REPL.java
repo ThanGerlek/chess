@@ -45,43 +45,25 @@ public class REPL implements NotificationHandler {
         }
 
         // TODO replace with switch?
-        if (Command.HELP.equals(cmd)) {
-            client.printHelpMenu();
-        } else if (Command.QUIT.equals(cmd)) {
-            client.quit();
-        } else if (Command.REGISTER.equals(cmd)) {
-            client.register();
-        } else if (Command.LOGIN.equals(cmd)) {
-            client.login();
-        } else if (Command.LOGOUT.equals(cmd)) {
-            client.logout();
-        } else if (Command.CREATE_GAME.equals(cmd)) {
-            client.createGame();
-        } else if (Command.LIST_GAMES.equals(cmd)) {
-            client.listGames();
-        } else if (Command.JOIN_GAME.equals(cmd)) {
-            client.joinGame();
-        } else if (Command.OBSERVE_GAME.equals(cmd)) {
-            client.observeGame();
-        } else if (Command.DRAW.equals(cmd)) {
-            client.drawBoard();
-        } else if (Command.LEAVE.equals(cmd)) {
-            client.leaveGame();
-        } else if (Command.MAKE_MOVE.equals(cmd)) {
-            client.makeMove();
-        } else if (Command.RESIGN.equals(cmd)) {
-            client.resign();
-        } else if (Command.HIGHLIGHT_MOVES.equals(cmd)) {
-            client.highlightMoves();
-        } else if (Command.TEST.equals(cmd)) {
-            client.runTest();
-        } else if (Command.IDENTITY.equals(cmd)) {
-            // do nothing
-            return;
-        } else if (Command.NO_INPUT.equals(cmd)) {
-            askForCommandInput();
-        } else {
-            rejectInput();
+        switch (cmd) {
+            case HELP -> client.printHelpMenu();
+            case QUIT -> client.quit();
+            case REGISTER -> client.register();
+            case LOGIN -> client.login();
+            case LOGOUT -> client.logout();
+            case CREATE_GAME -> client.createGame();
+            case LIST_GAMES -> client.listGames();
+            case JOIN_GAME -> client.joinGame();
+            case OBSERVE_GAME -> client.observeGame();
+            case DRAW -> client.drawBoard();
+            case LEAVE -> client.leaveGame();
+            case MAKE_MOVE -> client.makeMove();
+            case RESIGN -> client.resign();
+            case HIGHLIGHT_MOVES -> client.highlightMoves();
+            case TEST -> client.runTest();
+            case NO_INPUT -> askForCommandInput();
+            case IDENTITY -> {} // do nothing
+            default -> rejectInput();
         }
     }
 
