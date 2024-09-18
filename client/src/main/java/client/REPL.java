@@ -3,8 +3,7 @@ package client;
 import httpConnection.FailedConnectionException;
 import httpConnection.FailedResponseException;
 import ui.ConsoleUI;
-import ui.command.Command;
-import ui.command.Commands;
+import ui.Command;
 import websocket.NotificationHandler;
 import websocket.ServerMessageHandler;
 
@@ -23,8 +22,8 @@ public class REPL implements NotificationHandler {
 
     public void run() {
         ui.println("Welcome! Please enter a command, or 'help' for a list of available commands.");
-        Command cmd = Commands.IDENTITY;
-        while (cmd != Commands.QUIT) {
+        Command cmd = Command.IDENTITY;
+        while (cmd != Command.QUIT) {
             cmd = getCommand();
             try {
                 runCommand(cmd);
@@ -36,7 +35,7 @@ public class REPL implements NotificationHandler {
 
     private Command getCommand() {
         String input = ui.promptInput(getCommandPrompt());
-        return Commands.parse(input);
+        return Command.parse(input);
     }
 
     public void runCommand(Command cmd) throws FailedConnectionException, FailedResponseException {
@@ -45,38 +44,39 @@ public class REPL implements NotificationHandler {
             return;
         }
 
-        if (Commands.HELP.equals(cmd)) {
+        // TODO replace with switch?
+        if (Command.HELP.equals(cmd)) {
             client.printHelpMenu();
-        } else if (Commands.QUIT.equals(cmd)) {
+        } else if (Command.QUIT.equals(cmd)) {
             client.quit();
-        } else if (Commands.REGISTER.equals(cmd)) {
+        } else if (Command.REGISTER.equals(cmd)) {
             client.register();
-        } else if (Commands.LOGIN.equals(cmd)) {
+        } else if (Command.LOGIN.equals(cmd)) {
             client.login();
-        } else if (Commands.LOGOUT.equals(cmd)) {
+        } else if (Command.LOGOUT.equals(cmd)) {
             client.logout();
-        } else if (Commands.CREATE_GAME.equals(cmd)) {
+        } else if (Command.CREATE_GAME.equals(cmd)) {
             client.createGame();
-        } else if (Commands.LIST_GAMES.equals(cmd)) {
+        } else if (Command.LIST_GAMES.equals(cmd)) {
             client.listGames();
-        } else if (Commands.JOIN_GAME.equals(cmd)) {
+        } else if (Command.JOIN_GAME.equals(cmd)) {
             client.joinGame();
-        } else if (Commands.OBSERVE_GAME.equals(cmd)) {
+        } else if (Command.OBSERVE_GAME.equals(cmd)) {
             client.observeGame();
-        } else if (Commands.DRAW.equals(cmd)) {
+        } else if (Command.DRAW.equals(cmd)) {
             client.drawBoard();
-        } else if (Commands.LEAVE.equals(cmd)) {
+        } else if (Command.LEAVE.equals(cmd)) {
             client.leaveGame();
-        } else if (Commands.MAKE_MOVE.equals(cmd)) {
+        } else if (Command.MAKE_MOVE.equals(cmd)) {
             client.makeMove();
-        } else if (Commands.RESIGN.equals(cmd)) {
+        } else if (Command.RESIGN.equals(cmd)) {
             client.resign();
-        } else if (Commands.HIGHLIGHT_MOVES.equals(cmd)) {
+        } else if (Command.HIGHLIGHT_MOVES.equals(cmd)) {
             client.highlightMoves();
-        } else if (Commands.IDENTITY.equals(cmd)) {
+        } else if (Command.IDENTITY.equals(cmd)) {
             // do nothing
             return;
-        } else if (Commands.NO_INPUT.equals(cmd)) {
+        } else if (Command.NO_INPUT.equals(cmd)) {
             askForCommandInput();
         } else {
             rejectInput();

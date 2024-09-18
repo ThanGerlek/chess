@@ -12,9 +12,7 @@ import ui.BoardDrawer;
 import ui.ConsoleUI;
 import ui.IllegalCommandException;
 import ui.InvalidUserInputException;
-import ui.command.Command;
-import ui.command.Commands;
-import ui.command.UICommand;
+import ui.Command;
 import websocket.NotificationHandler;
 import websocket.WebSocketClient;
 import websocket.commands.ConnectGameCommand;
@@ -58,7 +56,7 @@ public class ChessClient {
 
     public void printHelpMenu() {
         ui.println("Available commands:");
-        for (UICommand cmd : Commands.UI_COMMANDS) {
+        for (Command cmd : Command.UI_COMMANDS) {
             if (isAuthorizedToRun(cmd)) {
                 ui.println("\t" + getHelpStringForCommand(cmd));
             }
@@ -69,7 +67,7 @@ public class ChessClient {
         return cmd.canBeRunBy(sessionData.getAuthRole());
     }
 
-    private String getHelpStringForCommand(UICommand cmd) {
+    private String getHelpStringForCommand(Command cmd) {
         return String.format("%s - %s", SET_TEXT_BOLD + cmd.getCommandString() + RESET_TEXT_BOLD_FAINT,
                 SET_TEXT_ITALIC + cmd.getDescription() + RESET_TEXT_ITALIC);
     }
