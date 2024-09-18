@@ -73,6 +73,8 @@ public class REPL implements NotificationHandler {
             client.resign();
         } else if (Command.HIGHLIGHT_MOVES.equals(cmd)) {
             client.highlightMoves();
+        } else if (Command.TEST.equals(cmd)) {
+            client.runTest();
         } else if (Command.IDENTITY.equals(cmd)) {
             // do nothing
             return;

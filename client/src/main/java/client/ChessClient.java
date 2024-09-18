@@ -76,6 +76,21 @@ public class ChessClient {
         ui.println("Goodbye!");
     }
 
+    public void runTest() {
+        ui.println("Running test.");
+        try {
+            test();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ui.println(e.getMessage());
+        }
+        ui.println("Completed test.");
+    }
+
+    private void test() throws Exception {
+        throw new RuntimeException("Unimplemented test() command");
+    }
+
     public void register() throws FailedConnectionException, FailedResponseException {
         ui.println("Please enter a username and password.");
         ui.println(String.format("%sWARNING: DO NOT USE A REAL PASSWORD.%s This program was built by a college "
