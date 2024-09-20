@@ -12,16 +12,20 @@ import java.net.URISyntaxException;
 public class WebSocketClient extends Endpoint {
     private final String serverURL;
     private Session session;
-    private NotificationHandler notificationHandler;
+    private final NotificationHandler notificationHandler;
 
-    public WebSocketClient(String serverURL) {
+    public WebSocketClient(String serverURL, NotificationHandler notificationHandler) {
         this.session = null;
-        this.notificationHandler = null;
+        this.notificationHandler = notificationHandler;
         this.serverURL = serverURL;
+        try {
+            openConnection();
+        } catch (FailedConnectionException e) {
+            throw new RuntimeException(e.getMessage(), e); // TODO Better error handling
+        }
     }
 
-    public void openConnection(NotificationHandler notificationHandler) throws FailedConnectionException {
-        this.notificationHandler = notificationHandler;
+    public void openConnection() throws FailedConnectionException {
         // TODO close previous connection?
         try {
             URI socketURI = getURI(serverURL);
@@ -63,7 +67,7 @@ public class WebSocketClient extends Endpoint {
             throw new FailedConnectionException("Client failed to send WebSocket message with error: " + e.getMessage());
         } catch (IllegalStateException e) {
             // Connection may have closed; try again
-            openConnection(notificationHandler);
+            openConnection();
             try {
                 session.getBasicRemote().sendText(messageJson);
             } catch (IOException e2) {

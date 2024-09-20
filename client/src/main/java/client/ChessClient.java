@@ -27,7 +27,6 @@ import java.util.HashSet;
 import static ui.EscapeSequences.*;
 
 public class ChessClient {
-    private final NotificationHandler notificationHandler;
     private final ConsoleUI ui;
     private final ChessServerFacade serverFacade;
     private final WebSocketClient ws;
@@ -35,10 +34,9 @@ public class ChessClient {
     private Game game;
 
     public ChessClient(String serverURL, ConsoleUI ui, NotificationHandler notificationHandler) {
-        this.notificationHandler = notificationHandler;
         this.ui = ui;
         this.serverFacade = new ChessServerFacade(serverURL);
-        this.ws = new WebSocketClient(serverURL);
+        this.ws = new WebSocketClient(serverURL, notificationHandler);
         this.sessionData = new SessionData();
     }
 
@@ -134,7 +132,6 @@ public class ChessClient {
         } catch (UserCancelException e) {
             return;
         }
-        ws.openConnection(notificationHandler);
         ws.send(gameCommand);
     }
 
@@ -150,7 +147,6 @@ public class ChessClient {
             return;
         }
 
-        ws.openConnection(notificationHandler);
         ws.send(gameCommand);
     }
 
