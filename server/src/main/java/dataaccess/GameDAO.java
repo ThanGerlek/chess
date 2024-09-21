@@ -73,6 +73,21 @@ public interface GameDAO {
         */
 
     /**
+     * Removes the assigned role (if any) from a user in a game.
+     *
+     * @param gameID   the ID of the game to remove the user's role from
+     * @param username the username of the user
+     * @throws DataAccessException if the game or the user was not found
+     */
+    void removePlayerRole(int gameID, String username) throws DataAccessException;
+        /* Failures
+        can't access database
+        game not found
+        user not found
+        user has no role
+        */
+
+    /**
      * Updates the game state of a Game in the database to match the given version.
      *
      * @param game the updated version of the Game

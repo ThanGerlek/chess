@@ -6,6 +6,7 @@ import model.Game;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A DAO (Data Access Object) for CRUD operations on Games currently being played.
@@ -109,6 +110,24 @@ public class MemoryGameDAO implements GameDAO {
         user already claimed different role? (just overwrite?) (violation of SRP?)
         (if user already has the role, just return.)
         */
+    }
+
+    /**
+     * Removes the assigned role (if any) from a user in a game.
+     *
+     * @param gameID   the ID of the game to remove the user's role from
+     * @param username the username of the user
+     * @throws DataAccessException if the game or the user was not found
+     */
+    public void removePlayerRole(int gameID, String username) throws DataAccessException {
+        // Failures: can't access database, game not found, user not found, user has no role
+        assertIDExists(gameID);
+        Game game = gameDatabase.get(gameID);
+        if (Objects.equals(game.whiteUsername(), username)) {
+            game.setWhiteUsername(null);
+        } else if (Objects.equals(game.blackUsername(), username)) {
+            game.setBlackUsername(null);
+        }
     }
 
     /**

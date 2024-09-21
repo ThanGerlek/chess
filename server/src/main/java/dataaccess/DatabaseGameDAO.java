@@ -155,6 +155,28 @@ public class DatabaseGameDAO implements GameDAO {
                 });
     }
 
+    /**
+     * Removes the assigned role (if any) from a user in a game.
+     *
+     * @param gameID   the ID of the game to remove the user's role from
+     * @param username the username of the user
+     * @throws DataAccessException if the game or the user was not found
+     */
+    @Override
+    public void removePlayerRole(int gameID, String username) throws DataAccessException {
+        // Failures: game not found, user not found, user has no role
+        assertIDExists(gameID);
+        if (!userDAO.hasUser(username)) {
+            throw new UnauthorizedAccessException("Unrecognized username");
+        }
+
+        ChessDatabaseManager.update("DELETE FROM roles WHERE username=? AND gameId=?",
+                preparedStatement -> {
+                    preparedStatement.setString(1, username);
+                    preparedStatement.setInt(2, gameID);
+                });
+    }
+
     private void assertIDExists(int gameID) throws DataAccessException {
         if (!ChessDatabaseManager.booleanQueryWithParam("SELECT gameId FROM games WHERE gameId=?", gameID)) {
             String msg = String.format("Tried to access a Game with an unrecognized gameID: '%d'", gameID);
