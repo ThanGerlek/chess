@@ -38,7 +38,7 @@ public class WebSocketClient extends Endpoint {
     }
 
     private URI getURI(String serverURL) throws URISyntaxException {
-        String uriString = serverURL.replace("https", "ws").replace("http", "ws") + "/connect";
+        String uriString = serverURL.replace("https", "ws").replace("http", "ws") + "/ws"; // TODO `/connect`? `/ws`?
         return new URI(uriString);
     }
 

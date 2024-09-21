@@ -89,7 +89,7 @@ public class Server {
     }
 
     private void exposeWebSocketServer() {
-        Spark.webSocket("/connect", webSocketServer);
+        Spark.webSocket("/ws", webSocketServer);
     }
 
     private void createRoutes() {
