@@ -188,15 +188,20 @@ public class UserGameCommandHandler {
 
     public void parseAsLeave(Session session, String message) throws DataAccessException {
         LeaveGameCommand gameCommand = ChessSerializer.gson().fromJson(message, LeaveGameCommand.class);
+        String authToken = gameCommand.getAuthToken();
+        int gameId = gameCommand.getGameID();
+
         System.out.printf("LEAVE | gameID: %d%n", gameCommand.getGameID());
 
         requireValidAuthString(gameCommand);
-        requireHasRoleInGame(gameCommand.getAuthToken(), gameCommand.getGameID());
+        requireHasRoleInGame(authToken, gameId);
 
-        String username = authDAO.getUsername(gameCommand.getAuthToken());
+        String username = authDAO.getUsername(authToken);
         String msg = String.format("User %s left the game", username);
-        sessionManager.removeUser(gameCommand.getGameID(), username);
-        sessionManager.broadcast(gameCommand.getGameID(), username, new NotificationServerMessage(msg));
+        sessionManager.removeUser(gameId, username);
+        sessionManager.broadcast(gameId, username, new NotificationServerMessage(msg));
+
+        gameDAO.removePlayerRole(gameId, username);
     }
 
     public void parseAsResign(Session session, String message) throws DataAccessException {
