@@ -6,12 +6,19 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import server.handlers.*;
+import server.services.*;
 import server.webSocket.GameSessionManager;
 import server.webSocket.WebSocketServer;
 
 public class Server {
 
     private Javalin app;
+
+    private final WebSocketServer webSocketServer;
+
+    private final UserDAO userDAO;
+    private final AuthDAO authDAO;
+    private final GameDAO gameDAO;
 
     private final ClearApplicationHandler clearApplicationHandler;
     private final CreateGameHandler createGameHandler;
@@ -21,11 +28,6 @@ public class Server {
     private final LogoutHandler logoutHandler;
     private final RegisterHandler registerHandler;
 
-    private final WebSocketServer webSocketServer;
-
-    private final UserDAO userDAO;
-    private final AuthDAO authDAO;
-    private final GameDAO gameDAO;
 
     public Server() {
         // TODO Proper dependency injection
@@ -37,17 +39,26 @@ public class Server {
 //        authDAO = new MemoryAuthDAO(userDAO);
 //        gameDAO = new MemoryGameDAO(userDAO);
 
-        createGameHandler = new CreateGameHandler(authDAO, gameDAO);
-        joinGameHandler = new JoinGameHandler(authDAO, gameDAO);
-        listGamesHandler = new ListGamesHandler(authDAO, gameDAO);
-        loginHandler = new LoginHandler(authDAO, userDAO);
-        logoutHandler = new LogoutHandler(authDAO);
-        registerHandler = new RegisterHandler(authDAO, userDAO);
-
         webSocketServer = new WebSocketServer(authDAO, gameDAO);
         GameSessionManager sessionManager = new GameSessionManager(webSocketServer);
 
-        clearApplicationHandler = new ClearApplicationHandler(authDAO, gameDAO, userDAO, sessionManager);
+        ClearApplicationService clearApplicationService = new ClearApplicationService(authDAO, gameDAO, userDAO,
+                sessionManager);
+        CreateGameService createGameService = new CreateGameService(authDAO, gameDAO);
+        JoinGameService joinGameService = new JoinGameService(authDAO, gameDAO);
+        ListGamesService listGamesService = new ListGamesService(authDAO, gameDAO);
+        LoginService loginService = new LoginService(authDAO, userDAO);
+        LogoutService logoutService = new LogoutService(authDAO);
+        RegisterService registerService = new RegisterService(authDAO, userDAO);
+
+        clearApplicationHandler = new ClearApplicationHandler(clearApplicationService);
+        createGameHandler = new CreateGameHandler(createGameService);
+        joinGameHandler = new JoinGameHandler(joinGameService);
+        listGamesHandler = new ListGamesHandler(listGamesService);
+        loginHandler = new LoginHandler(loginService);
+        logoutHandler = new LogoutHandler(logoutService);
+        registerHandler = new RegisterHandler(registerService);
+
     }
 
     public void stop() {

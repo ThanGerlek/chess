@@ -3,48 +3,56 @@ package server.handlers;
 import com.google.gson.Gson;
 import dataaccess.*;
 import http.MessageResponse;
-import spark.Request;
-import spark.Response;
+import io.javalin.http.Context;
 
-public abstract class HttpHandler {
-    protected Gson gson = new Gson();
+public abstract class HttpHandler<S> {
+    private final S service;
 
-    public static String parseToBody(Response res, Object response, int status) {
-        res.status(status);
-        return parseToBody(res, response);
+    protected HttpHandler(S service) {
+        this.service = service;
     }
 
-    public static String parseToBody(Response res, Object response) {
-        String bodyStr = (new Gson()).toJson(response);
-        res.type("application/json");
-        res.body(bodyStr);
-        return bodyStr;
+    public static void parseToBody(Context ctx, Object response, int status) {
+        String bodyStr = new Gson().toJson(response);
+        ctx.contentType("application/json");
+        ctx.result(bodyStr);
+        ctx.status(status);
     }
 
-    public Object handleRequest(Request req, Response res) {
-        return defaultErrorHandler(req, res);
-    }
+    public void handleRequest(Context ctx) {
+        String authToken = ctx.header("authentication");
+        String body = ctx.body();
 
-    protected Object defaultErrorHandler(Request req, Response res) {
+        Object response;
         try {
-            return route(req, res);
+            response = getResponse(body, authToken);
         } catch (NoSuchItemException | BadRequestException e) {
-            return handleError(res, 400, e.getMessage());
+            handleError(ctx, 400, e);
+            return;
         } catch (UnauthorizedAccessException e) {
-            return handleError(res, 401, e.getMessage());
+            handleError(ctx, 401, e);
+            return;
         } catch (ValueAlreadyTakenException e) {
-            return handleError(res, 403, e.getMessage());
+            handleError(ctx, 403, e);
+            return;
         } catch (Exception e) {
             System.out.println("[ERROR] Threw an unknown error: " + e.getMessage());
-            return handleError(res, 500, e.getMessage());
+            handleError(ctx, 500, e);
+            return;
         }
+
+        parseToBody(ctx, response, 200);
     }
 
-    protected abstract Object route(Request request, Response response) throws DataAccessException;
-
-    protected String handleError(Response res, int status, String errMsg) {
-        MessageResponse response = new MessageResponse(String.format("Error: %s", errMsg));
-        return parseToBody(res, response, status);
+    private void handleError(Context ctx, int status, Exception e) {
+        MessageResponse response = new MessageResponse(String.format("Error: %s", e.getMessage()));
+        parseToBody(ctx, response, status);
     }
+
+    protected S getService() {
+        return service;
+    }
+
+    protected abstract Object getResponse(String body, String authToken) throws DataAccessException;
 
 }

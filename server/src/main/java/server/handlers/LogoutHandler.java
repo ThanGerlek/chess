@@ -1,30 +1,15 @@
 package server.handlers;
 
-import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
-import http.MessageResponse;
 import server.services.LogoutService;
-import spark.Request;
-import spark.Response;
 
-public class LogoutHandler extends HttpHandler {
-    private final LogoutService service;
-
-    public LogoutHandler(AuthDAO authDAO) {
-        service = new LogoutService(authDAO);
+public class LogoutHandler extends HttpHandler<LogoutService> {
+    public LogoutHandler(LogoutService service) {
+        super(service);
     }
 
     @Override
-    public Object route(Request req, Response res) throws DataAccessException {
-        String authToken = gson.fromJson(req.headers("authorization"), String.class);
-        MessageResponse response = service.logout(authToken);
-        return parseToBody(res, response, 200);
+    protected Object getResponse(String body, String authToken) throws DataAccessException {
+        return getService().logout(authToken);
     }
 }
-
-/*
-
-| **Request class**    | N/A (no request body)                           |
-| **Response class**   | MessageResponse                                 |
-| **Headers**          | `authorization: <authToken>`                    |
- */

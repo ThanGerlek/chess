@@ -1,31 +1,19 @@
 package server.handlers;
 
-import dataaccess.AuthDAO;
+import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import dataaccess.UserDAO;
-import http.AuthResponse;
 import http.RegisterRequest;
 import server.services.RegisterService;
-import spark.Request;
-import spark.Response;
 
-public class RegisterHandler extends HttpHandler {
-    private final RegisterService service;
 
-    public RegisterHandler(AuthDAO authDAO, UserDAO userDAO) {
-        service = new RegisterService(authDAO, userDAO);
+public class RegisterHandler extends HttpHandler<RegisterService> {
+    public RegisterHandler(RegisterService service) {
+        super(service);
     }
 
     @Override
-    public Object route(Request req, Response res) throws DataAccessException {
-        RegisterRequest registerRequest = gson.fromJson(req.body(), RegisterRequest.class);
-        AuthResponse response = service.register(registerRequest);
-        return parseToBody(res, response, 200);
+    protected Object getResponse(String body, String authToken) throws DataAccessException {
+        RegisterRequest request = new Gson().fromJson(body, RegisterRequest.class);
+        return getService().register(request);
     }
 }
-
-/*
-| **Request class**    | RegisterRequest                                |
-| **Response class**   | AuthResponse                                   |
-| **Body**             | `{ "username":"", "password":"", "email":"" }` |
-*/
