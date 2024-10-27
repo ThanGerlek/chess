@@ -2,7 +2,6 @@ package server.webSocket;
 
 import dataaccess.DataAccessException;
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketException;
 import websocket.messages.ServerMessage;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,11 +47,12 @@ public class GameSessionManager {
         Session session = gameSession.get(username);
         try {
             wsServer.send(session, message);
-        } catch (WebSocketException e) {
-            if ("Session closed".equals(e.getMessage())) {
-                System.err.println("Tried to send to a closed connection. Removing");
+        } catch (Exception e) {
+            if (e.getMessage().toLowerCase().contains("connection closed")) {
+                System.err.println("Failed to send. Looks like the connection may be closed. Removing connection");
                 removeUser(gameID, username);
             } else {
+                System.err.println("Failed to send, but it doesn't seem to be a closed connection. Throwing.");
                 throw e;
             }
         }
