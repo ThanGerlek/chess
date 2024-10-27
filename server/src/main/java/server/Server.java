@@ -4,7 +4,6 @@ import dataaccess.*;
 import http.MessageResponse;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import io.javalin.http.Handler;
 import server.handlers.*;
 import server.services.*;
 import server.webSocket.GameSessionManager;
@@ -63,42 +62,26 @@ public class Server {
 
     public void stop() {
         app.stop();
-        // TODO? Spark.awaitStop();
     }
 
     public int run(int desiredPort) {
         System.out.println("Starting the server");
 
-        Handler testHandler = (ctx) -> {
-            System.out.println("ctx.method().name() = '" + ctx.method().name() + "'");
-            System.out.println("ctx.contextPath() = '" + ctx.contextPath() + "'");
-        };
-
-        app = Javalin.create()
-
-        // TODO? Spark.staticFiles.location("web");
-
-        // TODO
-//        Spark.notFound((req, res) -> {
-//            String errMsg = String.format("[%s] %s not found", req.requestMethod(), req.pathInfo());
-//            return errorHandler(new Exception(errMsg), req, res);
-//        });
+        app = Javalin.create(config -> config.staticFiles.add("/web"))
 
                 .exception(Exception.class, this::errorHandler)
 
                 .ws("/ws", webSocketServer::setUpWebSocketHandlers)
 
-                .before(testHandler)
+                .before((ctx) -> System.out.println("Executing route: " + ctx.method().name() + " " + ctx.path()))
 
-                .before((ctx) -> System.out.println("Executing route: " + ctx.method().name() + " " + ctx.contextPath()))
-
-//                .delete("/db", clearApplicationHandler::handleRequest)
-//                .post("/user", registerHandler::handleRequest)
-//                .post("/session", loginHandler::handleRequest)
-//                .delete("/session", logoutHandler::handleRequest)
-//                .get("/game", listGamesHandler::handleRequest)
-//                .post("/game", createGameHandler::handleRequest)
-//                .put("/game", joinGameHandler::handleRequest)
+                .delete("/db", clearApplicationHandler::handleRequest)
+                .post("/user", registerHandler::handleRequest)
+                .post("/session", loginHandler::handleRequest)
+                .delete("/session", logoutHandler::handleRequest)
+                .get("/game", listGamesHandler::handleRequest)
+                .post("/game", createGameHandler::handleRequest)
+                .put("/game", joinGameHandler::handleRequest)
 
                 .after((ctx) -> System.out.println("Finished executing route: " + ctx.contextPath()))
 
@@ -114,7 +97,6 @@ public class Server {
             System.exit(1);
         }
 
-        // TODO?  Spark.awaitInitialization();
         int port = app.port();
         System.out.println("Listening on port " + port);
         return port;
