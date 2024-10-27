@@ -20,7 +20,7 @@ public abstract class HttpHandler<S> {
     }
 
     public void handleRequest(Context ctx) {
-        String authToken = ctx.header("authentication");
+        String authToken = ctx.header("Authorization");
         String body = ctx.body();
 
         Object response;
