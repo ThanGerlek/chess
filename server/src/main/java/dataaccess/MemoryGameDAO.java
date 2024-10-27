@@ -89,14 +89,18 @@ public class MemoryGameDAO implements GameDAO {
 
         // TODO style: neaten this up using game.hasRole()
         Game game = gameDatabase.get(gameID);
+
+        boolean isWhiteTaken = game.whiteUsername() != null && !game.whiteUsername().isEmpty();
+        boolean isBlackTaken = game.blackUsername() != null && !game.blackUsername().isEmpty();
+
         if (PlayerRole.WHITE_PLAYER.equals(role)) {
-            if (!game.whiteUsername().isEmpty() && !game.whiteUsername().equals(username)) {
+            if (isWhiteTaken && !game.whiteUsername().equals(username)) {
                 throw new ValueAlreadyTakenException("Role already taken.");
             } else {
                 game.setWhiteUsername(username);
             }
         } else if (PlayerRole.BLACK_PLAYER.equals(role)) {
-            if (!game.blackUsername().isEmpty() && !game.blackUsername().equals(username)) {
+            if (isBlackTaken && !game.blackUsername().equals(username)) {
                 throw new ValueAlreadyTakenException("Role already taken.");
             } else {
                 game.setBlackUsername(username);
