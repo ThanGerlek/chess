@@ -78,8 +78,6 @@ public class Server {
 
         // TODO? Spark.staticFiles.location("web");
 
-        // TODO Spark.webSocket("/ws", webSocketServer);
-
         // TODO
 //        Spark.notFound((req, res) -> {
 //            String errMsg = String.format("[%s] %s not found", req.requestMethod(), req.pathInfo());
@@ -87,6 +85,8 @@ public class Server {
 //        });
 
                 .exception(Exception.class, this::errorHandler)
+
+                .ws("/ws", webSocketServer::setUpWebSocketHandlers)
 
                 .before(testHandler)
 

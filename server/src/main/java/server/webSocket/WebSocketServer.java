@@ -2,17 +2,16 @@ package server.webSocket;
 
 import dataaccess.*;
 import http.ChessSerializer;
+import io.javalin.websocket.WsConfig;
+import io.javalin.websocket.WsErrorContext;
+import io.javalin.websocket.WsMessageContext;
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorServerMessage;
 import websocket.messages.ServerMessage;
 
 import java.io.IOException;
 
-@WebSocket
 public class WebSocketServer {
     private final UserGameCommandHandler cmdHandler;
 
@@ -20,8 +19,14 @@ public class WebSocketServer {
         this.cmdHandler = new UserGameCommandHandler(authDAO, gameDAO, this);
     }
 
-    @OnWebSocketMessage
-    public void onMessage(Session session, String message) {
+    public void setUpWebSocketHandlers(WsConfig ws) {
+        ws.onMessage(this::onMessage);
+        ws.onError(this::onWebSocketError);
+    }
+
+    public void onMessage(WsMessageContext ctx) {
+        String message = ctx.message();
+        Session session = ctx.session;
         try {
             UserGameCommand gameCommand = ChessSerializer.gson().fromJson(message, UserGameCommand.class);
             switch (gameCommand.getCommandType()) {
@@ -53,14 +58,20 @@ public class WebSocketServer {
         try {
             System.out.println("Sending to session " + session.hashCode() + " with message " + messageJson);
             session.getRemote().sendString(messageJson);
+        } catch (java.nio.channels.ClosedChannelException e) {
+            System.err.println("Failed to send WebSocket message, channel was closed");
         } catch (IOException e) {
             System.err.println("Failed to send WebSocket message with error: " + e.getMessage());
         }
     }
 
-    @OnWebSocketError
-    public void onWebSocketError(Session session, Throwable exception) {
-        System.err.println("Server threw uncaught WebSocket error: " + exception.getMessage());
+    public void onWebSocketError(WsErrorContext ctx) {
+        if (ctx.error() != null) {
+            System.err.println("Server threw uncaught WebSocket error: " + ctx.error().getMessage());
+        }
+        else {
+            System.err.println("onWebSocketError() was called, but ctx.error() was null");
+        }
     }
 
     public void sendError(Session session, String errMsg) {
