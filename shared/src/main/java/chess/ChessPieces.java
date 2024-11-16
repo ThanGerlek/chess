@@ -4,11 +4,7 @@ public final class ChessPieces {
     private ChessPieces() {
     }
 
-    public static ChessPiece FromType(ChessPiece.PieceType type, ChessGame.TeamColor color) {
-        return FromType(type, color, true);
-    }
-
-    public static ChessPiece FromType(ChessPiece.PieceType type, ChessGame.TeamColor color, boolean hasNeverMoved) {
+    public static ChessPiece fromType(ChessPiece.PieceType type, ChessGame.TeamColor color, boolean hasNeverMoved) {
         return switch (type) {
             case KING -> new ChessPiece(color, ChessPiece.PieceType.KING, hasNeverMoved);
             case QUEEN -> new ChessPiece(color, ChessPiece.PieceType.QUEEN, hasNeverMoved);
@@ -47,6 +43,6 @@ public final class ChessPieces {
     }
 
     public static ChessPiece promote(ChessPiece piece, ChessPiece.PieceType promotionPiece) {
-        return FromType(promotionPiece, piece.getTeamColor(), false);
+        return fromType(promotionPiece, piece.getTeamColor(), false);
     }
 }

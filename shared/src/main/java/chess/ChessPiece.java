@@ -42,7 +42,7 @@ public class ChessPiece {
     }
 
     public ChessPiece copy() {
-        return ChessPieces.FromType(getPieceType(), getTeamColor(), hasNeverMoved());
+        return ChessPieces.fromType(getPieceType(), getTeamColor(), hasNeverMoved());
     }
 
     public void markAsHavingMoved() {
