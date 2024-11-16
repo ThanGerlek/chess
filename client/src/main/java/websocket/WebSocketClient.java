@@ -51,14 +51,6 @@ public class WebSocketClient extends Endpoint {
         });
     }
 
-    public void closeConnection() throws FailedConnectionException {
-        try {
-            this.session.close();
-        } catch (IOException e) {
-            throw new FailedConnectionException("Threw an error while closing WebSocket connection: " + e.getMessage());
-        }
-    }
-
     public void send(UserGameCommand gameCommand) throws FailedConnectionException {
         String messageJson = ChessSerializer.gson().toJson(gameCommand);
         try {
