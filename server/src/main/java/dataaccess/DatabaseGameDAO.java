@@ -138,7 +138,9 @@ public class DatabaseGameDAO implements GameDAO {
             throw new UnauthorizedAccessException("Unrecognized username");
         }
 
-        if (role == null) role = PlayerRole.SPECTATOR;
+        if (role == null) {
+            role = PlayerRole.SPECTATOR;
+        }
 
         Game game = findGame(gameID);
         if (isRoleTakenForUser(game, username, role)) {

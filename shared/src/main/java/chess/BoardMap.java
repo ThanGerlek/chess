@@ -9,8 +9,12 @@ public class BoardMap {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         BoardMap boardMap = (BoardMap) o;
         return Arrays.equals(board, boardMap.board);
     }

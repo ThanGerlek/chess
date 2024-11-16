@@ -20,8 +20,12 @@ public class ChessBoard {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ChessBoard that = (ChessBoard) o;
 
         for (int i = 0; i < 8; i++) {
@@ -93,7 +97,9 @@ public class ChessBoard {
      * @return the piece at the position, or null if no piece is at that position.
      */
     public ChessPiece getPiece(ChessPosition position) {
-        if (!position.isValidPosition()) return null;
+        if (!position.isValidPosition()) {
+            return null;
+        }
         return pieces[position.getRow() - 1][position.getColumn() - 1];
     }
 

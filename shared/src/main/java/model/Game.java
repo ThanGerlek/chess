@@ -83,8 +83,12 @@ public class Game {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Game game = (Game) o;
         return gameID == game.gameID && Objects.equals(chessGame, game.chessGame) &&
                 Objects.equals(gameName, game.gameName);

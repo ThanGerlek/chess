@@ -83,7 +83,9 @@ public class PawnMovementRule extends MovementRule {
         ChessGame.TeamColor color = board.getPiece(startPosition).getTeamColor();
         ChessPosition endPosition = shiftRelative(startPosition, color, 1, deltaCol);
 
-        if (isValidCapturingSpace(board, color, endPosition)) endPositions.add(endPosition);
+        if (isValidCapturingSpace(board, color, endPosition)) {
+            endPositions.add(endPosition);
+        }
     }
 
     private boolean isOnStartRow(ChessPosition position, ChessGame.TeamColor color) {

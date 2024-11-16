@@ -22,10 +22,11 @@ public class KingMovementRule extends MovementRule {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> moves = new LinkedList<>();
         ChessGame.TeamColor myColor = board.getPiece(myPosition).getTeamColor();
-        for (ChessPosition endPosition : getPotentialEndPositions(myPosition))
+        for (ChessPosition endPosition : getPotentialEndPositions(myPosition)) {
             if (isValidEmptySpace(board, endPosition) || isValidCapturingSpace(board, myColor, endPosition)) {
                 moves.add(new ChessMove(myPosition, endPosition));
             }
+        }
 
         return moves;
     }

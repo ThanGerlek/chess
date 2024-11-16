@@ -85,7 +85,9 @@ public class MemoryGameDAO implements GameDAO {
             throw new UnauthorizedAccessException("Unrecognized username");
         }
 
-        if (role == null) role = PlayerRole.SPECTATOR;
+        if (role == null) {
+            role = PlayerRole.SPECTATOR;
+        }
 
         // TODO style: neaten this up using game.hasRole()
         Game game = gameDatabase.get(gameID);
