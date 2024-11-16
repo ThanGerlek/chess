@@ -1,7 +1,7 @@
 package websocket;
 
 import http.ChessSerializer;
-import httpConnection.FailedConnectionException;
+import httpconnection.FailedConnectionException;
 import websocket.commands.UserGameCommand;
 
 import javax.websocket.*;

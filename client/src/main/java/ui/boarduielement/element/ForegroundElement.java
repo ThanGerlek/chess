@@ -1,4 +1,4 @@
-package ui.BoardUIElement.element;
+package ui.boarduielement.element;
 
 
 import chess.ChessGame;

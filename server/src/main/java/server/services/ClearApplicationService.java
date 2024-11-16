@@ -5,7 +5,7 @@ import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import dataaccess.UserDAO;
 import http.MessageResponse;
-import server.webSocket.GameSessionManager;
+import server.websocket.GameSessionManager;
 
 /**
  * Provides the Clear Application service, which performs a hard reset of the database, erasing all users, games, and

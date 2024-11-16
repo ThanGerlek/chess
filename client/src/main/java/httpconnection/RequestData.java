@@ -1,4 +1,4 @@
-package httpConnection;
+package httpconnection;
 
 public record RequestData(String method, String path, Object request, String authTokenString) {
     public RequestData(String method, String path, Object request) {

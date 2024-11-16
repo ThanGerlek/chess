@@ -3,10 +3,10 @@ package ui;
 import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPosition;
-import ui.BoardUIElement.BoardToUIElementParser;
-import ui.BoardUIElement.BoardUIElementHighlighter;
-import ui.BoardUIElement.BoardUIElementReader;
-import ui.BoardUIElement.BoardUIElementTransformer;
+import ui.boarduielement.BoardToUIElementParser;
+import ui.boarduielement.BoardUIElementHighlighter;
+import ui.boarduielement.BoardUIElementReader;
+import ui.boarduielement.BoardUIElementTransformer;
 
 import java.util.Collection;
 

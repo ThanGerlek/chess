@@ -1,4 +1,4 @@
-package chess.movementRules;
+package chess.movementrule;
 
 import chess.ChessPosition;
 

@@ -1,8 +1,8 @@
-package ui.BoardUIElement;
+package ui.boarduielement;
 
 import chess.ChessPosition;
-import ui.BoardUIElement.element.BackgroundElement;
-import ui.BoardUIElement.element.BoardElement;
+import ui.boarduielement.element.BackgroundElement;
+import ui.boarduielement.element.BoardElement;
 
 import java.util.Collection;
 

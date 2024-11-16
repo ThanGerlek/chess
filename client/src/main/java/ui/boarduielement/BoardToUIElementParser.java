@@ -1,10 +1,10 @@
-package ui.BoardUIElement;
+package ui.boarduielement;
 
 import chess.ChessBoard;
 import chess.ChessPosition;
-import ui.BoardUIElement.element.BackgroundElement;
-import ui.BoardUIElement.element.BoardElement;
-import ui.BoardUIElement.element.ForegroundElement;
+import ui.boarduielement.element.BackgroundElement;
+import ui.boarduielement.element.BoardElement;
+import ui.boarduielement.element.ForegroundElement;
 
 public class BoardToUIElementParser implements BoardUIElementReader {
     private BoardElement[][] elements;

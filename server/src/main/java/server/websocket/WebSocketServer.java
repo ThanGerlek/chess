@@ -1,4 +1,4 @@
-package server.webSocket;
+package server.websocket;
 
 import dataaccess.*;
 import http.ChessSerializer;

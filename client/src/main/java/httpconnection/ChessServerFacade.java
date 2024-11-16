@@ -1,4 +1,4 @@
-package httpConnection;
+package httpconnection;
 
 import chess.ChessGame;
 import http.*;

@@ -1,7 +1,7 @@
-package ui.BoardUIElement;
+package ui.boarduielement;
 
 import chess.ChessGame;
-import ui.BoardUIElement.element.BoardElement;
+import ui.boarduielement.element.BoardElement;
 
 public class BoardUIElementTransformer {
     private final ChessGame.TeamColor color;

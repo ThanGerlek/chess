@@ -2,9 +2,9 @@ package client;
 
 import chess.ChessGame;
 import http.GameListItem;
-import httpConnection.ChessServerFacade;
-import httpConnection.FailedConnectionException;
-import httpConnection.FailedResponseException;
+import httpconnection.ChessServerFacade;
+import httpconnection.FailedConnectionException;
+import httpconnection.FailedResponseException;
 import ui.ConsoleUI;
 import ui.IllegalCommandException;
 import ui.InvalidUserInputException;

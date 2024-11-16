@@ -1,4 +1,4 @@
-package httpConnection;
+package httpconnection;
 
 import com.google.gson.Gson;
 import http.MessageResponse;

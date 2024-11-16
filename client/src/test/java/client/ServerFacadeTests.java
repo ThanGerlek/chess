@@ -1,9 +1,9 @@
 package client;
 
 import http.AuthResponse;
-import httpConnection.ChessServerFacade;
-import httpConnection.FailedConnectionException;
-import httpConnection.FailedResponseException;
+import httpconnection.ChessServerFacade;
+import httpconnection.FailedConnectionException;
+import httpconnection.FailedResponseException;
 import org.junit.jupiter.api.*;
 import server.Server;
 

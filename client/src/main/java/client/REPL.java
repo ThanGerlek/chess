@@ -1,7 +1,7 @@
 package client;
 
-import httpConnection.FailedConnectionException;
-import httpConnection.FailedResponseException;
+import httpconnection.FailedConnectionException;
+import httpconnection.FailedResponseException;
 import ui.ConsoleUI;
 import ui.Command;
 import websocket.NotificationHandler;

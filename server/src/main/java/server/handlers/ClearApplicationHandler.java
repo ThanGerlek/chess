@@ -6,7 +6,7 @@ import dataaccess.GameDAO;
 import dataaccess.UserDAO;
 import http.MessageResponse;
 import server.services.ClearApplicationService;
-import server.webSocket.GameSessionManager;
+import server.websocket.GameSessionManager;
 import spark.Request;
 import spark.Response;
 

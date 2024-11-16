@@ -1,6 +1,6 @@
-package ui.BoardUIElement;
+package ui.boarduielement;
 
-import ui.BoardUIElement.element.BoardElement;
+import ui.boarduielement.element.BoardElement;
 
 public interface BoardUIElementReader {
 
