@@ -35,7 +35,7 @@ public class ServerFacadeTests {
     }
 
     @Test
-    public void register_returns_nonNull_authToken() throws FailedConnectionException, FailedResponseException {
+    public void registerReturnsNonNullAuthToken() throws FailedConnectionException, FailedResponseException {
         AuthResponse response = facade.register("testUser", "testPass", "testEmail");
         Assertions.assertNotNull(response.authToken());
     }

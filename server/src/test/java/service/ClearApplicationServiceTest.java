@@ -23,7 +23,7 @@ class ClearApplicationServiceTest extends ServiceTest {
 
     // Positive test
     @Test
-    void has_cleared_Users_is_false() throws DataAccessException {
+    void hasClearedUsersIsFalse() throws DataAccessException {
         userDAO.insertNewUser(new User("user1", "pass1", "mail1"));
         userDAO.insertNewUser(new User("user2", "pass2", "mail2"));
 
@@ -34,14 +34,14 @@ class ClearApplicationServiceTest extends ServiceTest {
     }
 
     @Test
-    void clearing_does_not_throw() {
+    void clearingDoesNotThrow() {
         Assertions.assertDoesNotThrow(() -> {
             service.clearApplication();
         });
     }
 
     @Test
-    void clearing_twice_does_not_throw() throws DataAccessException {
+    void clearingTwiceDoesNotThrow() throws DataAccessException {
         service.clearApplication();
         Assertions.assertDoesNotThrow(() -> {
             service.clearApplication();
@@ -49,7 +49,7 @@ class ClearApplicationServiceTest extends ServiceTest {
     }
 
     @Test
-    void finding_cleared_Games_errors() throws DataAccessException {
+    void findingClearedGamesErrors() throws DataAccessException {
         gameDAO.insertNewGame(new Game(1, "game1"));
         gameDAO.insertNewGame(new Game(2, "game2"));
 
@@ -60,7 +60,7 @@ class ClearApplicationServiceTest extends ServiceTest {
     }
 
     @Test
-    void cleared_AuthTokens_are_invalid() throws DataAccessException {
+    void clearedAuthTokensAreInvalid() throws DataAccessException {
         AuthToken token1 = new AuthToken("1234", "user1");
         AuthToken token2 = new AuthToken("2468", "user2");
         userDAO.insertNewUser(new User("user1", "pass1", "mail1"));

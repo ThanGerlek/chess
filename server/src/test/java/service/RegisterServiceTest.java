@@ -25,7 +25,7 @@ class RegisterServiceTest extends ServiceTest {
 
     // Positive test
     @Test
-    void get_registered_user_returns_user_with_correct_username_and_email() throws DataAccessException {
+    void getRegisteredUserReturnsUserWithCorrectUsernameAndEmail() throws DataAccessException {
         service.register(new RegisterRequest("user1", "pass1", "email1"));
         User retrievedUser = userDAO.getUser("user1");
         Assertions.assertEquals(retrievedUser.username(), "user1");
@@ -34,31 +34,31 @@ class RegisterServiceTest extends ServiceTest {
 
     // Negative test
     @Test
-    void register_existing_user_throws_already_taken() {
+    void registerExistingUserThrowsAlreadyTaken() {
         Assertions.assertThrows(ValueAlreadyTakenException.class,
                 () -> service.register(new RegisterRequest("existingUser", "pass1", "mail1")));
     }
 
     @Test
-    void register_new_user_returns_okay() throws DataAccessException {
+    void registerNewUserReturnsOkay() throws DataAccessException {
         AuthResponse response = service.register(new RegisterRequest("user1", "pass1", "mail1"));
         Assertions.assertEquals("Okay!", response.message());
     }
 
     @Test
-    void register_with_null_username_throws_bad_request_error() {
+    void registerWithNullUsernameThrowsBadRequestError() {
         Assertions.assertThrows(BadRequestException.class,
                 () -> service.register(new RegisterRequest(null, "pass1", "mail1")));
     }
 
     @Test
-    void register_with_null_password_throws_bad_request_error() {
+    void registerWithNullPasswordThrowsBadRequestError() {
         Assertions.assertThrows(BadRequestException.class,
                 () -> service.register(new RegisterRequest("user1", null, "mail1")));
     }
 
     @Test
-    void register_with_null_email_returns_user() throws DataAccessException {
+    void registerWithNullEmailReturnsUser() throws DataAccessException {
         service.register(new RegisterRequest("user1", "pass1", null));
         User retrievedUser = userDAO.getUser("user1");
         Assertions.assertEquals(retrievedUser.username(), "user1");

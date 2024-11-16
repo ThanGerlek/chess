@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 class ChessSerializerTest {
     @Test
-    void serialize_and_deserialize_move_with_null_promotion_piece() {
+    void serializeAndDeserializeMoveWithNullPromotionPiece() {
         ChessPosition startPos = new ChessPosition(2, 1);
         ChessPosition endPos = new ChessPosition(4, 1);
         ChessMove move = new ChessMove(startPos, endPos);
@@ -21,7 +21,7 @@ class ChessSerializerTest {
     }
 
     @Test
-    void serialize_and_deserialize_move_with_queen_promotion_piece() {
+    void serializeAndDeserializeMoveWithQueenPromotionPiece() {
         ChessPosition startPos = new ChessPosition(2, 1);
         ChessPosition endPos = new ChessPosition(4, 1);
         ChessPiece.PieceType promotionPiece = ChessPiece.PieceType.QUEEN;
@@ -35,7 +35,7 @@ class ChessSerializerTest {
     }
 
     @Test
-    void serialize_and_deserialize_position() {
+    void serializeAndDeserializePosition() {
         ChessPosition pos = new ChessPosition(2, 1);
         String json = ChessSerializer.gson().toJson(pos);
 

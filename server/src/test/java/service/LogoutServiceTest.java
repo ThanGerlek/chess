@@ -28,31 +28,31 @@ class LogoutServiceTest extends ServiceTest {
 
     // Positive test
     @Test
-    void logout_existing_user_invalidates_token() throws DataAccessException {
+    void logoutExistingUserInvalidatesToken() throws DataAccessException {
         service.logout(token.authToken());
         Assertions.assertFalse(authDAO.isValidAuthToken(token.authToken()));
     }
 
     // Negative test
     @Test
-    void logout_fake_user_returns_bad_request_error() {
+    void logoutFakeUserReturnsBadRequestError() {
         Assertions.assertThrows(UnauthorizedAccessException.class,
                 () -> service.logout(new AuthToken("iDoNotExist", "1234").authToken()));
     }
 
     @Test
-    void logout_existing_user_returns_okay() throws DataAccessException {
+    void logoutExistingUserReturnsOkay() throws DataAccessException {
         MessageResponse response = service.logout(token.authToken());
         Assertions.assertEquals("Okay!", response.message());
     }
 
     @Test
-    void logout_invalid_token_errors() {
+    void logoutInvalidTokenErrors() {
         Assertions.assertThrows(UnauthorizedAccessException.class, () -> service.logout("iAmIncorrect"));
     }
 
     @Test
-    void logout_token_twice_errors() throws DataAccessException {
+    void logoutTokenTwiceErrors() throws DataAccessException {
         service.logout(token.authToken());
         Assertions.assertThrows(UnauthorizedAccessException.class, () -> service.logout(token.authToken()));
     }

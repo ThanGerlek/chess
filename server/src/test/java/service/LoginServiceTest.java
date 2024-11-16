@@ -23,32 +23,32 @@ class LoginServiceTest extends ServiceTest {
 
     // Positive test
     @Test
-    void login_successfully_returns_valid_authToken() throws DataAccessException {
+    void loginSuccessfullyReturnsValidAuthToken() throws DataAccessException {
         AuthResponse response = service.login(new LoginRequest("user1", "pass1"));
         Assertions.assertTrue(authDAO.isValidAuthToken(response.authToken()));
     }
 
     // Negative test
     @Test
-    void login_incorrect_password_returns_forbidden() {
+    void loginIncorrectPasswordReturnsForbidden() {
         Assertions.assertThrows(UnauthorizedAccessException.class,
                 () -> service.login(new LoginRequest("user1", "iAmIncorrect")));
     }
 
     @Test
-    void login_successfully_returns_okay() throws DataAccessException {
+    void loginSuccessfullyReturnsOkay() throws DataAccessException {
         AuthResponse response = service.login(new LoginRequest("user1", "pass1"));
         Assertions.assertEquals("Okay!", response.message());
     }
 
     @Test
-    void login_successfully_returns_authToken() throws DataAccessException {
+    void loginSuccessfullyReturnsAuthToken() throws DataAccessException {
         AuthResponse response = service.login(new LoginRequest("user1", "pass1"));
         Assertions.assertNotNull(response.authToken());
     }
 
     @Test
-    void login_incorrect_username_returns_forbidden() {
+    void loginIncorrectUsernameReturnsForbidden() {
         Assertions.assertThrows(UnauthorizedAccessException.class,
                 () -> service.login(new LoginRequest("iAmIncorrect", "pass1")));
     }

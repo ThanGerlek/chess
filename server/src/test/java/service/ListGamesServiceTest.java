@@ -46,7 +46,7 @@ class ListGamesServiceTest extends ServiceTest {
 
     // Positive test
     @Test
-    void list_Games_returns_GameListItems() throws DataAccessException {
+    void listGamesReturnsGameListItems() throws DataAccessException {
         GameListItem[] expected = {new GameListItem(1, null, null, "game1"), new GameListItem(2, null, null, "game2")};
 
         ListGamesResponse response = service.listGames(token.authToken());
@@ -59,12 +59,12 @@ class ListGamesServiceTest extends ServiceTest {
 
     // Negative test
     @Test
-    void list_Games_with_invalid_token_returns_forbidden() {
+    void listGamesWithInvalidTokenReturnsForbidden() {
         Assertions.assertThrows(UnauthorizedAccessException.class, () -> service.listGames("iDoNotExist"));
     }
 
     @Test
-    void list_Games_returns_okay() throws DataAccessException {
+    void listGamesReturnsOkay() throws DataAccessException {
         ListGamesResponse response = service.listGames(token.authToken());
         Assertions.assertEquals("Okay!", response.message());
     }

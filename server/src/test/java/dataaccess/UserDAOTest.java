@@ -24,43 +24,43 @@ class UserDAOTest {
     }
 
     @Test
-    void get_inserted_user_has_correct_username() throws DataAccessException {
+    void getInsertedUserHasCorrectUsername() throws DataAccessException {
         userDAO.insertNewUser(user);
         User retrievedUser = userDAO.getUser(user.username());
         assertEquals(retrievedUser.username(), user.username());
     }
 
     @Test
-    void hasUser_on_inserted_user() throws DataAccessException {
+    void hasUserOnInsertedUser() throws DataAccessException {
         userDAO.insertNewUser(user);
         assertTrue(userDAO.hasUser(user.username()));
     }
 
     @Test
-    void insert_existing_user_throws() throws DataAccessException {
+    void insertExistingUserThrows() throws DataAccessException {
         userDAO.insertNewUser(user);
         assertThrows(ValueAlreadyTakenException.class, () -> userDAO.insertNewUser(user));
     }
 
     @Test
-    void hasUser_on_nonexistent_user() throws DataAccessException {
+    void hasUserOnNonexistentUser() throws DataAccessException {
         assertFalse(userDAO.hasUser("invalidUsername"));
     }
 
     @Test
-    void hasUser_on_removed_user() throws DataAccessException {
+    void hasUserOnRemovedUser() throws DataAccessException {
         userDAO.insertNewUser(user);
         userDAO.removeUser(user);
         assertFalse(userDAO.hasUser("invalidUsername"));
     }
 
     @Test
-    void remove_nonexistent_user_does_not_throw() throws DataAccessException {
+    void removeNonexistentUserDoesNotThrow() throws DataAccessException {
         userDAO.removeUser(user);
     }
 
     @Test
-    void hasUser_on_cleared_users() throws DataAccessException {
+    void hasUserOnClearedUsers() throws DataAccessException {
         User user2 = new User("username2", "pass2", "email2");
         userDAO.insertNewUser(user);
         userDAO.insertNewUser(user2);
@@ -70,7 +70,7 @@ class UserDAOTest {
     }
 
     @Test
-    void clearUsers_when_empty_does_not_throw() throws DataAccessException {
+    void clearUsersWhenEmptyDoesNotThrow() throws DataAccessException {
         userDAO.clearUsers();
     }
 }

@@ -42,24 +42,24 @@ class GameDAOTest {
     }
 
     @Test
-    void find_preexisting_game_returns_nonnull() throws DataAccessException {
+    void findPreexistingGameReturnsNonnull() throws DataAccessException {
         gameDAO.insertNewGame(game);
         assertNotNull(gameDAO.findGame(game.gameID()));
     }
 
     @Test
-    void insertNewGame_with_preexisting_gameID_throws() throws DataAccessException {
+    void insertNewGameWithPreexistingGameIDThrows() throws DataAccessException {
         gameDAO.insertNewGame(game);
         assertThrows(ValueAlreadyTakenException.class, () -> gameDAO.insertNewGame(game));
     }
 
     @Test
-    void find_nonexistent_game_throws() {
+    void findNonexistentGameThrows() {
         assertThrows(NoSuchItemException.class, () -> gameDAO.findGame(invalidGameID));
     }
 
     @Test
-    void allGames_after_inserting_returns_correctly_sized_list() throws DataAccessException {
+    void allGamesAfterInsertingReturnsCorrectlySizedList() throws DataAccessException {
         gameDAO.insertNewGame(game);
         gameDAO.insertNewGame(game2);
         Collection<GameListItem> games = gameDAO.allGames();
@@ -67,13 +67,13 @@ class GameDAOTest {
     }
 
     @Test
-    void allGames_without_inserting_returns_empty_list() throws DataAccessException {
+    void allGamesWithoutInsertingReturnsEmptyList() throws DataAccessException {
         Collection<GameListItem> games = gameDAO.allGames();
         assertEquals(0, games.size());
     }
 
     @Test
-    void assignPlayerRole_WHITE_then_get_has_correct_role_usernames() throws DataAccessException {
+    void assignPlayerRoleWHITEThenGetHasCorrectRoleUsernames() throws DataAccessException {
         gameDAO.insertNewGame(game);
         System.out.println(gameDAO.findGame(1));
         gameDAO.assignPlayerRole(game.gameID(), user.username(), PlayerRole.WHITE_PLAYER);
@@ -84,7 +84,7 @@ class GameDAOTest {
     }
 
     @Test
-    void assignPlayerRole_BLACK_then_get_has_correct_role_usernames() throws DataAccessException {
+    void assignPlayerRoleBLACKThenGetHasCorrectRoleUsernames() throws DataAccessException {
         gameDAO.insertNewGame(game);
         gameDAO.assignPlayerRole(game.gameID(), user2.username(), PlayerRole.BLACK_PLAYER);
 
@@ -94,7 +94,7 @@ class GameDAOTest {
     }
 
     @Test
-    void assignPlayerRole_SPECTATOR_does_not_change_role_usernames() throws DataAccessException {
+    void assignPlayerRoleSPECTATORDoesNotChangeRoleUsernames() throws DataAccessException {
         gameDAO.insertNewGame(game);
         gameDAO.assignPlayerRole(game.gameID(), user.username(), PlayerRole.SPECTATOR);
 
@@ -104,7 +104,7 @@ class GameDAOTest {
     }
 
     @Test
-    void assignPlayerRole_both_roles_then_get_has_correct_role_usernames() throws DataAccessException {
+    void assignPlayerRoleBothRolesThenGetHasCorrectRoleUsernames() throws DataAccessException {
         gameDAO.insertNewGame(game);
         gameDAO.assignPlayerRole(game.gameID(), user.username(), PlayerRole.WHITE_PLAYER);
         gameDAO.assignPlayerRole(game.gameID(), user2.username(), PlayerRole.BLACK_PLAYER);
@@ -115,13 +115,13 @@ class GameDAOTest {
     }
 
     @Test
-    void assignPlayerRole_invalid_gameID_throws() {
+    void assignPlayerRoleInvalidGameIDThrows() {
         assertThrows(NoSuchItemException.class,
                 () -> gameDAO.assignPlayerRole(invalidGameID, user.username(), PlayerRole.WHITE_PLAYER));
     }
 
     @Test
-    void assignPlayerRole_invalid_username_throws() throws DataAccessException {
+    void assignPlayerRoleInvalidUsernameThrows() throws DataAccessException {
         gameDAO.insertNewGame(game);
 
         User invalidUser = new User("invalidUsername", "password", "email");
@@ -130,7 +130,7 @@ class GameDAOTest {
     }
 
     @Test
-    void updateGameState_then_get_returns_updated_board() throws DataAccessException, InvalidMoveException {
+    void updateGameStateThenGetReturnsUpdatedBoard() throws DataAccessException, InvalidMoveException {
         gameDAO.insertNewGame(game);
 
         ChessGame updatedChessGame = new ChessGame();
@@ -146,7 +146,7 @@ class GameDAOTest {
     }
 
     @Test
-    void removeGame_then_findGame_throws() throws DataAccessException {
+    void removeGameThenFindGameThrows() throws DataAccessException {
         gameDAO.insertNewGame(game);
         gameDAO.removeGame(game.gameID());
 
@@ -154,7 +154,7 @@ class GameDAOTest {
     }
 
     @Test
-    void allGames_after_clearGames_returns_empty_list() throws DataAccessException {
+    void allGamesAfterClearGamesReturnsEmptyList() throws DataAccessException {
         gameDAO.insertNewGame(game);
         gameDAO.insertNewGame(game2);
         gameDAO.clearGames();
@@ -163,7 +163,7 @@ class GameDAOTest {
     }
 
     @Test
-    void two_generated_gameIDs_are_different() throws DataAccessException {
+    void twoGeneratedGameIDsAreDifferent() throws DataAccessException {
         Assertions.assertNotEquals(gameDAO.generateNewGameID(), gameDAO.generateNewGameID());
     }
 }

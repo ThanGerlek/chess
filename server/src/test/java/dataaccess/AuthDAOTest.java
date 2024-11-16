@@ -36,43 +36,43 @@ class AuthDAOTest {
     }
 
     @Test
-    void add_new_authToken_makes_token_valid() throws DataAccessException {
+    void addNewAuthTokenMakesTokenValid() throws DataAccessException {
         authDAO.addAuthToken(validToken);
         assertTrue(authDAO.isValidAuthToken(validToken.authToken()));
     }
 
     @Test
-    void add_existing_authToken_throws() throws DataAccessException {
+    void addExistingAuthTokenThrows() throws DataAccessException {
         authDAO.addAuthToken(validToken);
         assertThrows(ValueAlreadyTakenException.class, () -> authDAO.addAuthToken(validToken));
     }
 
     @Test
-    void addAuthToken_with_incorrect_username_throws() {
+    void addAuthTokenWithIncorrectUsernameThrows() {
         AuthToken invalidToken = new AuthToken(validToken.authToken(), "invalidUsername");
         assertThrows(UnauthorizedAccessException.class, () -> authDAO.addAuthToken(invalidToken));
     }
 
     @Test
-    void nonexistent_token_is_invalid() throws DataAccessException {
+    void nonexistentTokenIsInvalid() throws DataAccessException {
         AuthToken invalidToken = new AuthToken("invalidTokenString", validUser.username());
         assertFalse(authDAO.isValidAuthToken(invalidToken.authToken()));
     }
 
     @Test
-    void removeAuthToken_makes_token_invalid() throws DataAccessException {
+    void removeAuthTokenMakesTokenInvalid() throws DataAccessException {
         authDAO.addAuthToken(validToken);
         authDAO.removeAuthToken(validToken.authToken());
         assertFalse(authDAO.isValidAuthToken(validToken.authToken()));
     }
 
     @Test
-    void remove_nonexistent_authToken_does_not_throw() throws DataAccessException {
+    void removeNonexistentAuthTokenDoesNotThrow() throws DataAccessException {
         authDAO.removeAuthToken("invalidAuthToken");
     }
 
     @Test
-    void clearAuthTokens_makes_tokens_invalid() throws DataAccessException {
+    void clearAuthTokensMakesTokensInvalid() throws DataAccessException {
         authDAO.addAuthToken(validToken);
         AuthToken validToken2 = new AuthToken("tokenString2", validUser.username());
         authDAO.addAuthToken(validToken2);
@@ -83,18 +83,18 @@ class AuthDAOTest {
     }
 
     @Test
-    void clearAuthTokens_when_empty_does_not_throw() throws DataAccessException {
+    void clearAuthTokensWhenEmptyDoesNotThrow() throws DataAccessException {
         authDAO.clearAuthTokens();
     }
 
     @Test
-    void getUsername_returns_correct_username() throws DataAccessException {
+    void getUsernameReturnsCorrectUsername() throws DataAccessException {
         authDAO.addAuthToken(validToken);
         assertEquals(validUser.username(), authDAO.getUsername(validToken.authToken()));
     }
 
     @Test
-    void getUsername_of_nonexistent_token_throws() {
+    void getUsernameOfNonexistentTokenThrows() {
         assertThrows(UnauthorizedAccessException.class, () -> authDAO.getUsername("invalidTokenString"));
     }
 }
