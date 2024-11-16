@@ -1,8 +1,8 @@
 package service;
 
-import dataaccess.BadRequestException;
-import dataaccess.DataAccessException;
-import dataaccess.ValueAlreadyTakenException;
+import dataaccess.exception.BadRequestException;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.ValueAlreadyTakenException;
 import http.AuthResponse;
 import http.RegisterRequest;
 import model.User;

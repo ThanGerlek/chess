@@ -1,5 +1,12 @@
-package dataaccess;
+package dataaccess.sql;
 
+import dataaccess.GameDAO;
+import dataaccess.PlayerRole;
+import dataaccess.UserDAO;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.NoSuchItemException;
+import dataaccess.exception.UnauthorizedAccessException;
+import dataaccess.exception.ValueAlreadyTakenException;
 import http.ChessSerializer;
 import http.GameListItem;
 import model.Game;

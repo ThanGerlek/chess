@@ -1,5 +1,9 @@
-package dataaccess;
+package dataaccess.memory;
 
+import dataaccess.UserDAO;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.NoSuchItemException;
+import dataaccess.exception.ValueAlreadyTakenException;
 import model.User;
 
 import java.util.ArrayList;

@@ -1,5 +1,9 @@
-package dataaccess;
+package dataaccess.sql;
 
+import dataaccess.UserDAO;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.NoSuchItemException;
+import dataaccess.exception.ValueAlreadyTakenException;
 import model.User;
 
 import java.sql.Connection;

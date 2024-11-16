@@ -1,4 +1,6 @@
-package dataaccess;
+package dataaccess.sql;
+
+import dataaccess.exception.DataAccessException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

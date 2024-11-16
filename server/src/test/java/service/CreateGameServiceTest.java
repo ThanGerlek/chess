@@ -1,7 +1,7 @@
 package service;
 
-import dataaccess.DataAccessException;
-import dataaccess.UnauthorizedAccessException;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.UnauthorizedAccessException;
 import http.CreateGameRequest;
 import http.CreateGameResponse;
 import model.AuthToken;

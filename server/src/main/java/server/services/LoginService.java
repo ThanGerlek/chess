@@ -1,6 +1,9 @@
 package server.services;
 
 import dataaccess.*;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.NoSuchItemException;
+import dataaccess.exception.UnauthorizedAccessException;
 import http.AuthResponse;
 import http.LoginRequest;
 import model.AuthToken;

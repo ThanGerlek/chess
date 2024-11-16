@@ -1,7 +1,7 @@
 package service;
 
-import dataaccess.DataAccessException;
-import dataaccess.NoSuchItemException;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.NoSuchItemException;
 import model.AuthToken;
 import model.Game;
 import model.User;

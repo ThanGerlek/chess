@@ -1,8 +1,8 @@
 package server.services;
 
 import dataaccess.AuthDAO;
-import dataaccess.BadRequestException;
-import dataaccess.DataAccessException;
+import dataaccess.exception.BadRequestException;
+import dataaccess.exception.DataAccessException;
 import dataaccess.UserDAO;
 import http.AuthResponse;
 import http.RegisterRequest;

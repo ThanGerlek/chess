@@ -1,8 +1,8 @@
 package server.services;
 
 import dataaccess.AuthDAO;
-import dataaccess.DataAccessException;
-import dataaccess.UnauthorizedAccessException;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.UnauthorizedAccessException;
 import http.MessageResponse;
 
 /**

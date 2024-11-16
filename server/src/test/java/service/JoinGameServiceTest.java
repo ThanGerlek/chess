@@ -1,6 +1,7 @@
 package service;
 
 import dataaccess.*;
+import dataaccess.exception.*;
 import http.JoinGameRequest;
 import http.MessageResponse;
 import model.AuthToken;

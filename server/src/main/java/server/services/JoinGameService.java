@@ -1,6 +1,9 @@
 package server.services;
 
 import dataaccess.*;
+import dataaccess.exception.BadRequestException;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.UnauthorizedAccessException;
 import http.JoinGameRequest;
 import http.MessageResponse;
 

@@ -1,5 +1,11 @@
 package dataaccess;
 
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.UnauthorizedAccessException;
+import dataaccess.exception.ValueAlreadyTakenException;
+import dataaccess.memory.MemoryAuthDAO;
+import dataaccess.memory.MemoryUserDAO;
+import dataaccess.sql.DatabaseAuthDAO;
 import model.AuthToken;
 import model.User;
 import org.junit.jupiter.api.AfterAll;

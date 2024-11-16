@@ -1,7 +1,7 @@
 package server.handlers;
 
 import com.google.gson.Gson;
-import dataaccess.*;
+import dataaccess.exception.*;
 import http.MessageResponse;
 import spark.Request;
 import spark.Response;

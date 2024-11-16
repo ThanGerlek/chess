@@ -1,6 +1,9 @@
 package server.websocket;
 
 import dataaccess.*;
+import dataaccess.exception.BadRequestException;
+import dataaccess.exception.NoSuchItemException;
+import dataaccess.exception.UnauthorizedAccessException;
 import http.ChessSerializer;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;

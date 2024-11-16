@@ -1,6 +1,9 @@
-package dataaccess;
+package dataaccess.sql;
 
 import chess.ChessGame;
+import dataaccess.PlayerRole;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.NoSuchItemException;
 import http.ChessSerializer;
 import model.Game;
 

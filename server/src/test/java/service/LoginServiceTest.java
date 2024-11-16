@@ -1,7 +1,7 @@
 package service;
 
-import dataaccess.DataAccessException;
-import dataaccess.UnauthorizedAccessException;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.UnauthorizedAccessException;
 import http.AuthResponse;
 import http.LoginRequest;
 import org.junit.jupiter.api.Assertions;

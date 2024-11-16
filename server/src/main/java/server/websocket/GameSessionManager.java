@@ -1,6 +1,6 @@
 package server.websocket;
 
-import dataaccess.DataAccessException;
+import dataaccess.exception.DataAccessException;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketException;
 import websocket.messages.ServerMessage;

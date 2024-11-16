@@ -1,5 +1,10 @@
-package dataaccess;
+package dataaccess.sql;
 
+import dataaccess.AuthDAO;
+import dataaccess.UserDAO;
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.UnauthorizedAccessException;
+import dataaccess.exception.ValueAlreadyTakenException;
 import model.AuthToken;
 
 import java.util.ArrayList;

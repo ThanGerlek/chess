@@ -1,6 +1,11 @@
 package server;
 
 import dataaccess.*;
+import dataaccess.exception.DataAccessException;
+import dataaccess.sql.ChessDatabaseManager;
+import dataaccess.sql.DatabaseAuthDAO;
+import dataaccess.sql.DatabaseGameDAO;
+import dataaccess.sql.DatabaseUserDAO;
 import http.MessageResponse;
 import server.handlers.*;
 import server.websocket.GameSessionManager;

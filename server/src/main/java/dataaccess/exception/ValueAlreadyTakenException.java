@@ -1,4 +1,4 @@
-package dataaccess;
+package dataaccess.exception;
 
 public class ValueAlreadyTakenException extends DataAccessException {
     public ValueAlreadyTakenException(String message) {

@@ -1,5 +1,9 @@
 package dataaccess;
 
+import dataaccess.exception.DataAccessException;
+import dataaccess.exception.ValueAlreadyTakenException;
+import dataaccess.memory.MemoryUserDAO;
+import dataaccess.sql.DatabaseUserDAO;
 import model.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
