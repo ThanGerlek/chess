@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameDAOTest {
     private static final boolean IS_SQL_DAO = false;
-    private static final User user = new User("user1", "pass1", "email1");
-    private static final User user2 = new User("user2", "pass2", "email2");
-    private static final Game game2 = new Game(2, "GameDAOTest Game 2");
-    private static final int invalidGameID = 42;
+    private static final User USER = new User("user1", "pass1", "email1");
+    private static final User USER_2 = new User("user2", "pass2", "email2");
+    private static final Game GAME_2 = new Game(2, "GameDAOTest Game 2");
+    private static final int INVALID_GAME_ID = 42;
     private static UserDAO userDAO;
     private static GameDAO gameDAO;
     private static Game game = new Game(1, "GameDAOTest Game");
@@ -24,8 +24,8 @@ class GameDAOTest {
     static void init() throws DataAccessException {
         userDAO = new MemoryUserDAO();
         userDAO.clearUsers();
-        userDAO.insertNewUser(user);
-        userDAO.insertNewUser(user2);
+        userDAO.insertNewUser(USER);
+        userDAO.insertNewUser(USER_2);
     }
 
     @AfterAll
@@ -55,13 +55,13 @@ class GameDAOTest {
 
     @Test
     void findNonexistentGameThrows() {
-        assertThrows(NoSuchItemException.class, () -> gameDAO.findGame(invalidGameID));
+        assertThrows(NoSuchItemException.class, () -> gameDAO.findGame(INVALID_GAME_ID));
     }
 
     @Test
     void allGamesAfterInsertingReturnsCorrectlySizedList() throws DataAccessException {
         gameDAO.insertNewGame(game);
-        gameDAO.insertNewGame(game2);
+        gameDAO.insertNewGame(GAME_2);
         Collection<GameListItem> games = gameDAO.allGames();
         assertEquals(2, games.size());
     }
@@ -76,27 +76,27 @@ class GameDAOTest {
     void assignPlayerRoleWHITEThenGetHasCorrectRoleUsernames() throws DataAccessException {
         gameDAO.insertNewGame(game);
         System.out.println(gameDAO.findGame(1));
-        gameDAO.assignPlayerRole(game.gameID(), user.username(), PlayerRole.WHITE_PLAYER);
+        gameDAO.assignPlayerRole(game.gameID(), USER.username(), PlayerRole.WHITE_PLAYER);
 
         Game retrievedGame = gameDAO.findGame(game.gameID());
-        assertEquals(user.username(), retrievedGame.whiteUsername());
+        assertEquals(USER.username(), retrievedGame.whiteUsername());
         assertEquals("", retrievedGame.blackUsername());
     }
 
     @Test
     void assignPlayerRoleBLACKThenGetHasCorrectRoleUsernames() throws DataAccessException {
         gameDAO.insertNewGame(game);
-        gameDAO.assignPlayerRole(game.gameID(), user2.username(), PlayerRole.BLACK_PLAYER);
+        gameDAO.assignPlayerRole(game.gameID(), USER_2.username(), PlayerRole.BLACK_PLAYER);
 
         Game retrievedGame = gameDAO.findGame(game.gameID());
         assertEquals("", retrievedGame.whiteUsername());
-        assertEquals(user2.username(), retrievedGame.blackUsername());
+        assertEquals(USER_2.username(), retrievedGame.blackUsername());
     }
 
     @Test
     void assignPlayerRoleSPECTATORDoesNotChangeRoleUsernames() throws DataAccessException {
         gameDAO.insertNewGame(game);
-        gameDAO.assignPlayerRole(game.gameID(), user.username(), PlayerRole.SPECTATOR);
+        gameDAO.assignPlayerRole(game.gameID(), USER.username(), PlayerRole.SPECTATOR);
 
         Game retrievedGame = gameDAO.findGame(game.gameID());
         assertEquals("", retrievedGame.whiteUsername());
@@ -106,18 +106,18 @@ class GameDAOTest {
     @Test
     void assignPlayerRoleBothRolesThenGetHasCorrectRoleUsernames() throws DataAccessException {
         gameDAO.insertNewGame(game);
-        gameDAO.assignPlayerRole(game.gameID(), user.username(), PlayerRole.WHITE_PLAYER);
-        gameDAO.assignPlayerRole(game.gameID(), user2.username(), PlayerRole.BLACK_PLAYER);
+        gameDAO.assignPlayerRole(game.gameID(), USER.username(), PlayerRole.WHITE_PLAYER);
+        gameDAO.assignPlayerRole(game.gameID(), USER_2.username(), PlayerRole.BLACK_PLAYER);
 
         Game retrievedGame = gameDAO.findGame(game.gameID());
-        assertEquals(user.username(), retrievedGame.whiteUsername());
-        assertEquals(user2.username(), retrievedGame.blackUsername());
+        assertEquals(USER.username(), retrievedGame.whiteUsername());
+        assertEquals(USER_2.username(), retrievedGame.blackUsername());
     }
 
     @Test
     void assignPlayerRoleInvalidGameIDThrows() {
         assertThrows(NoSuchItemException.class,
-                () -> gameDAO.assignPlayerRole(invalidGameID, user.username(), PlayerRole.WHITE_PLAYER));
+                () -> gameDAO.assignPlayerRole(INVALID_GAME_ID, USER.username(), PlayerRole.WHITE_PLAYER));
     }
 
     @Test
@@ -156,7 +156,7 @@ class GameDAOTest {
     @Test
     void allGamesAfterClearGamesReturnsEmptyList() throws DataAccessException {
         gameDAO.insertNewGame(game);
-        gameDAO.insertNewGame(game2);
+        gameDAO.insertNewGame(GAME_2);
         gameDAO.clearGames();
         Collection<GameListItem> games = gameDAO.allGames();
         assertEquals(0, games.size());

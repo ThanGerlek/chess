@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserDAOTest {
     private static final boolean IS_SQL_DAO = true;
-    private static final User user = new User("validUser", "password", "email");
+    private static final User USER = new User("validUser", "password", "email");
     private static UserDAO userDAO;
 
     @AfterAll
@@ -25,21 +25,21 @@ class UserDAOTest {
 
     @Test
     void getInsertedUserHasCorrectUsername() throws DataAccessException {
-        userDAO.insertNewUser(user);
-        User retrievedUser = userDAO.getUser(user.username());
-        assertEquals(retrievedUser.username(), user.username());
+        userDAO.insertNewUser(USER);
+        User retrievedUser = userDAO.getUser(USER.username());
+        assertEquals(retrievedUser.username(), USER.username());
     }
 
     @Test
     void hasUserOnInsertedUser() throws DataAccessException {
-        userDAO.insertNewUser(user);
-        assertTrue(userDAO.hasUser(user.username()));
+        userDAO.insertNewUser(USER);
+        assertTrue(userDAO.hasUser(USER.username()));
     }
 
     @Test
     void insertExistingUserThrows() throws DataAccessException {
-        userDAO.insertNewUser(user);
-        assertThrows(ValueAlreadyTakenException.class, () -> userDAO.insertNewUser(user));
+        userDAO.insertNewUser(USER);
+        assertThrows(ValueAlreadyTakenException.class, () -> userDAO.insertNewUser(USER));
     }
 
     @Test
@@ -49,23 +49,23 @@ class UserDAOTest {
 
     @Test
     void hasUserOnRemovedUser() throws DataAccessException {
-        userDAO.insertNewUser(user);
-        userDAO.removeUser(user);
+        userDAO.insertNewUser(USER);
+        userDAO.removeUser(USER);
         assertFalse(userDAO.hasUser("invalidUsername"));
     }
 
     @Test
     void removeNonexistentUserDoesNotThrow() throws DataAccessException {
-        userDAO.removeUser(user);
+        userDAO.removeUser(USER);
     }
 
     @Test
     void hasUserOnClearedUsers() throws DataAccessException {
         User user2 = new User("username2", "pass2", "email2");
-        userDAO.insertNewUser(user);
+        userDAO.insertNewUser(USER);
         userDAO.insertNewUser(user2);
         userDAO.clearUsers();
-        assertFalse(userDAO.hasUser(user.username()));
+        assertFalse(userDAO.hasUser(USER.username()));
         assertFalse(userDAO.hasUser(user2.username()));
     }
 

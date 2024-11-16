@@ -5,13 +5,13 @@ public class AuthorizationRole {
     // ANY < GUEST
     // ANY < USER < CONSOLE < SUPERUSER
     // ANY < OBSERVER < PLAYER
-    public static AuthorizationRole ANY = new AuthorizationRole(Role.ANY);
-    public static AuthorizationRole GUEST = new AuthorizationRole(Role.GUEST);
-    public static AuthorizationRole USER = new AuthorizationRole(Role.USER);
-    public static AuthorizationRole CONSOLE = new AuthorizationRole(Role.CONSOLE);
-    public static AuthorizationRole SUPERUSER = new AuthorizationRole(Role.SUPERUSER);
-    public static AuthorizationRole PLAYER = new AuthorizationRole(Role.PLAYER);
-    public static AuthorizationRole OBSERVER = new AuthorizationRole(Role.OBSERVER);
+    public static final AuthorizationRole ANY = new AuthorizationRole(Role.ANY);
+    public static final AuthorizationRole GUEST = new AuthorizationRole(Role.GUEST);
+    public static final AuthorizationRole USER = new AuthorizationRole(Role.USER);
+    public static final AuthorizationRole CONSOLE = new AuthorizationRole(Role.CONSOLE);
+    public static final AuthorizationRole SUPERUSER = new AuthorizationRole(Role.SUPERUSER);
+    public static final AuthorizationRole PLAYER = new AuthorizationRole(Role.PLAYER);
+    public static final AuthorizationRole OBSERVER = new AuthorizationRole(Role.OBSERVER);
 
     private final Role role;
 
