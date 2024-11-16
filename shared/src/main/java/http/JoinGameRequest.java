@@ -7,5 +7,4 @@ package http;
  * @param gameID      the ID of the game to join
  */
 public record JoinGameRequest(String playerColor, int gameID) {
-    //    { "playerColor":"WHITE/BLACK", "gameID": 1234 }
 }

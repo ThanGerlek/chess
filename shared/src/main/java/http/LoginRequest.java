@@ -7,5 +7,4 @@ package http;
  * @param password the password to log in with
  */
 public record LoginRequest(String username, String password) {
-    //    { "username":"", "password":"" }
 }

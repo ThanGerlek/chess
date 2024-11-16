@@ -106,9 +106,9 @@ public class MemoryGameDAO implements GameDAO {
         }
 
         /* TODO Not handled:
-        role already claimed by different user (violation of SRP?)
-        user already claimed different role? (just overwrite?) (violation of SRP?)
-        (if user already has the role, just return.)
+        role already claimed by different user. Violation of SRP?
+        user already claimed different role? (just overwrite?) Violation of SRP?
+        If user already has the role, just return.
         */
     }
 

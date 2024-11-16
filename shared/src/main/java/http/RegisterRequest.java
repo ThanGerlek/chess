@@ -8,5 +8,4 @@ package http;
  * @param email    the email for the new user
  */
 public record RegisterRequest(String username, String password, String email) {
-    //    { "username":"", "password":"", "email":"" }
 }

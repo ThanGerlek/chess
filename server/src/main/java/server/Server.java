@@ -31,9 +31,6 @@ public class Server {
         userDAO = new DatabaseUserDAO();
         authDAO = new DatabaseAuthDAO(userDAO);
         gameDAO = new DatabaseGameDAO(userDAO);
-//        userDAO = new MemoryUserDAO();
-//        authDAO = new MemoryAuthDAO(userDAO);
-//        gameDAO = new MemoryGameDAO(userDAO);
 
         createGameHandler = new CreateGameHandler(authDAO, gameDAO);
         joinGameHandler = new JoinGameHandler(authDAO, gameDAO);

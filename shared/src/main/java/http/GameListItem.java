@@ -10,5 +10,4 @@ package http;
  * @param gameName      a human-readable name for the game.
  */
 public record GameListItem(int gameID, String whiteUsername, String blackUsername, String gameName) {
-    // {"gameID": 1234, "whiteUsername":"", "blackUsername":"", "gameName:""}
 }
